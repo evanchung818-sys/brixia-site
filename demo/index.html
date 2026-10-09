@@ -11,23 +11,24 @@
 <style>
 * { box-sizing: border-box; }
 body { margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px; font-family: "Manrope", system-ui, sans-serif; color: #fff; background: radial-gradient(circle at 15% 10%, rgba(84,110,168,.55), transparent 50%), radial-gradient(circle at 90% 95%, rgba(243,207,204,.4), transparent 55%), #111829; -webkit-font-smoothing: antialiased; }
-.wrap { width: min(820px, 100%); }
+.wrap { width: min(1080px, 100%); }
 .logo { display: flex; align-items: center; gap: 10px; font-family: "DM Serif Display", Georgia, serif; font-size: 28px; margin-bottom: 26px; }
 .mark { width: 34px; height: 34px; border-radius: 50%; background: #F3CFCC; color: #111829; display: grid; place-items: center; }
 .mark svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; }
 h1 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(34px, 5vw, 50px); line-height: 1.08; margin: 0 0 10px; }
 h1 em { color: #F3CFCC; }
 p.lede { color: rgba(255,255,255,.75); font-size: 16px; margin: 0 0 28px; }
-.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 a.card { display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 20px; background: #fff; color: #1C2440; text-decoration: none; transition: transform .15s; }
 a.card:hover { transform: translateY(-2px); }
 .tag { align-self: flex-start; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: #FBEDEC; color: #A85F62; }
 .card.v .tag { background: #E2E8F4; color: #3A5687; }
+.card.p .tag { background: #E6F2EA; color: #2F6B4A; }
 .card h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: 28px; margin: 0; }
 .card p { margin: 0; color: #5C6780; font-size: 14.5px; line-height: 1.5; }
 .card ul { margin: 4px 0 0; padding-left: 18px; color: #5C6780; font-size: 14px; display: grid; gap: 3px; }
 .go { margin-top: auto; padding-top: 12px; font-weight: 800; color: #1F2A4A; }
-@media (max-width: 640px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
 </style>
 </head>
 <body>
@@ -36,8 +37,9 @@ a.card:hover { transform: translateY(-2px); }
   <h1>Pick a demo. <em>Show the right side.</em></h1>
   <p class="lede">Clickable prototypes. Nothing is saved, and Reset demo puts everything back.</p>
   <div class="grid">
-    <a class="card" href="/couples-demo/"><span class="tag">For couples</span><h2>Couple demo</h2><p>The wedding folder: home dashboard and one organized inbox for every vendor.</p><ul><li>Home with cover, alerts and to-dos</li><li>Inbox grouped by category</li><li>Add a vendor you found</li></ul><span class="go">Open couple demo →</span></a>
-    <a class="card v" href="/vendor-demo/"><span class="tag">For vendors</span><h2>Vendor demo</h2><p>What a vendor sees: the inquiry email, replying with no account, their inbox and their profile.</p><ul><li>Reply from an email link</li><li>Claim your profile in two steps</li><li>Edit your public profile</li></ul><span class="go">Open vendor demo →</span></a>
+    <a class="card" href="/couples-demo/"><span class="tag">For couples</span><h2>Couple demo</h2><p>The wedding folder: one home, one inbox for every vendor, and a way to find the rest.</p><ul><li>Home with alerts, to-dos and what's coming up</li><li>Chat with quotes and time proposals</li><li>Explore vendors open on your date</li><li>Plans from real couples</li></ul><span class="go">Open couple demo →</span></a>
+    <a class="card v" href="/vendor-demo/"><span class="tag">For vendors</span><h2>Vendor demo</h2><p>What a vendor sees, from the first inquiry email to a booked wedding on their calendar.</p><ul><li>Reply from an email link, no account</li><li>Inbox with quotes and bookings</li><li>Calendar that fills itself in</li><li>Quote builder and their profile</li></ul><span class="go">Open vendor demo →</span></a>
+    <a class="card p" href="/plans-demo/"><span class="tag">Plans</span><h2>Plans demo</h2><p>A short walkthrough of plans. Start with just a venue booked, then pull in a whole team from a real wedding.</p><ul><li>Browse plans from past couples</li><li>Keep, swap or skip each vendor</li><li>Add it to your folder without losing anything</li></ul><span class="go">Open plans demo →</span></a>
   </div>
 </div>
 </body>

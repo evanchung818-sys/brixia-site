@@ -509,6 +509,380 @@ body[data-screen="profile"] #s-profile { display: flex; }
 @media (max-width: 1000px) { .p-grid { grid-template-columns: minmax(0, 1fr); } .p-head { grid-template-columns: auto minmax(0, 1fr); } .p-price { grid-column: 1 / -1; justify-items: start; text-align: left; } }
 @media (max-width: 760px) { .p-wrap { padding: 14px 12px 32px; } .p-cover { height: 170px; } .p-head { margin: -40px 8px 0; grid-template-columns: minmax(0, 1fr); } .p-logo { width: 64px; height: 64px; font-size: 24px; } .p-head h1 { font-size: 28px; } .p-imp .row { grid-template-columns: minmax(0, 1fr); } }
 
+
+/* ---------- Chat actions, bookings, quote builder ---------- */
+.plus-wrap { position: relative; flex: none; }
+.plus-btn { background: #EEF1F7; color: var(--slate); }
+.plus-btn.open { background: var(--navy); color: #fff; }
+.plus-btn .i { width: 20px; height: 20px; transition: transform .15s; }
+.plus-btn.open .i { transform: rotate(45deg); }
+.plus-menu { position: absolute; bottom: calc(100% + 10px); left: -6px; z-index: 20; width: 270px; background: #fff; border-radius: 16px; box-shadow: 0 12px 36px rgba(17,24,41,.22); border: 1px solid var(--line); padding: 6px; display: none; }
+.plus-menu.open { display: block; animation: rise .14s ease-out; }
+.plus-menu button { display: flex; align-items: center; gap: 11px; width: 100%; border: 0; background: transparent; border-radius: 11px; padding: 9px 10px; text-align: left; }
+.plus-menu button:hover { background: var(--hover); }
+.plus-menu .pi { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.plus-menu .pi.q { background: var(--info-bg); color: var(--info); } .plus-menu .pi.b { background: var(--blush-2); color: var(--rose-ink); } .plus-menu .pi.d { background: var(--ok-bg); color: var(--ok); } .plus-menu .pi.f { background: #F1EEED; color: var(--muted); }
+.plus-menu b { display: block; font-size: 13.5px; } .plus-menu span.s { font-size: 12px; color: var(--muted); }
+.bk { width: min(400px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+.bk-top { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: linear-gradient(120deg, #FBEDEC, #F3F0F7); }
+.bk-top .ic { width: 36px; height: 36px; border-radius: 11px; background: #fff; color: var(--rose-ink); display: grid; place-items: center; flex: none; }
+.bk-top b { flex: 1; font-size: 14.5px; }
+.bk-body { padding: 10px 14px 4px; display: grid; gap: 6px; font-size: 13.5px; }
+.bk-body div { display: flex; gap: 8px; align-items: center; }
+.bk-body .i { width: 15px; height: 15px; color: var(--faint); }
+.bk-note { font-size: 13px; color: var(--muted); padding: 4px 14px 0; }
+.bk-acts { display: flex; gap: 8px; padding: 12px 14px 14px; flex-wrap: wrap; }
+.bk-acts .btn { padding: 8px 14px; font-size: 13px; }
+.bk-state { display: flex; align-items: center; gap: 8px; margin: 10px 14px 14px; padding: 9px 12px; border-radius: 12px; font-size: 13px; font-weight: 700; }
+.bk-state.ok { background: var(--ok-bg); color: var(--ok); } .bk-state.wait { background: #F4F5F9; color: var(--muted); } .bk-state.no { background: #F6EEEE; color: #8E4B4F; }
+.demo-link { border: 0; background: none; padding: 0; margin-left: auto; font-size: 11.5px; font-weight: 800; color: var(--slate); text-decoration: underline; text-underline-offset: 2px; }
+.pill.pend { background: var(--warn-bg); color: var(--warn); } .pill.dec { background: #F6EEEE; color: #8E4B4F; }
+.dt-card { width: min(380px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); }
+.dt-card h4 { margin: 0 0 8px; font-size: 14px; display: flex; gap: 8px; align-items: center; }
+.dt-card h4 .i { color: var(--ok); }
+.dt-card div { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; padding: 3px 0; }
+.dt-card div span { color: var(--muted); }
+.sheet-h { display: flex; gap: 14px; align-items: flex-start; margin: 0 40px 16px 0; }
+.sheet-h h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.sheet-h p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.sheet-body { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.sheet-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.seg2 { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: #F1F3F8; }
+.seg2 button { border: 0; background: transparent; padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.seg2 button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(17,24,41,.12); }
+.sheet-err { color: #B0464C; font-size: 13px; font-weight: 700; min-height: 0; }
+.sheet-acts { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 14px; }
+.qb-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; align-items: start; }
+.qb-lines { display: grid; gap: 8px; }
+.qb-line { display: grid; grid-template-columns: minmax(0, 1fr) 120px 30px; gap: 8px; align-items: center; }
+.qb-line .rm { background: #EEF1F7; color: var(--muted); }
+.qb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.qb-chips button { border: 1.5px dashed var(--outline); background: #fff; border-radius: 999px; padding: 5px 11px; font-size: 12.5px; font-weight: 700; color: var(--slate); }
+.qb-chips button.tpl { border-style: solid; }
+.qb-chips button:hover { border-color: #AEBBD6; }
+.qb-sum { background: var(--navy); color: #fff; border-radius: 16px; padding: 16px; display: grid; gap: 8px; position: sticky; top: 0; }
+.qb-sum div { display: flex; justify-content: space-between; font-size: 13.5px; color: rgba(255,255,255,.8); }
+.qb-sum div b { color: #fff; font-variant-numeric: tabular-nums; }
+.qb-sum .tot { border-top: 1px solid rgba(255,255,255,.18); padding-top: 10px; font-size: 15px; color: #fff; }
+.qb-sum .tot b { font-family: var(--serif); font-weight: 400; font-size: 26px; }
+.h-up-row { display: flex; gap: 10px; padding: 9px 16px; align-items: center; }
+.h-up-row .d { width: 44px; flex: none; text-align: center; border-radius: 10px; background: #F4F5F9; padding: 4px 0; line-height: 1.1; }
+.h-up-row .d small { display: block; font-size: 10.5px; font-weight: 800; color: var(--rose-ink); text-transform: uppercase; }
+.h-up-row .d b { font-size: 17px; }
+.h-up-row .tx { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.35; }
+.h-up-row .tx span { display: block; font-size: 12px; color: var(--muted); }
+@media (max-width: 860px) { .qb-grid { grid-template-columns: minmax(0, 1fr); } .qb-sum { position: static; } }
+@media (max-width: 760px) { .sheet-row { grid-template-columns: minmax(0, 1fr); } .qb-line { grid-template-columns: minmax(0, 1fr) 96px 30px; } }
+
+
+/* ---------- Vendor calendar ---------- */
+body[data-screen="vcal"] #s-vcal, body[data-screen="vquotes"] #s-vquotes { display: flex; }
+.v-wrap { max-width: 1180px; margin: 0 auto; padding: 22px 26px 48px; }
+.v-head { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.v-head h1 { font-family: var(--serif); font-weight: 400; font-size: 36px; line-height: 1.05; }
+.v-head p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.v-head .r { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.v-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.v-stat { background: #fff; border: 1.5px solid var(--outline); border-radius: 16px; padding: 12px 14px; }
+.v-stat small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.v-stat b { display: block; font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; margin-top: 2px; }
+.v-stat span { font-size: 12px; color: var(--muted); }
+.v-stat.dark { background: var(--navy); border-color: var(--navy); color: #fff; }
+.v-stat.dark small, .v-stat.dark span { color: rgba(255,255,255,.7); }
+.v-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+.v-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; }
+.v-card-h { display: flex; align-items: center; gap: 10px; padding: 14px 16px 8px; flex-wrap: wrap; }
+.v-card-h h3 { font-size: 15px; font-weight: 800; }
+.v-card-h .r { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.v-col { display: grid; gap: 18px; }
+.cal-nav { display: flex; align-items: center; gap: 6px; }
+.cal-nav h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; min-width: 200px; }
+.cal-nav .icon-btn { background: #F1F3F8; }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 0 16px 10px; font-size: 12px; color: var(--muted); font-weight: 700; }
+.cal-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.cal-legend i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+.cal-dow { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); padding: 0 10px; font-size: 11px; font-weight: 800; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+.cal-dow span { padding: 6px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; padding: 0 10px 12px; }
+.cal-cell { position: relative; min-height: 96px; border: 1px solid var(--line); border-radius: 12px; background: #fff; padding: 5px; text-align: left; display: flex; flex-direction: column; gap: 3px; overflow: hidden; }
+.cal-cell:hover { border-color: #AEBBD6; }
+.cal-cell.out { background: #FAF8F8; } .cal-cell.out .dn { color: #C4C0C0; }
+.cal-cell.past { background: #FAF8F8; }
+.cal-cell.sel { box-shadow: 0 0 0 2px var(--navy); border-color: var(--navy); }
+.cal-cell.blocked { background: repeating-linear-gradient(135deg, #F4F1F1 0 6px, #ECE7E7 6px 12px); }
+.cal-cell .dn { font-size: 12.5px; font-weight: 800; color: var(--ink); width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; }
+.cal-cell.today .dn { background: var(--rose-ink); color: #fff; }
+.ev { display: block; font-size: 11px; font-weight: 700; line-height: 1.25; padding: 2px 6px; border-radius: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev.wedding { background: var(--navy); color: #fff; }
+.ev.wout { background: #fff; color: var(--navy); box-shadow: inset 0 0 0 1.5px var(--navy); }
+.ev.appt { background: var(--blush-2); color: var(--rose-ink); }
+.ev.own { background: var(--info-bg); color: var(--info); }
+.ev.pending, .ev.hold { background: #fff; color: var(--warn); box-shadow: inset 0 0 0 1.5px #E7C98E; border: 0; }
+.ev.hold { color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--outline); }
+.ev.block { background: #E4DEDE; color: #6E6565; }
+.ev-more { font-size: 11px; font-weight: 800; color: var(--muted); padding-left: 4px; }
+.cal-dots { display: none; gap: 3px; justify-content: center; }
+.cal-dots i { width: 6px; height: 6px; border-radius: 50%; }
+.dot-wedding { background: var(--navy); } .dot-wout { background: #fff; box-shadow: inset 0 0 0 1.5px var(--navy); } .dot-appt { background: #D79A9C; } .dot-own { background: #6E86B8; } .dot-pending, .dot-hold { background: #E2B866; } .dot-block { background: #B9AFAF; }
+.day-h { padding: 16px 16px 6px; }
+.day-h small { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--rose-ink); }
+.day-h h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.1; margin-top: 2px; }
+.day-st { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
+.day-st.open { background: var(--ok-bg); color: var(--ok); } .day-st.full { background: var(--navy); color: #fff; } .day-st.blocked { background: #ECE7E7; color: #6E6565; } .day-st.past { background: #F1EEED; color: var(--muted); }
+.day-evs { display: grid; gap: 8px; padding: 10px 16px; }
+.day-ev { display: grid; grid-template-columns: 4px minmax(0, 1fr) auto; gap: 10px; align-items: start; padding: 10px 12px 10px 0; border-radius: 12px; background: #FAF8F8; }
+.day-ev .bar { border-radius: 4px; align-self: stretch; }
+.day-ev b { display: block; font-size: 13.5px; line-height: 1.3; }
+.day-ev span { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
+.day-ev .tag { display: inline-block; margin-top: 5px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--slate); }
+.day-ev .acts2 { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.day-ev .mini { border: 0; background: #fff; border-radius: 8px; padding: 4px 8px; font-size: 11.5px; font-weight: 800; color: var(--slate); box-shadow: inset 0 0 0 1px var(--outline); }
+.day-acts { display: flex; gap: 8px; padding: 6px 16px 16px; flex-wrap: wrap; }
+.day-acts .btn { flex: 1; justify-content: center; padding: 9px 12px; font-size: 13px; }
+.day-form { margin: 0 16px 16px; padding: 12px; border-radius: 14px; background: #F7F8FB; border: 1px solid var(--line); display: grid; gap: 10px; }
+.day-form .fld input, .day-form .fld select { background: #fff; }
+.conflict { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; font-weight: 700; color: var(--warn); background: var(--warn-bg); border-radius: 10px; padding: 8px 10px; }
+.conflict.okc { color: var(--ok); background: var(--ok-bg); }
+.conflict .i { width: 15px; height: 15px; flex: none; margin-top: 1px; }
+.bk .conflict { margin: 8px 14px 0; }
+.up-row { display: flex; gap: 10px; align-items: center; padding: 8px 16px; width: 100%; border: 0; background: none; text-align: left; }
+.up-row:hover { background: var(--hover); }
+.up-row .d { width: 44px; flex: none; text-align: center; border-radius: 10px; background: #F4F5F9; padding: 4px 0; line-height: 1.1; }
+.up-row .d small { display: block; font-size: 10.5px; font-weight: 800; color: var(--rose-ink); text-transform: uppercase; }
+.up-row .d b { font-size: 17px; }
+.up-row .tx { flex: 1; min-width: 0; font-size: 13.5px; line-height: 1.35; }
+.up-row .tx span { display: block; font-size: 12px; color: var(--muted); }
+.sync-row { display: flex; gap: 8px; flex-wrap: wrap; padding: 4px 16px 16px; }
+.sync-row button { flex: 1; min-width: 90px; border: 1.5px solid var(--outline); background: #fff; border-radius: 12px; padding: 9px 8px; font-size: 12.5px; font-weight: 800; color: var(--slate); }
+.sync-row button:hover { border-color: #AEBBD6; }
+.v-note { font-size: 12.5px; color: var(--muted); padding: 0 16px 14px; line-height: 1.5; }
+/* ---------- Vendor quotes ---------- */
+.vq-chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 16px 10px; }
+.vq-chips button { border: 1.5px solid var(--outline); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 800; color: var(--muted); }
+.vq-chips button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.vq-chips button i { font-style: normal; opacity: .7; margin-left: 4px; }
+.vq-who .av { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none; color: #fff; font-size: 12px; font-weight: 800; }
+.vq-row { display: grid; grid-template-columns: minmax(0, 1fr) 180px 84px 196px; gap: 14px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
+.vq-who { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.vq-who b { display: block; font-size: 14px; }
+.vq-who span { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vq-amt b { display: block; font-size: 15px; font-variant-numeric: tabular-nums; }
+.vq-amt span { font-size: 12px; color: var(--muted); }
+.vq-acts { display: flex; gap: 6px; justify-content: flex-end; }
+.vq-acts .btn { padding: 7px 12px; font-size: 12.5px; }
+.pill.draft { background: #F1EEED; color: var(--muted); } .pill.exp { background: #F6EEEE; color: #8E4B4F; }
+.vq-empty { padding: 26px 16px; text-align: center; color: var(--muted); font-size: 13.5px; border-top: 1px solid var(--line); }
+.pr-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 16px; font-size: 13.5px; }
+.pr-row span { color: var(--muted); font-size: 12px; display: block; }
+.pr-row b.n { font-variant-numeric: tabular-nums; }
+.pr-sub { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); padding: 10px 16px 2px; }
+.terms { display: grid; gap: 10px; padding: 6px 16px 16px; }
+.qb-budget { font-size: 12px; color: var(--blush); background: rgba(255,255,255,.08); border-radius: 10px; padding: 8px 10px; }
+.qb-chips button.magic { border-style: solid; border-color: transparent; background: linear-gradient(120deg, #FBEDEC, #E9EEF8); color: var(--navy); }
+@media (max-width: 1000px) { .v-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .v-wrap { padding: 16px 14px 28px; }
+  .v-head h1 { font-size: 30px; }
+  .v-stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+  .v-stat b { font-size: 23px; }
+  .cal-nav h2 { font-size: 21px; min-width: 0; flex: 1; }
+  .cal-grid { gap: 2px; padding: 0 6px 10px; } .cal-dow { padding: 0 6px; }
+  .cal-cell { min-height: 54px; align-items: center; padding: 4px 2px; border-radius: 10px; }
+  .cal-cell .ev, .cal-cell .ev-more { display: none; }
+  .cal-dots { display: flex; }
+  .vq-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .vq-row .vq-amt { grid-column: 1; } .vq-row .vq-st { grid-column: 2; grid-row: 1; text-align: right; } .vq-row .vq-acts { grid-column: 1 / -1; justify-content: flex-start; }
+}
+
+
+/* ---------- Explore ---------- */
+body[data-screen="explore"] #s-explore, body[data-screen="plans"] #s-plans { display: flex; }
+.x-wrap { max-width: 1240px; margin: 0 auto; padding: 22px 26px 48px; }
+.x-hero { position: relative; border-radius: 26px; padding: 30px 28px 24px; color: #fff; background: radial-gradient(ellipse at 15% 10%, rgba(243,207,204,.45), transparent 50%), radial-gradient(ellipse at 90% 90%, rgba(169,138,151,.55), transparent 55%), linear-gradient(135deg, #111829 0%, #2F3F66 60%, #6D6A8C 100%); overflow: hidden; }
+.x-hero h1 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.05; }
+.x-hero h1 em { color: var(--blush); }
+.x-hero p { color: rgba(255,255,255,.78); margin-top: 6px; font-size: 14.5px; }
+.x-cats { display: flex; gap: 8px; margin-top: 18px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.x-cats::-webkit-scrollbar { display: none; }
+.x-cats button { flex: none; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 92px; padding: 12px 10px; border-radius: 16px; border: 0; background: rgba(255,255,255,.1); color: #fff; font-size: 12.5px; font-weight: 700; box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); }
+.x-cats button .i { width: 22px; height: 22px; }
+.x-cats button:hover { background: rgba(255,255,255,.18); }
+.x-cats button.on { background: #fff; color: var(--night); }
+.x-bar { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; gap: 0; margin-top: 16px; background: #fff; border-radius: 18px; padding: 6px; color: var(--ink); box-shadow: 0 12px 30px rgba(17,24,41,.25); }
+.x-bar label { display: flex; flex-direction: column; gap: 1px; padding: 6px 14px; border-right: 1px solid var(--line); min-width: 0; }
+.x-bar label:nth-last-child(2) { border-right: 0; }
+.x-bar small { font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.x-bar select, .x-bar input { border: 0; outline: 0; font: inherit; font-size: 14px; font-weight: 700; background: transparent; padding: 2px 0; color: var(--ink); min-width: 0; width: 100%; }
+.x-bar .btn { border-radius: 14px; padding: 0 22px; }
+.x-body { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 22px; margin-top: 22px; align-items: start; }
+.x-filters { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; padding: 6px 0 10px; position: sticky; top: 0; }
+.x-f { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.x-f:last-child { border-bottom: 0; }
+.x-f h4 { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.x-f .ck { display: flex; align-items: center; gap: 9px; padding: 4px 0; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.x-f .ck input { width: 16px; height: 16px; accent-color: var(--navy); }
+.x-f .ck span.n { margin-left: auto; font-size: 12px; color: var(--faint); }
+.x-tog { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+.x-tog input { appearance: none; width: 38px; height: 22px; border-radius: 999px; background: #D9DEE9; position: relative; flex: none; transition: background .15s; cursor: pointer; }
+.x-tog input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+.x-tog input:checked { background: var(--navy); }
+.x-tog input:checked::after { left: 19px; }
+.x-tog small { display: block; font-size: 12px; font-weight: 600; color: var(--muted); }
+.x-styles { display: flex; flex-wrap: wrap; gap: 6px; }
+.x-styles button { border: 1.5px solid var(--outline); background: #fff; border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 700; color: var(--slate); }
+.x-styles button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.x-range { width: 100%; accent-color: var(--navy); }
+.x-rhead { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.x-rhead h2 { font-size: 18px; font-weight: 800; }
+.x-rhead h2 span { color: var(--muted); font-weight: 600; }
+.x-rhead .r { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.x-rhead select { border: 1.5px solid var(--outline); border-radius: 999px; padding: 7px 12px; font: inherit; font-size: 13px; font-weight: 700; background: #fff; }
+.x-ffbtn { display: none; }
+.x-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.x-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 20px; overflow: hidden; text-align: left; padding: 0; display: flex; flex-direction: column; transition: transform .15s, box-shadow .15s; cursor: pointer; }
+.x-card:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(17,24,41,.12); }
+.x-img { position: relative; height: 170px; background-size: cover; background-position: center; }
+.x-img .wm { position: absolute; right: 14px; bottom: 10px; color: rgba(255,255,255,.55); }
+.x-img .wm .i { width: 46px; height: 46px; stroke-width: 1.2; }
+.x-badge { position: absolute; left: 10px; top: 10px; font-size: 11.5px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.92); color: var(--ok); }
+.x-badge.no { color: var(--muted); } .x-badge.mine { background: var(--navy); color: #fff; }
+.x-heart { position: absolute; right: 10px; top: 10px; width: 34px; height: 34px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: var(--ink); display: grid; place-items: center; }
+.x-heart .i { width: 18px; height: 18px; }
+.x-heart.on { color: #C2474F; } .x-heart.on .i { fill: #C2474F; }
+.x-cb { padding: 12px 14px 14px; display: grid; gap: 5px; }
+.x-cb .t { display: flex; gap: 8px; align-items: baseline; }
+.x-cb .t b { font-size: 15px; flex: 1; min-width: 0; }
+.x-rate { display: inline-flex; align-items: center; gap: 3px; font-size: 12.5px; font-weight: 800; white-space: nowrap; }
+.x-rate .i { width: 13px; height: 13px; fill: #E2A23B; stroke: #E2A23B; }
+.x-rate span { color: var(--muted); font-weight: 600; }
+.x-cb .sub { font-size: 12.5px; color: var(--muted); }
+.x-cb .tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.x-cb .tags span { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #F2F4F9; color: var(--slate); }
+.x-cb .pr { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; font-size: 12.5px; color: var(--muted); }
+.x-cb .pr b { font-size: 15px; color: var(--ink); }
+.x-ver { display: inline-flex; align-items: center; gap: 3px; color: var(--ok); font-weight: 800; font-size: 11.5px; }
+.x-ver .i { width: 13px; height: 13px; }
+.x-empty { background: #fff; border: 1.5px dashed var(--outline); border-radius: 20px; padding: 40px 20px; text-align: center; color: var(--muted); }
+.x-empty b { display: block; color: var(--ink); font-size: 16px; margin-bottom: 4px; }
+.x-pick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.x-pick button { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; border-radius: 16px; border: 1.5px solid var(--outline); background: #fff; text-align: left; }
+.x-pick button:hover { border-color: var(--navy); }
+.x-pick .ic2 { width: 40px; height: 40px; border-radius: 12px; background: var(--blush-2); color: var(--rose-ink); display: grid; place-items: center; }
+.x-pick b { font-size: 14px; } .x-pick span { font-size: 12px; color: var(--muted); }
+.x-pick button.done .ic2 { background: var(--ok-bg); color: var(--ok); }
+.x-ctx { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 14px; }
+.x-ctx span { font-size: 12.5px; font-weight: 700; padding: 5px 11px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--outline); }
+.qv-gal { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 110px 110px; gap: 6px; border-radius: 18px; overflow: hidden; margin: 0 0 16px; }
+.qv-gal div { background-size: cover; position: relative; }
+.qv-gal div:first-child { grid-row: 1 / 3; }
+.qv-h { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-right: 40px; }
+.qv-h h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; }
+.qv-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--muted); margin-top: 6px; }
+.qv-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; margin-top: 16px; align-items: start; }
+.qv-box { background: #fff; border: 1.5px solid var(--outline); border-radius: 16px; padding: 14px 16px; }
+.qv-box h4 { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.qv-pk { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.qv-pk:first-of-type { border-top: 0; }
+.qv-pk span { display: block; font-size: 12px; color: var(--muted); }
+.qv-msg textarea { width: 100%; min-height: 120px; border: 1.5px solid var(--outline); border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 13.5px; resize: vertical; outline: 0; background: #fff; }
+.qv-msg textarea:focus { border-color: var(--slate); }
+.qv-plan { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border-radius: 12px; background: linear-gradient(120deg, #FBEDEC, #EEF1F8); font-size: 13px; margin-top: 10px; border: 0; width: 100%; text-align: left; }
+.qv-plan b { display: block; }
+/* ---------- Plans ---------- */
+.modal .m-x { z-index: 3; }
+.pl-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.pd-hero > .pl-art { position: absolute; }
+.pl-head { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.pl-head h1 { font-family: var(--serif); font-weight: 400; font-size: 46px; line-height: 1.02; }
+.pl-head h1 em { color: var(--rose-ink); }
+.pl-head p { color: var(--muted); font-size: 14.5px; margin-top: 6px; max-width: 560px; }
+.pl-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.pl-chips button { border: 1.5px solid var(--outline); background: #fff; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; color: var(--slate); }
+.pl-chips button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+.pl-feat { position: relative; display: grid; grid-template-columns: 1.25fr 1fr; border-radius: 26px; overflow: hidden; background: var(--night); color: #fff; margin-bottom: 18px; border: 0; padding: 0; text-align: left; width: 100%; cursor: pointer; }
+.pl-feat .im { min-height: 340px; background-size: cover; position: relative; }
+.pl-feat .tx { padding: 28px; display: flex; flex-direction: column; gap: 10px; }
+.pl-feat .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--blush); }
+.pl-feat h2 { font-family: var(--serif); font-weight: 400; font-size: 36px; line-height: 1.05; }
+.pl-feat p { color: rgba(255,255,255,.78); font-size: 14px; line-height: 1.55; }
+.pl-nums { display: flex; gap: 22px; flex-wrap: wrap; margin-top: auto; }
+.pl-nums > span small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .65; }
+.pl-nums > span b { font-family: var(--serif); font-weight: 400; font-size: 24px; }
+.pl-sw { display: flex; gap: 4px; }
+.pl-sw i { width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+.pl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.pl-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 22px; overflow: hidden; padding: 0; text-align: left; cursor: pointer; display: flex; flex-direction: column; transition: transform .15s, box-shadow .15s; }
+.pl-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(17,24,41,.12); }
+.pl-card .im { height: 190px; background-size: cover; position: relative; }
+.pl-card .im .pl-sw { position: absolute; left: 12px; bottom: 12px; }
+.pl-card .im .used { position: absolute; right: 12px; top: 12px; font-size: 11.5px; font-weight: 800; padding: 4px 9px; border-radius: 999px; background: rgba(17,24,41,.55); color: #fff; backdrop-filter: blur(6px); }
+.pl-card .bd { padding: 14px 16px 16px; display: grid; gap: 6px; }
+.pl-card h3 { font-family: var(--serif); font-weight: 400; font-size: 23px; line-height: 1.1; }
+.pl-card .who { font-size: 12.5px; color: var(--muted); }
+.pl-card .facts { display: flex; gap: 12px; font-size: 12.5px; font-weight: 700; color: var(--slate); flex-wrap: wrap; }
+.pl-stack { display: flex; margin-top: 4px; }
+.pl-stack .av { width: 28px; height: 28px; border-radius: 9px; font-size: 10px; box-shadow: 0 0 0 2px #fff; }
+.pl-stack .av + .av { margin-left: -6px; }
+.pd-hero { position: relative; border-radius: 26px; min-height: 300px; background-size: cover; color: #fff; display: flex; flex-direction: column; justify-content: flex-end; padding: 26px; overflow: hidden; }
+.pd-hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,24,41,0) 30%, rgba(17,24,41,.7)); }
+.pd-hero > * { position: relative; }
+.pd-hero .back2 { position: absolute; left: 16px; top: 16px; }
+.pd-hero h1 { font-family: var(--serif); font-weight: 400; font-size: 48px; line-height: 1.02; max-width: 760px; }
+.pd-hero .who { color: rgba(255,255,255,.85); margin-top: 8px; font-size: 14px; }
+.pd-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; margin-top: 20px; align-items: start; }
+.pd-story { font-size: 15px; line-height: 1.65; color: var(--ink); padding: 16px 18px; }
+.pd-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
+.pd-row.skip { opacity: .55; }
+.pd-row .cic { width: 44px; height: 44px; border-radius: 13px; background-size: cover; display: grid; place-items: center; color: rgba(255,255,255,.9); }
+.pd-row .nm small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.pd-row .nm b { font-size: 14.5px; }
+.pd-row .nm span { display: block; font-size: 12.5px; color: var(--muted); }
+.pd-row .nm span.lock { color: var(--ok); font-weight: 700; }
+.pd-seg { display: inline-flex; gap: 3px; padding: 3px; border-radius: 999px; background: #F1F3F8; }
+.pd-seg button { border: 0; background: transparent; border-radius: 999px; padding: 6px 11px; font-size: 12.5px; font-weight: 800; color: var(--muted); }
+.pd-seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 2px rgba(17,24,41,.14); }
+.pd-seg button.on.sk { background: #6E6565; color: #fff; }
+.pd-swap { grid-column: 1 / -1; display: grid; gap: 6px; padding: 8px; border-radius: 14px; background: #F7F8FB; }
+.pd-swap button { display: flex; gap: 10px; align-items: center; border: 1.5px solid transparent; background: #fff; border-radius: 12px; padding: 8px 10px; text-align: left; }
+.pd-swap button:hover { border-color: #AEBBD6; }
+.pd-swap button.on { border-color: var(--navy); }
+.pd-swap .cic { width: 34px; height: 34px; border-radius: 10px; background-size: cover; flex: none; }
+.pd-swap .tx { flex: 1; min-width: 0; font-size: 13px; } .pd-swap .tx span { display: block; font-size: 12px; color: var(--muted); }
+.pd-sum { background: var(--navy); color: #fff; border-radius: 20px; padding: 18px; display: grid; gap: 10px; position: sticky; top: 0; }
+.pd-sum h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; }
+.pd-sum .ln { display: flex; justify-content: space-between; font-size: 13px; color: rgba(255,255,255,.78); gap: 10px; }
+.pd-sum .ln b { color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pd-sum .big { border-top: 1px solid rgba(255,255,255,.18); padding-top: 10px; }
+.pd-sum .big b { font-family: var(--serif); font-weight: 400; font-size: 30px; }
+.pd-sum .ck { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; color: rgba(255,255,255,.85); cursor: pointer; }
+.pd-sum .ck input { margin-top: 2px; accent-color: var(--blush); width: 16px; height: 16px; flex: none; }
+.pd-sum .btn { background: var(--blush); color: var(--night); width: 100%; padding: 13px; font-size: 14.5px; }
+.pd-sum .btn[disabled] { opacity: .5; cursor: not-allowed; }
+.pd-sum .fine { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.5; }
+.pd-tl { padding: 6px 16px 14px; display: grid; gap: 0; }
+.pd-tl div { position: relative; padding: 0 0 14px 22px; font-size: 13.5px; }
+.pd-tl div::before { content: ''; position: absolute; left: 4px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--rose-ink); }
+.pd-tl div::after { content: ''; position: absolute; left: 8px; top: 17px; bottom: 0; width: 1.5px; background: var(--line); }
+.pd-tl div:last-child::after { display: none; }
+.pd-tl small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.pd-done { background: linear-gradient(120deg, #E6F2EA, #F3F0F7); border: 1.5px solid #BFD9C8; border-radius: 20px; padding: 18px; margin-top: 18px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.pd-done .ic2 { width: 46px; height: 46px; border-radius: 14px; background: var(--ok); color: #fff; display: grid; place-items: center; flex: none; }
+.pd-done b { display: block; font-size: 16px; }
+.pd-done span { font-size: 13px; color: var(--muted); }
+.pd-done .r { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 1000px) { .x-body { grid-template-columns: minmax(0, 1fr); } .x-filters { position: static; display: none; } .x-filters.open { display: block; } .x-ffbtn { display: inline-flex; } .pd-grid, .qv-grid { grid-template-columns: minmax(0, 1fr); } .pd-sum { position: static; } .pl-feat { grid-template-columns: minmax(0, 1fr); } .pl-feat .im { min-height: 220px; } }
+@media (max-width: 760px) {
+  .x-wrap { padding: 14px 14px 28px; }
+  .x-hero { padding: 22px 16px 16px; border-radius: 20px; } .x-hero h1 { font-size: 32px; }
+  .x-bar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px; }
+  .x-bar label { border-right: 0; background: #F6F7FA; border-radius: 12px; }
+  .x-bar .btn { grid-column: 1 / -1; padding: 11px; }
+  .x-pick { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .pl-head h1 { font-size: 34px; } .pd-hero h1 { font-size: 32px; } .pd-hero { min-height: 240px; padding: 18px; }
+  .pd-row { grid-template-columns: 40px minmax(0, 1fr); } .pd-row .pd-seg { grid-column: 1 / -1; justify-self: start; }
+  .qv-h h2 { font-size: 26px; } .qv-gal { grid-template-rows: 80px 80px; }
+}
+
 /* ---------- Claim + vendor inbox ---------- */
 #s-claim { overflow-y: auto; background: var(--paper); justify-content: center; padding: 32px 16px 48px; }
 .claim-card { width: min(560px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; align-self: flex-start; }
@@ -647,6 +1021,55 @@ body[data-screen="profile"] #s-profile { display: flex; }
     <div class="foot">Prototype. Nothing here is saved.</div>
   </aside>
   <div class="hmain" id="pmain"></div>
+  <nav class="bottom-nav" id="pBNav"></nav>
+</section>
+
+<!-- Couple explore -->
+<section class="screen app-screen" id="s-explore" aria-label="Explore vendors">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="wcard"><small>Wedding folder</small><b>Maya <em>&amp;</em> Daniel</b><span>June 12, 2027 · Brooklyn</span></div>
+    <nav class="nav" id="xNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="xmain"></div>
+  <nav class="bottom-nav" id="xBNav"></nav>
+</section>
+
+<!-- Couple plans -->
+<section class="screen app-screen" id="s-plans" aria-label="Plans">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="wcard"><small>Wedding folder</small><b>Maya <em>&amp;</em> Daniel</b><span>June 12, 2027 · Brooklyn</span></div>
+    <nav class="nav" id="plNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="plmain"></div>
+  <nav class="bottom-nav" id="plBNav"></nav>
+</section>
+
+<!-- Vendor calendar -->
+<section class="screen app-screen" id="s-vcal" aria-label="Vendor calendar">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="vbiz"><small>Vendor account</small><b>Petal and Stem Studio</b><span class="ver"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Verified florist</span></div>
+    <nav class="nav" id="vcNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="vcmain"></div>
+  <nav class="bottom-nav" id="vcBNav"></nav>
+</section>
+
+<!-- Vendor quotes -->
+<section class="screen app-screen" id="s-vquotes" aria-label="Vendor quotes">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="vbiz"><small>Vendor account</small><b>Petal and Stem Studio</b><span class="ver"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Verified florist</span></div>
+    <nav class="nav" id="vqNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="vqmain"></div>
+  <nav class="bottom-nav" id="vqBNav"></nav>
 </section>
 
 <!-- Vendor inbox -->
@@ -671,8 +1094,10 @@ body[data-screen="profile"] #s-profile { display: flex; }
     <div class="scroll" id="vlist"></div>
   </div>
   <div class="thread" id="vthread"></div>
+  <nav class="bottom-nav" id="viBNav"></nav>
 </section>
 
+<div id="sheetRoot"></div>
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -702,6 +1127,14 @@ const ICON = {
   officiant: '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/>',
   cake: '<path d="M4 20h16M5 20v-6h14v6M7 14v-3h10v3M12 11V8"/><path d="M12 5.5c.9 0 1.3-.9 0-2.2-1.3 1.3-.9 2.2 0 2.2z"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/>',
+  spark: '<path d="M12 3.5l1.9 5.2 5.1 1.8-5.1 1.9L12 17.6l-1.9-5.2L5 10.5l5.1-1.8z"/><path d="M18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/>',
+  cal: '<rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  pin: '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+  heart: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>',
+  filter: '<path d="M4 6h16M7 12h10M10 18h4"/>',
   archive: '<rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5v11h14v-11M10 12.5h4"/>'
 };
 const ic = (n, extra = '') => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" ${extra}>${ICON[n]}</svg>`;
@@ -721,14 +1154,16 @@ const SEED = () => [
   { id: 't1', cat: 'venue', vendor: 'Harborline Loft', av: ['#C9D2E6', '#8E9EC4'], status: 'booked', unread: 0, onBrixia: true, email: 'events@harborlineloft.com', msgs: [
     { from: 'vendor', text: 'Thanks for touring the space! June 12 is yours. The contract is attached.', when: 'Sep 20' },
     { from: 'me', text: 'Signed and sent back. So excited!', when: 'Sep 21' },
-    { from: 'vendor', text: 'Wonderful. Your coordinator will reach out about 8 weeks before the date.', when: 'Oct 2' } ] },
+    { from: 'vendor', text: 'Wonderful. Your coordinator will reach out about 8 weeks before the date.', when: 'Oct 2' },
+    { from: 'vendor', type: 'booking', when: 'Oct 2', b: { title: 'Final venue walkthrough', date: '2026-11-07', allDay: false, start: '10:00', end: '11:00', where: 'Harborline Loft', note: '', status: 'accepted' } } ] },
   { id: 't2', cat: 'venue', vendor: 'The Glasshouse on Kent', av: ['#D7D0C4', '#A99C8A'], status: 'archived', unread: 0, onBrixia: false, email: 'hello@glasshouseonkent.com', msgs: [
     { from: 'me', text: 'Hi! Is June 12, 2027 available?', when: 'Sep 8' },
     { from: 'vendor', text: "Unfortunately we're booked that weekend. Best of luck!", when: 'Sep 9', via: true } ] },
   { id: 't3', cat: 'photo', vendor: 'Lens and Light Studio', av: ['#B9C3DA', '#8C9BC0'], status: 'quote', unread: 1, onBrixia: true, email: 'studio@lensandlight.com', msgs: [
     { from: 'me', text: "Hi! We're getting married June 12 at Harborline Loft. Are you available, and what do your packages look like?", when: 'Oct 3' },
     { from: 'vendor', text: 'Congrats! June 12 is open. I put together a quote for 8 hours with a second shooter.', when: 'Yesterday' },
-    { from: 'vendor', type: 'quote', when: 'Yesterday', quote: { title: 'Photography quote', lines: [['8 hours of coverage', 3900], ['Second shooter', 600], ['Engagement session', 300]], deposit: 1200, due: 'May 12, 2027', valid: 'Oct 30' } } ] },
+    { from: 'vendor', type: 'quote', when: 'Yesterday', quote: { title: 'Photography quote', lines: [['8 hours of coverage', 3900], ['Second shooter', 600], ['Engagement session', 300]], deposit: 1200, due: 'May 12, 2027', valid: 'Oct 30' } },
+    { from: 'vendor', type: 'booking', when: 'Yesterday', b: { title: 'Engagement shoot', date: '2026-10-24', allDay: false, start: '16:00', end: '18:00', where: 'Prospect Park, Brooklyn', note: 'Golden hour, about 2 hours. Included in the quote.', status: 'pending' } } ] },
   { id: 't4', cat: 'photo', vendor: 'Hazel Ward Photography', av: ['#D8C3D6', '#A98EB0'], status: 'waiting', unread: 0, onBrixia: false, email: 'hazel@hazelwardphoto.com', msgs: [
     { from: 'me', text: 'Hi Hazel! Are you available on June 12, 2027 in Brooklyn?', when: 'Oct 5' } ] },
   { id: 't5', cat: 'florist', vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], status: 'needs', unread: 1, onBrixia: false, email: 'hello@petalandstem.com', msgs: [
@@ -745,6 +1180,7 @@ const SEED = () => [
 
 let S;
 function reset() {
+  const PM = document.body.dataset.mode === 'plans';
   S = { threads: SEED().map(t => t.id === 't5' ? { ...t, unread: 0 } : t), sel: 't5', filter: 'all', q: '', open: new Set(['photo', 'florist']), showArch: new Set(), starred: new Set(['t3', 't4', 't5', 't6', 't7']), mailThread: 't5', replySent: false, fresh: null,
     cover: 0, coverImg: null, menu: false,
     todos: [
@@ -758,7 +1194,15 @@ function reset() {
       { i: 'star', t: 'Daniel shortlisted Hazel Ward Photography', w: 'Yesterday' },
       { i: 'doc', t: 'Lens and Light Studio sent a quote', w: 'Yesterday' },
       { i: 'venue', t: 'Harborline Loft: your coordinator reaches out 8 weeks before', w: 'Oct 2' }
-    ] };
+    ],
+    ex: { cat: null, open: true, boros: new Set(), max: 0, styles: new Set(), rating: 0, verified: false, sort: 'rec', saved: new Set(['d6', 'd10']), onlySaved: false, ff: false }, exSeen: false,
+    plan: null, planF: 'all', pick: {}, swap: null, intro: true, done: null };
+  if (PM) {
+    S.threads = SEED().filter(t => t.id === 't1'); S.sel = null; S.starred = new Set(); S.open = new Set(['venue']); S.mailThread = 't1';
+    S.todos = [{ id: 's3', t: 'Start the guest list', done: true }];
+    S.activity = [{ i: 'venue', t: 'You booked Harborline Loft', w: 'Oct 2' }, { i: 'home', t: 'You created your wedding folder', w: 'Sep 30' }];
+    S.ex.saved = new Set();
+  }
 }
 reset();
 
@@ -769,7 +1213,7 @@ const avatar = (t, sm) => `<span class="av${sm ? ' sm' : ''}" style="background:
 const STATUS = { booked: ['booked', 'Booked'], quote: ['qin', 'Quote in'], needs: ['needs', 'Needs reply'], waiting: ['waiting', 'Waiting on vendor'] };
 const total = q => q.lines.reduce((a, l) => a + l[1], 0);
 const lastMsg = t => t.msgs.at(-1);
-const preview = t => { const m = lastMsg(t); if (!m) return ''; if (m.type === 'quote') return m.accepted ? 'Quote accepted' : `Sent you a quote for ${money(total(m.quote))}`; return (m.from === 'me' ? 'You: ' : '') + m.text; };
+const preview = t => { const m = lastMsg(t); if (!m) return ''; if (m.type === 'quote') return m.accepted ? 'Quote accepted' : `Sent you a quote for ${money(total(m.quote))}`; if (m.type === 'booking') return `${m.from === 'me' ? 'You proposed' : 'Proposed'}: ${m.b.title}`; if (m.type === 'details') return 'You shared your wedding details'; return (m.from === 'me' ? 'You: ' : '') + m.text; };
 const hasQuote = t => t.msgs.some(m => m.type === 'quote');
 
 function catState(cid) {
@@ -857,7 +1301,8 @@ function quoteCard(t, m, mi, vendorView) {
     <div class="q-h">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(q.title)}</span></span><span class="pill waiting">Valid until ${esc(q.valid)}</span></div>
     <div class="q-l">${q.lines.map(l => `<div><span>${esc(l[0])}</span><span>${money(l[1])}</span></div>`).join('')}<div class="tot"><span>Total</span><span>${money(tot)}</span></div></div>
     <div class="q-s"><div><span>Deposit, due on booking</span><b>${money(q.deposit)}</b></div><div><span>Balance, due ${esc(q.due)}</span><b>${money(tot - q.deposit)}</b></div></div>
-    ${m.accepted ? `<div class="q-done">${ic('check')}Accepted. Paying deposits in Brixia is coming soon.</div>` : vendorView ? '' : `<div class="q-a"><button type="button" class="btn" data-accept="${t.id}:${mi}">Accept quote</button><button type="button" class="btn line" data-sugg="Quick question about the quote:">Ask a question</button></div>`}
+    ${m.note ? `<p class="bk-note" style="padding:8px 2px 0">${esc(m.note)}</p>` : ''}
+    ${m.accepted ? `<div class="q-done">${ic('check')}Accepted. Paying deposits in Brixia is coming soon.</div>` : vendorView ? `<div class="bk-state wait" style="margin:12px 0 0">${ic('clock')}Waiting for the couple<button type="button" class="demo-link" data-qdemo="${t.id}:${mi}">Demo: they accept</button></div>` : `<div class="q-a"><button type="button" class="btn" data-accept="${t.id}:${mi}">Accept quote</button><button type="button" class="btn line" data-sugg="Quick question about the quote:">Ask a question</button></div>`}
   </div>`;
 }
 
@@ -871,6 +1316,8 @@ function renderMsgs(t, vendorView, showNote = true) {
     const ca = t.coupleAv || ['#43537A', '#C3979C'];
     const who = mine ? '' : vendorView ? `<span class="av sm" style="background:linear-gradient(140deg,${ca[0]},${ca[1]})" aria-hidden="true">${esc(t.coupleInit || 'MD')}</span>` : avatar(t, true);
     if (m.type === 'quote') { h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div>${quoteCard(t, m, mi, vendorView)}<div class="when">${esc(m.when)}</div></div></div>`; return; }
+    if (m.type === 'booking') { h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div>${bookingCard(t, m, mi, vendorView)}<div class="when">${esc(m.when)}</div></div></div>`; return; }
+    if (m.type === 'details') { h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div>${detailsCard()}<div class="when">${esc(m.when)}</div></div></div>`; return; }
     const via = !vendorView && m.from === 'vendor' && m.via ? '<span class="via">via email link</span>' : '';
     h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div><div class="bub">${esc(m.text)}</div><div class="when">${esc(m.when)}${via}</div></div></div>`;
   });
@@ -897,7 +1344,7 @@ function renderThread() {
     <div class="compose">
       <div class="sugg">${sugg.map(s => `<button type="button" data-sugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
       <form class="box" id="sendForm">
-        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        ${plusMenu('couple')}
         <textarea id="msgIn" rows="1" placeholder="Message ${esc(t.vendor)}" aria-label="Message"></textarea>
         <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
       </form>
@@ -999,7 +1446,12 @@ function go(screen) {
   document.body.dataset.screen = screen;
   const tab = screen === 'claim' ? 'vinbox' : screen;
   if (screen === 'profile' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
+  if ((screen === 'vcal' || screen === 'vquotes') && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
   if (screen === 'profile') renderProfile();
+  if (screen === 'vcal') renderVCal();
+  if (screen === 'explore') renderExplore();
+  if (screen === 'plans') renderPlans();
+  if (screen === 'vquotes') renderVQuotes();
   document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
   if (screen === 'vinbox' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
   if (screen === 'inbox') renderInbox();
@@ -1049,7 +1501,7 @@ document.addEventListener('click', e => {
   if (d.toast) { e.preventDefault(); toast(d.toast); return; }
   if (vClick(el, d)) return;
   if (pClick(el, d)) return;
-  if (d.nav) { if (d.nav === 'home') go('home'); else if (d.nav === 'inbox') { $('s-inbox').classList.remove('thread-open'); go('inbox'); } else toast(`${d.nav[0].toUpperCase() + d.nav.slice(1)} is a later screen.`); return; }
+  if (d.nav) { if (d.nav === 'home') go('home'); else if (d.nav === 'inbox') { $('s-inbox').classList.remove('thread-open'); go('inbox'); } else if (d.nav === 'plans') { S.plan = null; go('plans'); } else go(d.nav); return; }
   if (hClick(el, d)) return;
   if (d.cat) { S.open.has(d.cat) ? S.open.delete(d.cat) : S.open.add(d.cat); renderList(); return; }
   if (d.arch) { S.showArch.has(d.arch) ? S.showArch.delete(d.arch) : S.showArch.add(d.arch); renderList(); return; }
@@ -1075,22 +1527,25 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey && (e.target.id === 'msgIn' || e.target.id === 'vIn' || e.target.id === 'vinIn')) { e.preventDefault(); e.target.form.requestSubmit(); }
 });
 $('q').addEventListener('input', e => { S.q = e.target.value; renderList(); });
-$('reset').addEventListener('click', () => { reset(); resetV(); $('hmain').scrollTop = 0; $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go(START); });
+$('reset').addEventListener('click', () => { if (typeof closeSheet === 'function') closeSheet(); reset(); resetV(); $('hmain').scrollTop = 0; $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go(START); });
 
 /* ---------- Vendor side: claim + inbox ---------- */
 let VS;
 const VSEED = () => [
-  { id: 'c1', link: 't5', names: 'Maya and Daniel', init: 'MD', av: ['#43537A', '#C3979C'], date: 'June 12, 2027', short: 'Jun 12, 2027', area: 'Brooklyn', guests: 120, style: 'Soft, garden feel', budget: 'Around $4,000', stage: 'talk', unread: 0 },
-  { id: 'c2', names: 'Priya and Sam', init: 'PS', av: ['#6E86B8', '#B6C4E2'], date: 'September 18, 2027', short: 'Sep 18, 2027', area: 'Queens', guests: 90, style: 'Bright and colorful', budget: 'Not shared yet', stage: 'new', unread: 1, msgs: [
-    { from: 'me', text: "Hi! We're getting married September 18, 2027 in Astoria with about 90 guests. We love bright, colorful flowers. Are you available?", when: '8:40 AM' } ] },
-  { id: 'c3', names: 'Chloe and Marcus', init: 'CM', av: ['#5B4A6E', '#A58BB8'], date: 'October 23, 2027', short: 'Oct 23, 2027', area: 'Manhattan', guests: 140, style: 'Moody, candlelit', budget: '$6,000 to $8,000', stage: 'new', unread: 1, msgs: [
+  { id: 'c1', iso: '2027-06-12', link: 't5', names: 'Maya and Daniel', init: 'MD', av: ['#43537A', '#C3979C'], date: 'June 12, 2027', short: 'Jun 12, 2027', area: 'Brooklyn', guests: 120, style: 'Soft, garden feel', budget: 'Around $4,000', stage: 'talk', unread: 0 },
+  { id: 'c2', iso: '2027-09-18', names: 'Priya and Sam', init: 'PS', av: ['#6E86B8', '#B6C4E2'], date: 'September 18, 2027', short: 'Sep 18, 2027', area: 'Queens', guests: 90, style: 'Bright and colorful', budget: 'Not shared yet', stage: 'new', unread: 1, msgs: [
+    { from: 'me', text: "Hi! We're getting married September 18, 2027 in Astoria with about 90 guests. We love bright, colorful flowers. Are you available?", when: '8:40 AM' },
+    { from: 'me', type: 'booking', when: '8:41 AM', b: { title: 'Design call', date: '2026-10-14', allDay: false, start: '16:00', end: '16:30', where: 'Video call', note: 'Would love to walk you through our mood board.', status: 'pending' } } ] },
+  { id: 'c3', iso: '2027-10-23', names: 'Chloe and Marcus', init: 'CM', av: ['#5B4A6E', '#A58BB8'], date: 'October 23, 2027', short: 'Oct 23, 2027', area: 'Manhattan', guests: 140, style: 'Moody, candlelit', budget: '$6,000 to $8,000', stage: 'new', unread: 1, msgs: [
     { from: 'me', text: 'Hello! Do you do ceremony and reception florals for about 140 guests? Our date is October 23, 2027.', when: 'Yesterday' } ] },
-  { id: 'c4', names: 'Jordan and Alex', init: 'JA', av: ['#3F6B6A', '#8DB8B0'], date: 'May 2, 2027', short: 'May 2, 2027', area: 'Manhattan', guests: 150, style: 'Modern, all white', budget: 'Around $5,000', stage: 'quoted', unread: 0, msgs: [
+  { id: 'c4', iso: '2027-05-02', names: 'Jordan and Alex', init: 'JA', av: ['#3F6B6A', '#8DB8B0'], date: 'May 2, 2027', short: 'May 2, 2027', area: 'Manhattan', guests: 150, style: 'Modern, all white', budget: 'Around $5,000', stage: 'quoted', unread: 0, msgs: [
     { from: 'me', text: 'Could you send a quote for a ceremony arch, 15 centerpieces and two bouquets?', when: 'Oct 2' },
     { from: 'vendor', type: 'quote', when: 'Oct 4', quote: { title: 'Florals quote', lines: [['Ceremony arch', 1800], ['15 centerpieces', 2700], ['Two bouquets and boutonnieres', 700]], deposit: 1300, due: 'Apr 2, 2027', valid: 'Oct 31' } } ] },
-  { id: 'c5', names: 'Emma and Luis', init: 'EL', av: ['#8A6A3E', '#D2B07C'], date: 'April 10, 2027', short: 'Apr 10, 2027', area: 'Brooklyn', guests: 80, style: 'Wildflower, relaxed', budget: '$3,500', stage: 'booked', unread: 0, msgs: [
+  { id: 'c5', iso: '2027-04-10', names: 'Emma and Luis', init: 'EL', av: ['#8A6A3E', '#D2B07C'], date: 'April 10, 2027', short: 'Apr 10, 2027', area: 'Brooklyn', guests: 80, style: 'Wildflower, relaxed', budget: '$3,500', stage: 'booked', unread: 0, msgs: [
+    { from: 'vendor', type: 'quote', when: 'Sep 20', accepted: true, quote: { title: 'Florals quote', lines: [['Full wedding package', 3200], ['Delivery and setup', 250]], deposit: 860, due: 'Mar 10, 2027', valid: 'Oct 4' } },
     { from: 'vendor', text: "You're all set for April 10! We'll do a final walkthrough in March.", when: 'Sep 28' },
-    { from: 'me', text: 'Perfect, thank you so much!', when: 'Sep 28' } ] }
+    { from: 'me', text: 'Perfect, thank you so much!', when: 'Sep 28' },
+    { from: 'vendor', type: 'booking', when: 'Sep 28', b: { title: 'Mock-up centerpiece review', date: '2027-03-13', allDay: false, start: '11:00', end: '12:00', where: 'Studio, Greenpoint', note: '', status: 'accepted' } } ] }
 ];
 const STAGES = [
   { id: 'new', name: 'New inquiries', icon: 'bell' },
@@ -1098,16 +1553,16 @@ const STAGES = [
   { id: 'quoted', name: 'Quote sent', icon: 'doc' },
   { id: 'booked', name: 'Booked', icon: 'check' }
 ];
-function resetV() { VS = { couples: VSEED(), sel: 'c1', open: new Set(['new', 'talk']), filter: 'all', q: '', claimed: false, step: 1, profile: VPSEED(), editing: false, draft: null, pview: 'vendor', pErr: '' }; }
+function resetV() { VS = { couples: VSEED(), sel: 'c1', open: new Set(['new', 'talk']), filter: 'all', q: '', claimed: false, step: 1, profile: VPSEED(), editing: false, draft: null, pview: 'vendor', pErr: '', drafts: [], events: VEVENTS(), calMonth: '2026-10', calDay: '2026-10-09', calAdd: null, cap: 1, qf: 'all', terms: { pct: 25, due: '4 weeks before the wedding', days: 21 }, past: PASTQ() }; }
 resetV();
 
 const C = id => VS.couples.find(c => c.id === id);
-const vt = c => c.link ? Object.assign(T(c.link), { coupleInit: c.init, coupleAv: c.av }) : { id: c.id, vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], onBrixia: true, cat: 'florist', msgs: c.msgs, coupleInit: c.init, coupleAv: c.av };
+const vt = c => c.link && T(c.link) ? Object.assign(T(c.link), { coupleInit: c.init, coupleAv: c.av }) : { id: c.id, vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], onBrixia: true, cat: 'florist', msgs: c.msgs || (c.msgs = []), coupleInit: c.init, coupleAv: c.av };
 const cMsgs = c => vt(c).msgs;
-const yourTurn = c => { const m = cMsgs(c).at(-1); return m && m.from === 'me' && c.stage !== 'booked'; };
+const yourTurn = c => { const m = cMsgs(c).at(-1); return m && m.from === 'me' && !(m.type === 'booking' && m.b.status !== 'pending') && c.stage !== 'booked'; };
 const cUnread = c => c.link ? (yourTurn(c) && VS.sel !== c.id ? 1 : 0) : c.unread;
 const cAv = c => `<span class="av sm" style="background:linear-gradient(140deg,${c.av[0]},${c.av[1]})" aria-hidden="true">${esc(c.init)}</span>`;
-const cPrev = c => { const m = cMsgs(c).at(-1); if (!m) return ''; if (m.type === 'quote') return `You sent a quote for ${money(total(m.quote))}`; return (m.from === 'vendor' ? 'You: ' : '') + m.text; };
+const cPrev = c => { const m = cMsgs(c).at(-1); if (!m) return ''; if (m.type === 'quote') return m.accepted ? 'Quote accepted' : `You sent a quote for ${money(total(m.quote))}`; if (m.type === 'booking') return `${m.from === 'vendor' ? 'You proposed' : 'Proposed'}: ${m.b.title}`; if (m.type === 'details') return 'Shared their wedding details'; return (m.from === 'vendor' ? 'You: ' : '') + m.text; };
 const vMatch = c => (!VS.q || c.names.toLowerCase().includes(VS.q.toLowerCase())) && (VS.filter === 'all' || (VS.filter === 'turn' && yourTurn(c)) || (VS.filter === 'booked' && c.stage === 'booked'));
 
 function renderClaim() {
@@ -1149,16 +1604,17 @@ function claimSubmit() {
   toast("Profile claimed. Every couple who messages you lands here now.");
 }
 
-function vNavHtml(active) {
+function vNavHtml(active, sideNav = true) {
   const turn = VS.couples.filter(yourTurn).length;
   const items = [['inbox', 'Inbox'], ['calendar', 'Calendar'], ['quotes', 'Quotes'], ['profile', 'Profile']];
-  const icn = { inbox: 'inbox', calendar: 'plans', quotes: 'doc', profile: 'home' };
+  const icn = { inbox: 'inbox', calendar: 'cal', quotes: 'doc', profile: 'home' };
   document.querySelectorAll('.vbiz b').forEach(b => { b.textContent = VS.profile.name; });
+  if (!sideNav) return items.map(([k, l]) => `<button type="button" class="${k === active ? 'on' : ''}" data-vnav="${l}">${ic(icn[k])}${l}</button>`).join('');
   return items.map(([k, l]) => `<button type="button" class="${k === active ? 'on' : ''}" data-vnav="${l}" aria-label="${l}">${ic(icn[k])}<span>${l}</span>${k === 'inbox' && turn ? `<b class="count">${turn}</b>` : ''}</button>`).join('');
 }
 function renderVInbox() {
   const turn = VS.couples.filter(yourTurn).length;
-  $('vNav').innerHTML = vNavHtml('inbox');
+  $('vNav').innerHTML = vNavHtml('inbox'); $('viBNav').innerHTML = vNavHtml('inbox', false);
   $('vListSub').textContent = `${VS.couples.length} couples${turn ? `, ${turn} waiting on you` : ''}`;
   renderVList(); renderVThread();
 }
@@ -1206,7 +1662,7 @@ function renderVThread() {
       ${cAv(c).replace('av sm', 'av')}
       <div class="who"><b>${esc(c.names)}</b><span class="sub"><span class="wchips"><span>${esc(c.date)}</span><span>${esc(c.area)}</span><span>${c.guests} guests</span><span>${esc(c.style)}</span><span>Budget: ${esc(c.budget)}</span></span></span></div>
       <div class="acts">
-        <button type="button" class="btn sm line" data-toast="The quote builder comes in Phase 5.">${ic('doc')}Send quote</button>
+        <button type="button" class="btn sm line" data-pa="quote">${ic('doc')}Send quote</button>
         ${c.stage !== 'booked' ? `<button type="button" class="btn sm" data-vbook="${c.id}">${ic('check')}Mark booked</button>` : ''}
       </div>
     </div>
@@ -1214,7 +1670,7 @@ function renderVThread() {
     <div class="compose">
       <div class="sugg">${sugg.map(x => `<button type="button" data-visugg="${esc(x)}">${esc(x)}</button>`).join('')}</div>
       <form class="box" id="vinForm">
-        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        ${plusMenu('vendor')}
         <textarea id="vinIn" rows="1" placeholder="Message ${esc(c.names)}" aria-label="Message"></textarea>
         <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
       </form>
@@ -1237,7 +1693,7 @@ function sendVInbox(text) {
 
 function vClick(el, d) {
   if (el.hasAttribute('data-claimback')) { VS.step = 1; renderClaim(); return true; }
-  if (d.vnav) { if (d.vnav === 'Inbox') { $('s-vinbox').classList.remove('thread-open'); go('vinbox'); } else if (d.vnav === 'Profile') go('profile'); else toast(`${d.vnav} is a later vendor screen.`); return true; }
+  if (d.vnav) { if (d.vnav === 'Inbox') { $('s-vinbox').classList.remove('thread-open'); go('vinbox'); } else if (d.vnav === 'Profile') go('profile'); else if (d.vnav === 'Calendar') go('vcal'); else if (d.vnav === 'Quotes') go('vquotes'); return true; }
   if (d.vgrp) { VS.open.has(d.vgrp) ? VS.open.delete(d.vgrp) : VS.open.add(d.vgrp); renderVList(); return true; }
   if (d.vopen) { const c = C(d.vopen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); S.fresh = null; $('s-vinbox').classList.add('thread-open'); renderVInbox(); const r = document.querySelector(`#vlist .trow[data-vopen="${c.id}"]`); if (r) { r.classList.add('flash'); r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } return true; }
   if (d.vf) { VS.filter = d.vf; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b === el)); renderVList(); return true; }
@@ -1330,6 +1786,7 @@ function renderHome() {
       <div class="card"><div class="card-h"><h3>This week<span class="h-left">${left} left</span></h3><button type="button" class="link" data-hadd>${S.adding ? 'Cancel' : 'Add'}</button></div>
         ${S.adding ? `<form class="h-add" id="hAddForm"><input id="hAddT" placeholder="Add a to-do, like tasting with the caterer" aria-label="New to-do" maxlength="80"><input id="hAddD" class="due" placeholder="Due (optional)" aria-label="Due date" maxlength="24"><button type="submit" class="btn">Add</button>${S.addErr ? `<span class="err">${esc(S.addErr)}</span>` : ''}</form>` : ''}
         <div style="padding-bottom:8px">${rows.map(t => todoRow(t)).join('')}</div></div>
+      <div class="card"><div class="card-h"><h3>Upcoming</h3><span class="link" style="color:var(--faint)">${upcoming().length} on the calendar</span></div><div style="padding-bottom:8px">${upcomingRows()}</div></div>
       <div class="card"><div class="card-h"><h3>What's new</h3></div><div style="padding-bottom:8px">${S.activity.slice(0, 5).map(a => `<div class="h-act${a.fresh ? ' fresh' : ''}"><span class="ic">${ic(a.i)}</span><p>${esc(a.t)}<time>${esc(a.w)}</time></p></div>`).join('')}</div></div>
     </div>
   </div></div>${S.modal ? modalHtml() : ''}`;
@@ -1528,7 +1985,7 @@ function strength(pr) {
 }
 
 function renderProfile() {
-  $('pNav').innerHTML = vNavHtml('profile');
+  $('pNav').innerHTML = vNavHtml('profile'); $('pBNav').innerHTML = vNavHtml('profile', false);
   const pr = P(), ed = VS.editing, couple = VS.pview === 'couple' && !ed;
   const st = strength(pr);
   const avg = pr.reviews.length ? (pr.reviews.reduce((a, r) => a + r.stars, 0) / pr.reviews.length).toFixed(1) : null;
@@ -1651,17 +2108,737 @@ document.addEventListener('submit', e => {
   }
 });
 
+/* ---------- Chat actions: + menu, bookings, details, quote builder ---------- */
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const pd = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
+const isoOf = dt => `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+const fmtDate = iso => { const d = pd(iso); return `${DOW[d.getDay()]}, ${MON[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`; };
+const fmtShort = iso => { const d = pd(iso); return `${MON[d.getMonth()]} ${d.getDate()}`; };
+const fmtTime = t => { let [h, m] = t.split(':').map(Number); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return m ? `${h}:${String(m).padStart(2, '0')} ${ap}` : `${h} ${ap}`; };
+const timeRange = b => b.allDay ? 'All day' : `${fmtTime(b.start)} to ${fmtTime(b.end)}`;
+const TODAY = '2026-10-09';
+const anyThread = id => T(id) || (C(id) ? vt(C(id)) : null);
+const otherName = (t, vendorView) => vendorView ? (VS.couples.find(c => vt(c).id === t.id)?.names || 'the couple') : t.vendor;
+
+function plusMenu(side) {
+  const items = side === 'vendor'
+    ? [['quote', 'q', 'doc', 'Send a quote', 'Line items, deposit and due dates'], ['booking', 'b', 'cal', 'Propose a time', 'Call, meeting or wedding-day booking'], ['file', 'f', 'clip', 'Attach a file', 'Contracts, photos, PDFs']]
+    : [['booking', 'b', 'cal', 'Propose a time', 'Call, tasting or walkthrough'], ['details', 'd', 'check', 'Share wedding details', 'Date, venue, guests and budget'], ['file', 'f', 'clip', 'Attach a file', 'Inspiration photos, PDFs']];
+  return `<div class="plus-wrap"><button type="button" class="icon-btn plus-btn" data-plus aria-label="More actions" aria-expanded="false">${ic('plus')}</button>
+    <div class="plus-menu" role="menu">${items.map(([k, c, i, t, sub]) => `<button type="button" role="menuitem" data-pa="${k}" data-side="${side}"><span class="pi ${c}">${ic(i)}</span><span><b>${t}</b><span class="s">${sub}</span></span></button>`).join('')}</div></div>`;
+}
+function closePlus() { document.querySelectorAll('.plus-menu.open').forEach(m => { m.classList.remove('open'); m.previousElementSibling.classList.remove('open'); m.previousElementSibling.setAttribute('aria-expanded', 'false'); }); }
+
+function bookingCard(t, m, mi, vendorView) {
+  const b = m.b, mine = vendorView ? m.from === 'vendor' : m.from === 'me', other = otherName(t, vendorView);
+  const pill = b.status === 'accepted' ? '<span class="pill booked">Accepted</span>' : b.status === 'declined' ? '<span class="pill dec">Declined</span>' : '<span class="pill pend">Pending</span>';
+  let foot = '';
+  if (b.status === 'accepted') foot = `<div class="bk-state ok">${ic('check')}On both calendars</div>`;
+  else if (b.status === 'declined') foot = `<div class="bk-state no">${mine ? `${esc(other)} declined. Try another time.` : 'You declined this time.'}</div>`;
+  else if (mine) foot = `<div class="bk-state wait">${ic('clock')}Waiting for ${esc(other)}<button type="button" class="demo-link" data-bk="${t.id}:${mi}:accept">Demo: they accept</button></div>`;
+  else foot = (vendorView ? conflictHtml(b.date) : '') + `<div class="bk-acts"><button type="button" class="btn" data-bk="${t.id}:${mi}:accept">${ic('check')}Accept</button><button type="button" class="btn line" data-bk="${t.id}:${mi}:counter">Suggest another time</button><button type="button" class="btn line" data-bk="${t.id}:${mi}:decline">Decline</button></div>`;
+  return `<div class="bk"><div class="bk-top"><span class="ic">${ic('cal')}</span><b>${esc(b.title)}</b>${pill}</div>
+    <div class="bk-body"><div>${ic('cal')}${fmtDate(b.date)}</div><div>${ic('clock')}${timeRange(b)}</div>${b.where ? `<div>${ic('pin')}${esc(b.where)}</div>` : ''}</div>
+    ${b.note ? `<p class="bk-note">${esc(b.note)}</p>` : ''}${foot}</div>`;
+}
+function detailsCard() {
+  return `<div class="dt-card"><h4>${ic('check')}Our wedding details</h4><div><span>Date</span><b>June 12, 2027</b></div><div><span>Venue</span><b>Harborline Loft, Brooklyn</b></div><div><span>Guests</span><b>About 120</b></div><div><span>Style</span><b>Soft, garden feel</b></div><div><span>Florals budget</span><b>Around $4,000</b></div></div>`;
+}
+
+/* sheet (shared pop-up) */
+function openSheet(html) { const ex = document.querySelector('#sheetBg .modal'); if (ex) { const st = ex.scrollTop; ex.innerHTML = '<button type="button" class="m-x" data-sclose aria-label="Close">&times;</button>' + html; ex.scrollTop = st; return; } $('sheetRoot').innerHTML = `<div class="modal-bg" id="sheetBg" role="dialog" aria-modal="true"><div class="modal">${'<button type="button" class="m-x" data-sclose aria-label="Close">&times;</button>'}${html}</div></div>`; }
+function closeSheet() { $('sheetRoot').innerHTML = ''; SH = null; }
+let SH = null;
+
+/* booking sheet */
+const PRESETS = {
+  couple: [['Consultation call', 30, 'Video call'], ['Tasting', 90, ''], ['Venue walkthrough', 60, 'Harborline Loft'], ['Meet in person', 60, ''], ['Wedding day booking', 0, 'Harborline Loft']],
+  vendor: [['Consultation call', 30, 'Video call'], ['Design meeting', 60, 'Studio, Greenpoint'], ['Mock-up review', 60, 'Studio, Greenpoint'], ['Delivery and setup', 120, 'Harborline Loft'], ['Wedding day booking', 0, 'Harborline Loft']]
+};
+function openBooking(side, tid, prefill) {
+  const p = PRESETS[side][0];
+  SH = { kind: 'booking', side, tid, title: prefill?.title || p[0], date: prefill?.date || '2026-10-16', allDay: prefill?.allDay || false, start: prefill?.start || '16:00', end: prefill?.end || '16:30', where: prefill?.where ?? p[2], note: '', counterOf: prefill?.counterOf || null };
+  renderBooking();
+}
+function addMins(t, mins) { let [h, m] = t.split(':').map(Number); const x = Math.min(h * 60 + m + mins, 23 * 60 + 59); return `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`; }
+function renderBooking(err = '') {
+  const t = anyThread(SH.tid), other = otherName(t, SH.side === 'vendor');
+  openSheet(`<div class="sheet-h"><span class="m-ic">${ic('cal')}</span><div><h2>${SH.counterOf ? 'Suggest another time' : 'Propose a time'}</h2><p>Sends a booking card to ${esc(other)}. Once they accept, it goes on both calendars.</p></div></div>
+  <form class="sheet-body" id="bkForm" novalidate>
+    <div class="qb-chips">${PRESETS[SH.side].map(([n]) => `<button type="button" class="tpl" data-bkp="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+    <div class="fld"><label for="bkT">What</label><input id="bkT" data-sh="title" value="${esc(SH.title)}" maxlength="60"></div>
+    <div class="sheet-row">
+      <div class="fld"><label for="bkD">Date</label><input id="bkD" type="date" data-sh="date" value="${SH.date}" min="${TODAY}"></div>
+      <div class="fld"><label>Time</label><div class="seg2" style="margin-top:2px"><button type="button" data-bkall="0" class="${SH.allDay ? '' : 'on'}">Set hours</button><button type="button" data-bkall="1" class="${SH.allDay ? 'on' : ''}">All day</button></div></div>
+    </div>
+    ${SH.allDay ? '' : `<div class="sheet-row"><div class="fld"><label for="bkS">Starts</label><input id="bkS" type="time" data-sh="start" value="${SH.start}"></div><div class="fld"><label for="bkE">Ends</label><input id="bkE" type="time" data-sh="end" value="${SH.end}"></div></div>`}
+    ${SH.side === 'vendor' ? conflictHtml(SH.date) : ''}
+    <div class="fld"><label for="bkW">Where</label><input id="bkW" data-sh="where" value="${esc(SH.where)}" placeholder="Video call, studio, or venue" maxlength="80"></div>
+    <div class="fld"><label for="bkN">Note (optional)</label><input id="bkN" data-sh="note" value="${esc(SH.note)}" placeholder="Anything they should know" maxlength="140"></div>
+    <div class="sheet-err" aria-live="polite">${esc(err)}</div>
+  </form>
+  <div class="sheet-acts"><button type="button" class="btn line" data-sclose>Cancel</button><button type="submit" form="bkForm" class="btn">${ic('send')}Send proposal</button></div>`);
+}
+function submitBooking() {
+  if (!SH.title.trim()) return renderBooking('Add what this is for.');
+  if (!SH.date) return renderBooking('Pick a date.');
+  if (SH.date < TODAY) return renderBooking('Pick a date from today on.');
+  if (!SH.allDay && SH.end <= SH.start) return renderBooking('The end time has to be after the start time.');
+  const t = anyThread(SH.tid), vendorSide = SH.side === 'vendor';
+  if (SH.counterOf) { const [, mi] = SH.counterOf.split(':'); t.msgs[+mi].b.status = 'declined'; }
+  t.msgs.push({ from: vendorSide ? 'vendor' : 'me', type: 'booking', when: 'Just now', b: { title: SH.title.trim(), date: SH.date, allDay: SH.allDay, start: SH.start, end: SH.end, where: SH.where.trim(), note: SH.note.trim(), status: 'pending' } });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  const other = otherName(t, vendorSide);
+  if (vendorSide) { const c = VS.couples.find(x => vt(x).id === t.id); if (c && c.stage === 'new') c.stage = 'talk'; if (c?.link) { T(c.link).unread += 1; if (T(c.link).status !== 'booked') T(c.link).status = 'needs'; } }
+  else logAct('cal', `You proposed ${SH.title.trim()} with ${t.vendor}`);
+  closeSheet(); rerenderChats();
+  toast(`Sent to ${other}. It goes on both calendars once they accept.`);
+}
+function rerenderChats() {
+  const sc = document.body.dataset.screen;
+  if (sc === 'inbox') renderInbox(); else if (sc === 'vinbox') renderVInbox(); else if (sc === 'home') renderHome(); else if (sc === 'vcal') renderVCal(); else if (sc === 'vquotes') renderVQuotes();
+}
+function bookingAction(spec) {
+  const [tid, mi, act] = spec.split(':'); const t = anyThread(tid); const m = t.msgs[+mi];
+  const vendorView = document.body.dataset.screen === 'vinbox';
+  if (act === 'accept') {
+    m.b.status = 'accepted';
+    if (vendorView) { const c = VS.couples.find(x => vt(x).id === t.id); if (c) { c.unread = 0; if (c.stage === 'new') { c.stage = 'talk'; VS.open.add('talk'); } } }
+    if (!vendorView || T(tid)) logAct('cal', `${m.b.title} with ${t.vendor} is on your calendar`);
+    rerenderChats(); toast(`${m.b.title} accepted. It's on both calendars.`);
+  } else if (act === 'decline') { m.b.status = 'declined'; rerenderChats(); toast('Declined. They can suggest another time.'); }
+  else if (act === 'counter') { openBooking(vendorView ? 'vendor' : 'couple', tid, { ...m.b, counterOf: `${tid}:${mi}` }); }
+}
+function upcoming() {
+  const out = [];
+  S.threads.forEach(t => t.msgs.forEach(m => { if (m.type === 'booking' && m.b.status !== 'declined' && m.b.date >= TODAY) out.push({ t, b: m.b }); }));
+  return out.sort((a, b) => (a.b.date + (a.b.start || '')).localeCompare(b.b.date + (b.b.start || '')));
+}
+function upcomingRows() {
+  const u = upcoming();
+  if (!u.length) return '<p class="h-empty">Nothing scheduled yet. Use the + button in any chat to propose a time.</p>';
+  return u.slice(0, 4).map(({ t, b }) => { const d = pd(b.date); return `<button type="button" class="h-up-row" style="width:100%;border:0;background:none;text-align:left" data-hopen="${t.id}"><span class="d"><small>${MON[d.getMonth()]}</small><b>${d.getDate()}</b></span><span class="tx"><b>${esc(b.title)}</b><span>${esc(t.vendor)} · ${timeRange(b)}</span></span><span class="pill ${b.status === 'accepted' ? 'booked' : 'pend'}">${b.status === 'accepted' ? 'Confirmed' : 'Pending'}</span></button>`; }).join('');
+}
+
+/* quote builder */
+const ADDONS = [['Delivery and setup', 250], ['Extra centerpiece', 180], ['Arch rental', 400], ['Breakdown after the event', 200]];
+function openQuote(cid, draft) {
+  const c = C(cid) || VS.couples[0];
+  const pk = VS.profile.packages[0];
+  SH = draft ? { kind: 'quote', ...JSON.parse(JSON.stringify(draft)), draftId: draft.id || null } : { kind: 'quote', cid: c.id, lines: [[`${pk.t} package`, +pk.p]], pct: VS.terms.pct, due: VS.terms.due, valid: isoPlus(TODAY, VS.terms.days), note: '', draftId: null };
+  renderQuote();
+}
+function qTotal() { return SH.lines.reduce((a, l) => a + (+l[1] || 0), 0); }
+function renderQuote(err = '') {
+  const c = C(SH.cid), tot = qTotal(), dep = Math.round(tot * SH.pct / 100);
+  openSheet(`<div class="sheet-h"><span class="m-ic">${ic('doc')}</span><div><h2>Send a quote</h2><p>Start from one of your packages, adjust the lines, and send it straight into the chat.</p></div></div>
+  <div class="qb-grid">
+    <form class="sheet-body" id="qbForm" novalidate>
+      <div class="fld"><label for="qbC">For</label><select id="qbC" data-qf="cid">${VS.couples.map(x => `<option value="${x.id}" ${x.id === SH.cid ? 'selected' : ''}>${esc(x.names)} · ${esc(x.short)}</option>`).join('')}</select></div>
+      <div><span class="p-lbl">Start from your packages</span><div class="qb-chips"><button type="button" class="magic" data-qmagic>${ic('spark')}Draft from their details</button>${VS.profile.packages.map((k, i) => `<button type="button" class="tpl" data-qtpl="${i}">${esc(k.t)} · ${money(+k.p)}</button>`).join('')}</div></div>
+      <div><span class="p-lbl">Line items</span><div class="qb-lines">${SH.lines.map((l, i) => `<div class="qb-line"><input class="p-in" data-ql="${i}:0" value="${esc(l[0])}" aria-label="Item"><input class="p-in" data-ql="${i}:1" type="number" min="0" step="10" value="${l[1]}" aria-label="Amount in dollars"><button type="button" class="rm" data-qrm="${i}" aria-label="Remove line">&times;</button></div>`).join('')}</div>
+        <div class="qb-chips" style="margin-top:8px"><button type="button" data-qadd="-1">${'+ Blank line'}</button>${ADDONS.map((a, i) => `<button type="button" data-qadd="${i}">+ ${esc(a[0])} · ${money(a[1])}</button>`).join('')}</div></div>
+      <div class="sheet-row">
+        <div class="fld"><label for="qbP">Deposit</label><select id="qbP" data-qf="pct">${[0, 20, 25, 30, 50].map(v => `<option value="${v}" ${v === +SH.pct ? 'selected' : ''}>${v}% due on booking</option>`).join('')}</select></div>
+        <div class="fld"><label for="qbV">Valid until</label><input id="qbV" type="date" data-qf="valid" value="${SH.valid}" min="${TODAY}"></div>
+      </div>
+      <div class="fld"><label for="qbD">Balance due</label><input id="qbD" data-qf="due" value="${esc(SH.due)}" maxlength="40"></div>
+      <div class="fld"><label for="qbN">Note to the couple (optional)</label><input id="qbN" data-qf="note" value="${esc(SH.note)}" maxlength="160" placeholder="Includes a design call and a mock-up centerpiece"></div>
+      <div class="sheet-err" aria-live="polite">${esc(err)}</div>
+    </form>
+    <div class="qb-sum" id="qbSum">${qSumHtml(c, tot, dep)}</div>
+  </div>
+  <div class="sheet-acts"><button type="button" class="btn line" data-qdraft>Save draft</button><button type="button" class="btn" data-qsend>${ic('send')}Send quote</button></div>`);
+}
+function qSumHtml(c, tot, dep) {
+  return `<span class="p-lbl" style="color:var(--blush)">Quote for ${esc(c.names)}</span>${SH.lines.map(l => `<div><span>${esc(l[0] || 'Untitled')}</span><b>${money(+l[1] || 0)}</b></div>`).join('')}<div class="tot"><span>Total</span><b>${money(tot)}</b></div><div><span>Deposit (${SH.pct}%)</span><b>${money(dep)}</b></div><div><span>Balance</span><b>${money(tot - dep)}</b></div><div class="qb-budget">${c.guests} guests · ${esc(c.style)} · Budget: ${esc(c.budget)}</div>`;
+}
+function sendQuote() {
+  if (!SH.lines.length) return renderQuote('Add at least one line item.');
+  if (SH.lines.some(l => !String(l[0]).trim())) return renderQuote('Every line needs a description.');
+  const tot = qTotal(); if (!(tot > 0)) return renderQuote('The total has to be more than $0.');
+  if (!SH.valid || SH.valid < TODAY) return renderQuote('Pick a valid-until date from today on.');
+  const c = C(SH.cid), t = vt(c), dep = Math.round(tot * SH.pct / 100);
+  t.msgs.push({ from: 'vendor', type: 'quote', when: 'Just now', note: SH.note.trim(), quote: { title: `${VS.profile.category === 'Florist' ? 'Florals' : VS.profile.category} quote`, lines: SH.lines.map(l => [String(l[0]).trim(), +l[1] || 0]), deposit: dep, due: SH.due.trim() || 'Before the wedding', valid: fmtShort(SH.valid) } });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (c.stage === 'new' || c.stage === 'talk') c.stage = 'quoted';
+  c.unread = 0;
+  VS.open.add(c.stage);
+  if (c.link) { const ct = T(c.link); if (ct.status !== 'booked') ct.status = 'quote'; ct.unread += 1; }
+  if (SH.draftId) VS.drafts = VS.drafts.filter(d => d.id !== SH.draftId);
+  const sc = document.body.dataset.screen; closeSheet();
+  if (sc === 'vinbox') { VS.sel = c.id; renderVInbox(); } else rerenderChats();
+  toast(`Quote for ${money(tot)} sent to ${c.names}.`, sc !== 'vinbox' ? { label: 'Open chat', fn: () => { VS.sel = c.id; go('vinbox'); } } : null);
+}
+function saveDraft() {
+  const id = SH.draftId || 'd' + Date.now();
+  const d = { id, cid: SH.cid, lines: SH.lines.map(l => [l[0], +l[1] || 0]), pct: +SH.pct, due: SH.due, valid: SH.valid, note: SH.note, saved: 'Just now' };
+  VS.drafts = [d, ...VS.drafts.filter(x => x.id !== id)];
+  closeSheet(); rerenderChats(); toast('Draft saved in Quotes.');
+}
+function quoteDemoAccept(spec) {
+  const [tid, mi] = spec.split(':'); const t = anyThread(tid); t.msgs[+mi].accepted = true;
+  const c = VS.couples.find(x => vt(x).id === t.id);
+  if (c) { c.stage = 'booked'; VS.open.add('booked'); if (c.link) T(c.link).status = 'booked'; }
+  rerenderChats(); toast(`${c ? c.names : 'The couple'} accepted. Their wedding is on your calendar.`);
+}
+
+/* events */
+document.addEventListener('click', e => {
+  if (!e.target.closest('.plus-wrap')) closePlus();
+  if (e.target.id === 'sheetBg') closeSheet();
+}, true);
+document.addEventListener('click', e => {
+  const el = e.target.closest('button'); if (!el) return;
+  const d = el.dataset;
+  if (el.hasAttribute('data-plus')) { const m = el.nextElementSibling, open = !m.classList.contains('open'); closePlus(); if (open) { m.classList.add('open'); el.classList.add('open'); el.setAttribute('aria-expanded', 'true'); } return; }
+  if (d.pa) {
+    closePlus();
+    const vendorSide = d.side === 'vendor' || (!d.side && document.body.dataset.screen === 'vinbox');
+    if (d.pa === 'file') { toast('Attachments come with the real app.'); return; }
+    if (d.pa === 'quote') { openQuote(VS.sel); return; }
+    if (d.pa === 'booking') { openBooking(vendorSide ? 'vendor' : 'couple', vendorSide ? vt(C(VS.sel)).id : S.sel); return; }
+    if (d.pa === 'details') { const t = T(S.sel); t.msgs.push({ from: 'me', type: 'details', when: 'Just now' }); S.fresh = `${t.id}:${t.msgs.length - 1}`; renderInbox(); toast(`Shared your wedding details with ${t.vendor}.`); return; }
+  }
+  if (el.hasAttribute('data-sclose')) { closeSheet(); return; }
+  if (d.bk) { bookingAction(d.bk); return; }
+  if (d.qdemo) { quoteDemoAccept(d.qdemo); return; }
+  if (!SH) return;
+  if (d.bkp) { const pr = PRESETS[SH.side].find(x => x[0] === d.bkp); SH.title = pr[0]; if (pr[2]) SH.where = pr[2]; if (pr[1] === 0) { SH.allDay = true; SH.date = '2027-06-12'; } else { SH.allDay = false; SH.end = addMins(SH.start, pr[1]); } renderBooking(); return; }
+  if (d.bkall !== undefined) { SH.allDay = d.bkall === '1'; renderBooking(); return; }
+  if (el.hasAttribute('data-qmagic')) { const c = C(SH.cid), tables = Math.ceil(c.guests / 10); SH.lines = [['Bridal bouquet', 350], ['Bridesmaid bouquets (4)', 480], ['Boutonnieres (6)', 150], ['Ceremony arrangements (2)', 600], [`Centerpieces for ${tables} tables`, tables * 180], ['Delivery and setup', 250]]; SH.note = `Built around ${c.guests} guests and a ${c.style.toLowerCase()} look. Happy to adjust anything.`; renderQuote(); return; }
+  if (d.qtpl !== undefined) { const k = VS.profile.packages[+d.qtpl]; SH.lines = [[`${k.t} package`, +k.p]]; renderQuote(); return; }
+  if (d.qadd !== undefined) { SH.lines.push(+d.qadd < 0 ? ['', 0] : [...ADDONS[+d.qadd]]); renderQuote(); return; }
+  if (d.qrm !== undefined) { SH.lines.splice(+d.qrm, 1); renderQuote(); return; }
+  if (el.hasAttribute('data-qsend')) { sendQuote(); return; }
+  if (el.hasAttribute('data-qdraft')) { saveDraft(); return; }
+});
+document.addEventListener('input', e => {
+  if (!SH) return;
+  const t = e.target;
+  if (t.dataset.sh) { SH[t.dataset.sh] = t.value; if (t.dataset.sh === 'date' && SH.side === 'vendor') { renderBooking(); const x = $('bkD'); x.focus(); } }
+  if (t.dataset.ql) { const [i, k] = t.dataset.ql.split(':'); SH.lines[+i][+k] = k === '1' ? t.value : t.value; }
+  if (t.dataset.qf) SH[t.dataset.qf] = t.value;
+  if (SH.kind === 'quote' && $('qbSum')) { const c = C(SH.cid), tot = qTotal(); $('qbSum').innerHTML = qSumHtml(c, tot, Math.round(tot * SH.pct / 100)); }
+});
+document.addEventListener('change', e => { if (SH && SH.kind === 'quote' && (e.target.dataset.qf === 'cid' || e.target.dataset.qf === 'pct')) { SH[e.target.dataset.qf] = e.target.value; renderQuote(); } });
+document.addEventListener('submit', e => { if (e.target.id === 'bkForm') { e.preventDefault(); submitBooking(); } if (e.target.id === 'qbForm') e.preventDefault(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (SH) closeSheet(); closePlus(); } });
+
+/* ---------- Vendor calendar ---------- */
+function VEVENTS() { return [
+  { id: 'e1', date: '2026-10-18', kind: 'block', title: 'Family weekend', allDay: true },
+  { id: 'e2', date: '2026-10-21', kind: 'own', title: 'Flower market run', allDay: false, start: '05:30', end: '08:00', where: '28th Street, Manhattan' },
+  { id: 'e3', date: '2026-10-24', kind: 'wout', title: 'Ramos wedding', allDay: true, where: 'The Foundry, Long Island City', note: 'Booked outside Brixia' },
+  { id: 'e4', date: '2026-10-28', kind: 'own', title: 'Portfolio photo shoot', allDay: false, start: '13:00', end: '15:00', where: 'Studio, Greenpoint' },
+  { id: 'e5', date: '2026-11-14', kind: 'wout', title: 'Whitfield wedding', allDay: true, where: 'Brooklyn Botanic Garden', note: 'Booked outside Brixia' },
+  { id: 'e6', date: '2027-06-05', kind: 'wout', title: 'Okafor wedding', allDay: true, where: 'Wythe Hotel', note: 'Booked outside Brixia' }
+]; }
+function PASTQ() { return [
+  { id: 'x1', names: 'Hannah and Theo', init: 'HT', av: ['#7A6A8E', '#C4B4D6'], title: 'Florals quote', lines: [['Ceremony essentials package', 2500], ['Extra centerpiece', 180], ['Delivery and setup', 250]], when: 'Aug 30', valid: 'Sep 20' },
+  { id: 'x2', names: 'Rosa and Kenji', init: 'RK', av: ['#4E6C8A', '#9DB6CE'], title: 'Florals quote', lines: [['Statement installations package', 8000], ['Arch rental', 400]], when: 'Aug 12', valid: 'Sep 2' }
+]; }
+const isoPlus = (iso, n) => { const d = pd(iso); d.setDate(d.getDate() + n); return isoOf(d); };
+const KIND = { wedding: ['Brixia wedding', '#1F2A4A'], wout: ['Outside wedding', '#1F2A4A'], appt: ['Brixia appointment', '#D79A9C'], pending: ['Waiting on reply', '#E2B866'], hold: ['Quote out', '#C9D1E2'], own: ['Your appointment', '#6E86B8'], block: ['Blocked', '#B9AFAF'] };
+function allEvents() {
+  const out = VS.events.map(e => ({ ...e, src: 'manual' }));
+  VS.couples.forEach(c => {
+    const t = vt(c);
+    t.msgs.forEach((m, mi) => { if (m.type === 'booking' && m.b.status !== 'declined') out.push({ id: `${t.id}:${mi}`, date: m.b.date, kind: m.b.status === 'accepted' ? 'appt' : 'pending', title: m.b.title, allDay: m.b.allDay, start: m.b.start, end: m.b.end, where: m.b.where, who: c.names, cid: c.id, src: 'chat', fromVendor: m.from === 'vendor' }); });
+    if (c.stage === 'booked') out.push({ id: 'w' + c.id, date: c.iso, kind: 'wedding', title: `${c.names} wedding`, allDay: true, where: c.area, who: c.names, cid: c.id, src: 'wedding', note: `${c.guests} guests` });
+    else if (c.stage === 'quoted') out.push({ id: 'h' + c.id, date: c.iso, kind: 'hold', title: `${c.names} (quote out)`, allDay: true, where: c.area, who: c.names, cid: c.id, src: 'wedding', note: 'Not held until they accept' });
+  });
+  const ord = { block: 0, wedding: 1, wout: 2, hold: 3 };
+  return out.sort((a, b) => a.date.localeCompare(b.date) || (ord[a.kind] ?? 9) - (ord[b.kind] ?? 9) || (a.allDay ? -1 : 0) || String(a.start).localeCompare(String(b.start)));
+}
+const eventsOn = iso => allEvents().filter(e => e.date === iso);
+function dayStatus(iso) {
+  const ev = eventsOn(iso);
+  if (ev.some(e => e.kind === 'block')) return ['blocked', 'Blocked. Hidden from couples searching this date.'];
+  const w = ev.filter(e => e.kind === 'wedding' || e.kind === 'wout').length;
+  if (iso < TODAY) return ['past', 'Past date'];
+  if (w >= VS.cap) return ['full', `Fully booked (${w} of ${VS.cap} wedding${VS.cap > 1 ? 's' : ''})`];
+  return ['open', w ? `Open for ${VS.cap - w} more wedding${VS.cap - w > 1 ? 's' : ''}` : 'Open for weddings'];
+}
+function conflictHtml(iso) {
+  if (!iso) return '';
+  const ev = eventsOn(iso).filter(e => e.kind !== 'pending' && e.kind !== 'hold');
+  if (!ev.length) return `<div class="conflict okc">${ic('check')}Your calendar is free on ${fmtShort(iso)}.</div>`;
+  return `<div class="conflict">${ic('cal')}<span>Heads up, on ${fmtShort(iso)} you have ${ev.slice(0, 2).map(e => `${esc(e.title)}${e.allDay ? '' : ` (${fmtTime(e.start)})`}`).join(' and ')}.</span></div>`;
+}
+function satsOpen() {
+  let d = pd('2027-05-01'), open = 0, all = 0;
+  while (isoOf(d) <= '2027-10-31') { if (d.getDay() === 6) { all++; if (dayStatus(isoOf(d))[0] === 'open') open++; } d.setDate(d.getDate() + 1); }
+  return [open, all];
+}
+function renderVCal() {
+  $('vcNav').innerHTML = vNavHtml('calendar'); $('vcBNav').innerHTML = vNavHtml('calendar', false);
+  const [y, mo] = VS.calMonth.split('-').map(Number);
+  const first = new Date(y, mo - 1, 1), start = new Date(y, mo - 1, 1 - first.getDay());
+  const evs = allEvents();
+  const monthEvs = evs.filter(e => e.date.startsWith(VS.calMonth));
+  const pending = evs.filter(e => e.kind === 'pending' && !e.fromVendor && e.date >= TODAY).length;
+  const [so, sa] = satsOpen();
+  let cells = '';
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    if (i >= 35 && d.getMonth() !== mo - 1) break;
+    const iso = isoOf(d), de = evs.filter(e => e.date === iso), out = d.getMonth() !== mo - 1;
+    const cls = ['cal-cell', out ? 'out' : '', iso < TODAY && !out ? 'past' : '', iso === TODAY ? 'today' : '', iso === VS.calDay ? 'sel' : '', de.some(e => e.kind === 'block') ? 'blocked' : ''].filter(Boolean).join(' ');
+    const shown = de.filter(e => e.kind !== 'block');
+    cells += `<button type="button" class="${cls}" data-cday="${iso}" aria-label="${fmtDate(iso)}${de.length ? `, ${de.length} item${de.length > 1 ? 's' : ''}` : ''}"><span class="dn">${d.getDate()}</span>${shown.slice(0, 2).map(e => `<span class="ev ${e.kind}">${e.allDay ? '' : fmtTime(e.start).replace(' ', '') + ' '}${esc(e.title)}</span>`).join('')}${shown.length > 2 ? `<span class="ev-more">+${shown.length - 2} more</span>` : ''}${de.length ? `<span class="cal-dots">${de.slice(0, 3).map(e => `<i class="dot-${e.kind}"></i>`).join('')}</span>` : ''}</button>`;
+  }
+  const minM = '2026-10', maxM = '2027-12';
+  const up = evs.filter(e => e.date >= TODAY && e.kind !== 'block').slice(0, 6);
+  $('vcmain').innerHTML = `<div class="v-wrap">
+    <div class="v-head"><div><h1>Calendar</h1><p>Your Brixia bookings fill in on their own. Add anything you booked outside Brixia so couples never see you as open when you're not.</p></div>
+      <div class="r"><button type="button" class="btn line" data-cblockday>${ic('x')}Block a date</button><button type="button" class="btn" data-cadd="appt">${ic('plus')}Add to calendar</button></div></div>
+    <div class="v-stats">
+      <div class="v-stat dark"><small>Weddings booked</small><b>${evs.filter(e => (e.kind === 'wedding' || e.kind === 'wout') && e.date >= TODAY).length}</b><span>${evs.filter(e => e.kind === 'wedding' && e.date >= TODAY).length} through Brixia</span></div>
+      <div class="v-stat"><small>This month</small><b>${monthEvs.filter(e => e.kind === 'appt' || e.kind === 'own').length}</b><span>appointments in ${MON[mo - 1]}</span></div>
+      <div class="v-stat"><small>Waiting on you</small><b>${pending}</b><span>time ${pending === 1 ? 'request' : 'requests'} from couples</span></div>
+      <div class="v-stat"><small>Peak Saturdays open</small><b>${so}<span style="font-size:15px;font-family:var(--sans,inherit)"> of ${sa}</span></b><span>May to Oct 2027</span></div>
+    </div>
+    <div class="v-grid">
+      <div class="v-card">
+        <div class="v-card-h"><div class="cal-nav"><button type="button" class="icon-btn" data-cm="-1" aria-label="Previous month" ${VS.calMonth <= minM ? 'disabled style="opacity:.35"' : ''}>${ic('back')}</button><h2>${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][mo - 1]} ${y}</h2><button type="button" class="icon-btn" data-cm="1" aria-label="Next month" ${VS.calMonth >= maxM ? 'disabled style="opacity:.35"' : ''}><span style="display:inline-flex;transform:scaleX(-1)">${ic('back')}</span></button></div>
+          <div class="r"><button type="button" class="btn sm line" data-cm="0">Today</button></div></div>
+        <div class="cal-legend">${['wedding', 'wout', 'appt', 'own', 'pending', 'block'].map(k => `<span><i class="dot-${k}" style="border-radius:4px"></i>${KIND[k][0]}</span>`).join('')}</div>
+        <div class="cal-dow">${DOW.map(d => `<span>${d}</span>`).join('')}</div>
+        <div class="cal-grid">${cells}</div>
+      </div>
+      <div class="v-col">
+        <div class="v-card" id="dayPanel">${dayPanel()}</div>
+        <div class="v-card"><div class="v-card-h"><h3>Coming up</h3></div><div style="padding-bottom:8px">${up.length ? up.map(e => { const d = pd(e.date); return `<button type="button" class="up-row" data-cday="${e.date}" data-cjump="1"><span class="d"><small>${MON[d.getMonth()]}</small><b>${d.getDate()}</b></span><span class="tx"><b>${esc(e.title)}</b><span>${e.allDay ? 'All day' : `${fmtTime(e.start)} to ${fmtTime(e.end)}`}${e.where ? ` · ${esc(e.where)}` : ''}</span></span><i class="dot-${e.kind}" style="width:9px;height:9px;border-radius:50%;flex:none"></i></button>`; }).join('') : '<p class="v-note">Nothing coming up.</p>'}</div></div>
+        <div class="v-card"><div class="v-card-h"><h3>Weddings per day</h3></div>
+          <div style="padding:0 16px 10px"><div class="seg2">${[1, 2, 3].map(n => `<button type="button" data-ccap="${n}" class="${VS.cap === n ? 'on' : ''}">${n} wedding${n > 1 ? 's' : ''}</button>`).join('')}</div></div>
+          <p class="v-note">When a date is full or blocked, you show as booked for that date in Explore, and couples can't send you a request for it.</p></div>
+        <div class="v-card"><div class="v-card-h"><h3>Sync your other calendars</h3></div>
+          <div class="sync-row"><button type="button" data-csync="Google Calendar">Google</button><button type="button" data-csync="Apple Calendar">Apple</button><button type="button" data-csync="Outlook">Outlook</button></div>
+          <p class="v-note">Coming soon. Busy times from your other calendars will block Brixia automatically, and Brixia bookings will show up there.</p></div>
+      </div>
+    </div></div>`;
+}
+function dayPanel() {
+  const iso = VS.calDay, ev = eventsOn(iso), [st, stTxt] = dayStatus(iso), blk = ev.find(e => e.kind === 'block');
+  const a = VS.calAdd;
+  const evHtml = ev.length ? ev.map(e => `<div class="day-ev"><span class="bar" style="background:${KIND[e.kind][1]}"></span><div><b>${esc(e.title)}</b><span>${e.allDay ? 'All day' : `${fmtTime(e.start)} to ${fmtTime(e.end)}`}${e.where ? ` · ${esc(e.where)}` : ''}</span>${e.note ? `<span>${esc(e.note)}</span>` : ''}<span class="tag">${KIND[e.kind][0]}${e.src === 'chat' ? ' · from chat' : ''}</span></div>
+      <div class="acts2">${e.cid ? `<button type="button" class="mini" data-copen="${e.cid}">Open chat</button>` : ''}${e.src === 'manual' ? `<button type="button" class="mini" data-cdel="${e.id}">Remove</button>` : ''}</div></div>`).join('') : '<p class="v-note" style="padding:0">Nothing on this day yet.</p>';
+  const form = a ? `<form class="day-form" id="calForm" novalidate>
+      <div class="seg2">${[['own', 'Appointment'], ['wout', 'Outside wedding'], ['block', 'Block day']].map(([k, l]) => `<button type="button" data-ckind="${k}" class="${a.kind === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+      ${a.kind === 'block' ? '' : `<div class="fld"><label for="caT">${a.kind === 'wout' ? 'Couple or event' : 'What'}</label><input id="caT" data-ca="title" value="${esc(a.title)}" placeholder="${a.kind === 'wout' ? 'Lopez wedding' : 'Client meeting, market run, day off'}" maxlength="60"></div>`}
+      <div class="sheet-row"><div class="fld"><label for="caD">Date</label><input id="caD" type="date" data-ca="date" value="${a.date}"></div>${a.kind === 'own' ? `<div class="fld"><label>Time</label><div class="seg2" style="margin-top:2px"><button type="button" data-caall="0" class="${a.allDay ? '' : 'on'}">Hours</button><button type="button" data-caall="1" class="${a.allDay ? 'on' : ''}">All day</button></div></div>` : '<div></div>'}</div>
+      ${a.kind === 'own' && !a.allDay ? `<div class="sheet-row"><div class="fld"><label for="caS">Starts</label><input id="caS" type="time" data-ca="start" value="${a.start}"></div><div class="fld"><label for="caE">Ends</label><input id="caE" type="time" data-ca="end" value="${a.end}"></div></div>` : ''}
+      ${a.kind === 'block' ? `<div class="fld"><label for="caT">Reason (only you see this)</label><input id="caT" data-ca="title" value="${esc(a.title)}" placeholder="Vacation" maxlength="60"></div>` : `<div class="fld"><label for="caW">Where (optional)</label><input id="caW" data-ca="where" value="${esc(a.where)}" maxlength="80"></div>`}
+      <div class="sheet-err">${esc(a.err || '')}</div>
+      <div style="display:flex;gap:8px;justify-content:flex-end"><button type="button" class="btn line sm" data-cadd="">Cancel</button><button type="submit" class="btn sm">${ic('check')}Save</button></div>
+    </form>` : '';
+  return `<div class="day-h"><small>${iso === TODAY ? 'Today' : 'Selected day'}</small><h3>${fmtDate(iso).replace(/, \d{4}$/, '')}</h3><span class="day-st ${st}">${stTxt}</span></div>
+    <div class="day-evs">${evHtml}</div>
+    ${form || `<div class="day-acts"><button type="button" class="btn line" data-cadd="own">${ic('plus')}Add here</button>${blk ? `<button type="button" class="btn line" data-cdel="${blk.id}">Unblock day</button>` : `<button type="button" class="btn line" data-cadd="block">Block day</button>`}</div>`}`;
+}
+function openCalAdd(kind, date) { VS.calAdd = { kind, date: date || VS.calDay, title: '', allDay: kind !== 'own', start: '10:00', end: '11:00', where: '', err: '' }; if (date) { VS.calDay = date; VS.calMonth = date.slice(0, 7); } renderVCal(); setTimeout(() => { $('caT')?.focus(); $('dayPanel')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }, 30); }
+function saveCal() {
+  const a = VS.calAdd;
+  if (a.kind !== 'block' && !a.title.trim()) { a.err = 'Give it a name.'; return renderVCal(); }
+  if (!a.date) { a.err = 'Pick a date.'; return renderVCal(); }
+  if (a.kind === 'own' && !a.allDay && a.end <= a.start) { a.err = 'The end time has to be after the start time.'; return renderVCal(); }
+  const ev = { id: 'e' + Date.now(), date: a.date, kind: a.kind, title: a.title.trim() || 'Blocked', allDay: a.kind !== 'own' || a.allDay, start: a.start, end: a.end, where: a.where.trim(), note: a.kind === 'wout' ? 'Booked outside Brixia' : '' };
+  VS.events.push(ev); VS.calAdd = null; VS.calDay = a.date; VS.calMonth = a.date.slice(0, 7); renderVCal();
+  toast(a.kind === 'block' ? `${fmtShort(a.date)} is blocked. Couples see you as unavailable.` : a.kind === 'wout' ? `Added. ${fmtShort(a.date)} now counts toward your weddings for that day.` : `${ev.title} added to your calendar.`);
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('button'); if (!el || !el.closest('#s-vcal')) return;
+  const d = el.dataset;
+  if (d.cm !== undefined) { if (d.cm === '0') { VS.calMonth = TODAY.slice(0, 7); VS.calDay = TODAY; } else { const [y, m] = VS.calMonth.split('-').map(Number); const n = new Date(y, m - 1 + +d.cm, 1); VS.calMonth = isoOf(n).slice(0, 7); } VS.calAdd = null; renderVCal(); return; }
+  if (d.cday) { VS.calDay = d.cday; VS.calMonth = d.cday.slice(0, 7); VS.calAdd = null; renderVCal(); if (d.cjump || window.innerWidth <= 1000) $('dayPanel')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); return; }
+  if (d.cadd !== undefined) { if (!d.cadd) { VS.calAdd = null; renderVCal(); } else openCalAdd(d.cadd === 'appt' ? 'own' : d.cadd); return; }
+  if (el.hasAttribute('data-cblockday')) { openCalAdd('block'); return; }
+  if (d.ckind) { VS.calAdd.kind = d.ckind; VS.calAdd.allDay = d.ckind !== 'own'; VS.calAdd.err = ''; renderVCal(); return; }
+  if (d.caall !== undefined) { VS.calAdd.allDay = d.caall === '1'; renderVCal(); return; }
+  if (d.cdel) { const ev = VS.events.find(x => x.id === d.cdel); VS.events = VS.events.filter(x => x.id !== d.cdel); renderVCal(); toast(ev?.kind === 'block' ? 'Unblocked. Couples can request this date again.' : 'Removed from your calendar.'); return; }
+  if (d.copen) { const c = C(d.copen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); go('vinbox'); $('s-vinbox').classList.add('thread-open'); renderVInbox(); return; }
+  if (d.ccap) { VS.cap = +d.ccap; renderVCal(); return; }
+  if (d.csync) { toast(`${d.csync} sync comes with the real app.`); return; }
+});
+document.addEventListener('input', e => { if (e.target.dataset.ca && VS.calAdd) VS.calAdd[e.target.dataset.ca] = e.target.value; });
+document.addEventListener('submit', e => { if (e.target.id === 'calForm') { e.preventDefault(); saveCal(); } });
+
+/* ---------- Vendor quotes ---------- */
+function allQuotes() {
+  const rows = [];
+  VS.couples.forEach(c => { const t = vt(c); t.msgs.forEach((m, mi) => { if (m.type === 'quote' && m.from === 'vendor') rows.push({ key: `${t.id}:${mi}`, c, names: c.names, av: cAv(c), title: m.quote.title, lines: m.quote.lines, tot: total(m.quote), dep: m.quote.deposit, st: m.accepted ? 'accepted' : 'sent', when: m.when, valid: m.quote.valid }); }); });
+  VS.drafts.forEach(d => { const c = C(d.cid), tot = d.lines.reduce((a, l) => a + (+l[1] || 0), 0); rows.push({ key: d.id, draft: d, c, names: c.names, av: cAv(c), title: 'Draft quote', lines: d.lines, tot, dep: Math.round(tot * d.pct / 100), st: 'draft', when: d.saved }); });
+  VS.past.forEach(x => { const tot = x.lines.reduce((a, l) => a + l[1], 0); rows.push({ key: x.id, past: x, names: x.names, av: `<span class="av sm" style="background:linear-gradient(140deg,${x.av[0]},${x.av[1]})" aria-hidden="true">${x.init}</span>`, title: x.title, lines: x.lines, tot, dep: Math.round(tot * .25), st: 'expired', when: x.when, valid: x.valid }); });
+  const ord = { draft: 0, sent: 1, accepted: 2, expired: 3 };
+  return rows.sort((a, b) => ord[a.st] - ord[b.st]);
+}
+function renderVQuotes() {
+  $('vqNav').innerHTML = vNavHtml('quotes'); $('vqBNav').innerHTML = vNavHtml('quotes', false);
+  const rows = allQuotes(), cnt = k => rows.filter(r => r.st === k).length, sum = k => rows.filter(r => r.st === k).reduce((a, r) => a + r.tot, 0);
+  const decided = cnt('accepted') + cnt('expired');
+  const shown = rows.filter(r => VS.qf === 'all' || r.st === VS.qf);
+  const pill = { draft: '<span class="pill draft">Draft</span>', sent: '<span class="pill pend">Waiting</span>', accepted: '<span class="pill booked">Accepted</span>', expired: '<span class="pill exp">Expired</span>' };
+  const sub = r => r.st === 'draft' ? `Saved ${r.when.toLowerCase()}` : r.st === 'sent' ? `Sent ${r.when === 'Just now' ? 'just now' : r.when}${r.valid ? ` · valid until ${r.valid}` : ''}` : r.st === 'accepted' ? `Accepted · sent ${r.when}` : `Expired ${r.valid}`;
+  const acts = r => r.st === 'draft' ? `<button type="button" class="btn sm line" data-qdel="${r.key}">Delete</button><button type="button" class="btn sm" data-qedit="${r.key}">Finish</button>`
+    : r.st === 'sent' ? `<button type="button" class="btn sm line" data-qnudge="${r.c.id}">Nudge</button><button type="button" class="btn sm line" data-qchat="${r.c.id}">Open chat</button>`
+    : r.st === 'accepted' ? `<button type="button" class="btn sm line" data-qchat="${r.c.id}">Open chat</button>`
+    : `<button type="button" class="btn sm line" data-qreuse="${r.key}">Reuse as template</button>`;
+  const pr = VS.profile;
+  $('vqmain').innerHTML = `<div class="v-wrap">
+    <div class="v-head"><div><h1>Quotes</h1><p>Build a quote in under a minute from your packages, send it into the chat, and see where every one stands.</p></div>
+      <div class="r"><button type="button" class="btn" data-qnew>${ic('plus')}New quote</button></div></div>
+    <div class="v-stats">
+      <div class="v-stat dark"><small>Waiting on couples</small><b>${money(sum('sent'))}</b><span>${cnt('sent')} quote${cnt('sent') === 1 ? '' : 's'} out</span></div>
+      <div class="v-stat"><small>Won</small><b>${money(sum('accepted'))}</b><span>${cnt('accepted')} accepted</span></div>
+      <div class="v-stat"><small>Win rate</small><b>${decided ? Math.round(cnt('accepted') / decided * 100) : 0}%</b><span>of decided quotes</span></div>
+      <div class="v-stat"><small>Drafts</small><b>${cnt('draft')}</b><span>${cnt('draft') ? 'ready to finish' : 'nothing half done'}</span></div>
+    </div>
+    <div class="v-grid">
+      <div class="v-card">
+        <div class="v-card-h"><h3>All quotes</h3></div>
+        <div class="vq-chips">${[['all', 'All', rows.length], ['draft', 'Drafts', cnt('draft')], ['sent', 'Waiting', cnt('sent')], ['accepted', 'Accepted', cnt('accepted')], ['expired', 'Expired', cnt('expired')]].map(([k, l, n]) => `<button type="button" data-qf2="${k}" class="${VS.qf === k ? 'on' : ''}">${l}<i>${n}</i></button>`).join('')}</div>
+        ${shown.length ? shown.map(r => `<div class="vq-row"><div class="vq-who">${r.av}<div style="min-width:0"><b>${esc(r.names)}</b><span>${esc(r.lines.map(l => l[0]).join(', '))}</span></div></div>
+          <div class="vq-amt"><b>${money(r.tot)}</b><span>${sub(r)}</span></div><div class="vq-st">${pill[r.st]}</div><div class="vq-acts">${acts(r)}</div></div>`).join('') : `<div class="vq-empty">No ${VS.qf === 'all' ? '' : VS.qf + ' '}quotes right now.</div>`}
+      </div>
+      <div class="v-col">
+        <div class="v-card"><div class="v-card-h"><h3>Your pricing</h3><div class="r"><button type="button" class="btn sm line" data-vnav="Profile">Edit packages</button></div></div>
+          <div class="pr-sub">Packages, shown on your profile</div>
+          ${pr.packages.map(k => `<div class="pr-row"><div><b>${esc(k.t)}</b><span>${esc(k.d)}</span></div><b class="n">${money(+k.p)}</b></div>`).join('')}
+          <div class="pr-sub">Add-ons, one tap in the builder</div>
+          ${ADDONS.map(a => `<div class="pr-row"><div>${esc(a[0])}</div><b class="n">${money(a[1])}</b></div>`).join('')}
+          <div style="height:10px"></div></div>
+        <div class="v-card"><div class="v-card-h"><h3>Default terms</h3></div>
+          <div class="terms">
+            <div class="fld"><label for="tP">Deposit</label><select id="tP" data-qterm="pct">${[0, 20, 25, 30, 50].map(v => `<option value="${v}" ${v === VS.terms.pct ? 'selected' : ''}>${v}% due on booking</option>`).join('')}</select></div>
+            <div class="fld"><label for="tD">Balance due</label><input id="tD" data-qterm="due" value="${esc(VS.terms.due)}" maxlength="40"></div>
+            <div class="fld"><label for="tV">Quotes stay valid for</label><select id="tV" data-qterm="days">${[14, 21, 30, 45].map(v => `<option value="${v}" ${v === VS.terms.days ? 'selected' : ''}>${v} days</option>`).join('')}</select></div>
+          </div><p class="v-note">Every new quote starts with these. Payments through Brixia are coming soon, so deposits will collect themselves.</p></div>
+      </div>
+    </div></div>`;
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('button'); if (!el || !el.closest('#s-vquotes')) return;
+  const d = el.dataset;
+  if (el.hasAttribute('data-qnew')) { openQuote(VS.sel); return; }
+  if (d.qf2) { VS.qf = d.qf2; renderVQuotes(); return; }
+  if (d.qedit) { openQuote(null, VS.drafts.find(x => x.id === d.qedit)); return; }
+  if (d.qdel) { VS.drafts = VS.drafts.filter(x => x.id !== d.qdel); renderVQuotes(); toast('Draft deleted.'); return; }
+  if (d.qchat) { const c = C(d.qchat); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); go('vinbox'); $('s-vinbox').classList.add('thread-open'); renderVInbox(); return; }
+  if (d.qnudge) { const c = C(d.qnudge), t = vt(c); t.msgs.push({ from: 'vendor', text: `Hi ${c.names.split(' ')[0]}! Just checking in on the quote. Happy to adjust anything or hop on a quick call.`, when: 'Just now' }); if (c.link) T(c.link).unread += 1; renderVQuotes(); toast(`Nudge sent to ${c.names}.`, { label: 'Open chat', fn: () => { VS.sel = c.id; go('vinbox'); } }); return; }
+  if (d.qreuse) { const x = VS.past.find(p => p.id === d.qreuse); openQuote(VS.sel, { cid: VS.sel, lines: x.lines.map(l => [...l]), pct: VS.terms.pct, due: VS.terms.due, valid: isoPlus(TODAY, VS.terms.days), note: '', id: null }); return; }
+});
+document.addEventListener('change', e => { const k = e.target.dataset.qterm; if (!k) return; VS.terms[k] = k === 'due' ? e.target.value : +e.target.value; toast('Default terms updated.'); });
+
+/* ---------- Explore: vendor directory ---------- */
+const PAL = {
+  venue: [['#E9D8C7', '#9FA9C6', '#3C4A6E'], ['#DCE7DA', '#B9C9AE', '#6D8A70'], ['#F1D7C9', '#C99A8F', '#2E3654'], ['#E7E2F0', '#B3A5C9', '#4D4A72'], ['#F3D9B8', '#B0847A', '#2A2230']],
+  photo: [['#D8DEEC', '#98A6C8', '#2F3F66'], ['#EED9E0', '#C79AAB', '#5A4363'], ['#F6E2C6', '#E0B48A', '#7A5A4A'], ['#E3E3E3', '#9C9C9C', '#2B2B2B']],
+  florist: [['#F6D6D3', '#E9B7B9', '#C47E85'], ['#FBE3C9', '#F2A97F', '#C9705A'], ['#E2EBD8', '#B7C9A6', '#6F8A62']],
+  catering: [['#F4E1C1', '#D9A866', '#8A5A2B'], ['#EDE4D3', '#C6B48F', '#6E6247'], ['#F0D8CC', '#C98F7A', '#5A3A35']],
+  music: [['#D9D6F0', '#8C86C8', '#2C2A55'], ['#EAD7E6', '#B88BB0', '#4A2C4A'], ['#F2DFC0', '#D4A04F', '#4A3415']],
+  beauty: [['#F7DED8', '#E8B0A8', '#B0706E'], ['#F2E3EC', '#D1A4C0', '#8A5A7E']],
+  officiant: [['#E4E9F2', '#AAB6D0', '#53638C'], ['#EFE8DA', '#C9B993', '#7C6B47']],
+  cake: [['#FBEAE6', '#F1C1BE', '#C98E95'], ['#F5EEDF', '#E1CDA3', '#A98B5A']]
+};
+const DIR = [
+  { id: 'd1', name: 'Harborline Loft', cat: 'venue', area: 'Dumbo, Brooklyn', boro: 'Brooklyn', start: 14000, rating: 4.9, reviews: 212, styles: ['Industrial', 'Waterfront', 'Modern'], tag: 'Brick, steel and a wall of windows on the East River', cap: 160, open: false, ver: true, resp: 'Replies in about an hour', pal: 0 },
+  { id: 'd2', name: 'The Glasshouse on Kent', cat: 'venue', area: 'Williamsburg, Brooklyn', boro: 'Brooklyn', start: 18500, rating: 4.8, reviews: 156, styles: ['Garden', 'Modern', 'Light-filled'], tag: 'A greenhouse ceremony room with a skyline view', cap: 180, open: false, ver: false, resp: 'Replies in about a day', pal: 1 },
+  { id: 'd3', name: 'Atlas Rooftop', cat: 'venue', area: 'Long Island City, Queens', boro: 'Queens', start: 12000, rating: 4.7, reviews: 98, styles: ['Rooftop', 'Skyline', 'Modern'], tag: 'Golden hour vows with the whole Manhattan skyline behind you', cap: 140, open: true, ver: true, resp: 'Replies in about 3 hours', pal: 2 },
+  { id: 'd4', name: 'The Conservatory at Fulton', cat: 'venue', area: 'Fort Greene, Brooklyn', boro: 'Brooklyn', start: 16000, rating: 4.9, reviews: 74, styles: ['Garden', 'Romantic', 'Classic'], tag: 'Glass ceilings, old trees and long candlelit tables', cap: 120, open: true, ver: true, resp: 'Replies in about 2 hours', pal: 1 },
+  { id: 'd5', name: 'Candle and Brick', cat: 'venue', area: 'Tribeca, Manhattan', boro: 'Manhattan', start: 9500, rating: 4.6, reviews: 61, styles: ['Moody', 'Intimate', 'Industrial'], tag: 'A candlelit loft for 70 or fewer', cap: 70, open: true, ver: true, resp: 'Replies in about 4 hours', pal: 4 },
+  { id: 'd6', name: 'Lens and Light Studio', cat: 'photo', area: 'Bushwick, Brooklyn', boro: 'Brooklyn', start: 4200, rating: 4.9, reviews: 143, styles: ['Documentary', 'Editorial'], tag: 'Unposed, story-first wedding photography', open: true, ver: true, resp: 'Replies in about an hour', pal: 0 },
+  { id: 'd7', name: 'Hazel Ward Photography', cat: 'photo', area: 'Park Slope, Brooklyn', boro: 'Brooklyn', start: 3600, rating: 4.8, reviews: 88, styles: ['Film', 'Romantic'], tag: 'Soft film photos that feel like a memory', open: true, ver: false, resp: 'Replies in about a day', pal: 1 },
+  { id: 'd8', name: 'Golden Hour Collective', cat: 'photo', area: 'Astoria, Queens', boro: 'Queens', start: 3200, rating: 4.7, reviews: 120, styles: ['Bright', 'Candid'], tag: 'Two shooters, bright colors, lots of laughing', open: true, ver: true, resp: 'Replies in about 2 hours', pal: 2 },
+  { id: 'd9', name: 'Mira Chen Photo', cat: 'photo', area: 'Lower East Side, Manhattan', boro: 'Manhattan', start: 5200, rating: 5.0, reviews: 64, styles: ['Editorial', 'Black and white'], tag: 'Magazine-style portraits with a quiet eye', open: false, ver: true, resp: 'Replies in about 5 hours', pal: 3 },
+  { id: 'd10', name: 'Petal and Stem Studio', cat: 'florist', area: 'Greenpoint, Brooklyn', boro: 'Brooklyn', start: 2500, rating: 4.9, reviews: 57, styles: ['Garden', 'Romantic', 'Seasonal'], tag: 'Loose, seasonal, garden-style flowers', open: true, ver: true, resp: 'Replies in a few hours', pal: 0, live: true },
+  { id: 'd11', name: 'Wildbloom Florals', cat: 'florist', area: 'Red Hook, Brooklyn', boro: 'Brooklyn', start: 2200, rating: 4.7, reviews: 83, styles: ['Wildflower', 'Bright'], tag: 'Meadow flowers in every color', open: true, ver: false, resp: 'Replies in about a day', pal: 1 },
+  { id: 'd12', name: 'Fern and Field', cat: 'florist', area: 'Ridgewood, Queens', boro: 'Queens', start: 1800, rating: 4.8, reviews: 41, styles: ['Minimal', 'Greenery'], tag: 'Mostly green, a little white, very calm', open: true, ver: true, resp: 'Replies in about 3 hours', pal: 2 },
+  { id: 'd13', name: 'Saffron Table Catering', cat: 'catering', area: 'Jackson Heights, Queens', boro: 'Queens', start: 95, per: 'guest', rating: 4.8, reviews: 190, styles: ['South Asian', 'Family style'], tag: 'Big, generous, family-style feasts', open: true, ver: true, resp: 'Replies in about 2 hours', pal: 0 },
+  { id: 'd14', name: 'Little Fig Kitchen', cat: 'catering', area: 'Carroll Gardens, Brooklyn', boro: 'Brooklyn', start: 78, per: 'guest', rating: 4.9, reviews: 72, styles: ['Mediterranean', 'Seasonal'], tag: 'Long tables, shared plates, lots of olive oil', open: true, ver: true, resp: 'Replies in about an hour', pal: 1 },
+  { id: 'd15', name: 'Harvest and Hearth', cat: 'catering', area: "Hell's Kitchen, Manhattan", boro: 'Manhattan', start: 120, per: 'guest', rating: 4.7, reviews: 101, styles: ['Farm to table', 'Plated'], tag: 'Plated, seasonal dinners from upstate farms', open: false, ver: true, resp: 'Replies in about 4 hours', pal: 2 },
+  { id: 'd16', name: 'Night Shift Sound', cat: 'music', area: 'Bed-Stuy, Brooklyn', boro: 'Brooklyn', start: 2400, rating: 4.8, reviews: 134, styles: ['DJ', 'Dance floor'], tag: 'Packed dance floors until the lights come up', open: true, ver: false, resp: 'Replies in about a day', pal: 0 },
+  { id: 'd17', name: 'Velvet Room Quartet', cat: 'music', area: 'Upper West Side, Manhattan', boro: 'Manhattan', start: 3000, rating: 4.9, reviews: 52, styles: ['Strings', 'Ceremony'], tag: 'Strings for the aisle and cocktail hour', open: true, ver: true, resp: 'Replies in about 3 hours', pal: 1 },
+  { id: 'd18', name: 'Brass and Bloom Band', cat: 'music', area: 'Crown Heights, Brooklyn', boro: 'Brooklyn', start: 6500, rating: 4.8, reviews: 39, styles: ['Live band', 'Brass'], tag: 'An eight-piece band with a horn section', open: true, ver: true, resp: 'Replies in about 5 hours', pal: 2 },
+  { id: 'd19', name: 'Glow Theory Beauty', cat: 'beauty', area: 'SoHo, Manhattan', boro: 'Manhattan', start: 950, rating: 4.9, reviews: 211, styles: ['Natural', 'Airbrush'], tag: 'Skin-first makeup that lasts through the last dance', open: true, ver: true, resp: 'Replies in about an hour', pal: 0 },
+  { id: 'd20', name: 'Studio Lumi', cat: 'beauty', area: 'Flushing, Queens', boro: 'Queens', start: 780, rating: 4.8, reviews: 96, styles: ['Soft glam', 'Bridal party'], tag: 'A team of five for the whole bridal party', open: true, ver: true, resp: 'Replies in about 2 hours', pal: 1 },
+  { id: 'd21', name: 'Vows by Nora', cat: 'officiant', area: 'All boroughs', boro: 'Brooklyn', start: 650, rating: 5.0, reviews: 77, styles: ['Personal', 'Bilingual'], tag: 'A ceremony written about the two of you', open: true, ver: true, resp: 'Replies in about 3 hours', pal: 0 },
+  { id: 'd22', name: 'The Ceremony Co', cat: 'officiant', area: 'All boroughs', boro: 'Manhattan', start: 500, rating: 4.7, reviews: 45, styles: ['Nonreligious', 'Short and sweet'], tag: 'Twenty warm minutes, then the party', open: true, ver: false, resp: 'Replies in about a day', pal: 1 },
+  { id: 'd23', name: 'Sugar and Bloom Bakery', cat: 'cake', area: 'Cobble Hill, Brooklyn', boro: 'Brooklyn', start: 850, rating: 4.9, reviews: 118, styles: ['Floral', 'Buttercream'], tag: 'Buttercream cakes with pressed flowers', open: true, ver: true, resp: 'Replies in about 2 hours', pal: 0 },
+  { id: 'd24', name: 'Crumb and Co', cat: 'cake', area: 'Astoria, Queens', boro: 'Queens', start: 600, rating: 4.8, reviews: 66, styles: ['Dessert table', 'Modern'], tag: 'Dessert tables your guests will photograph', open: true, ver: true, resp: 'Replies in about 4 hours', pal: 1 }
+];
+const D = id => DIR.find(v => v.id === id);
+const GUESTS = 120;
+const vImg = (v, k = 0) => { const p = PAL[v.cat][(v.pal + k) % PAL[v.cat].length]; const a = [[25, 30, 75, 70], [70, 25, 30, 80], [50, 60, 80, 20]][k % 3]; return `radial-gradient(circle at ${a[0]}% ${a[1]}%, ${p[0]} 0, transparent 52%), radial-gradient(circle at ${a[2]}% ${a[3]}%, ${p[1]} 0, transparent 55%), linear-gradient(150deg, ${p[1]}, ${p[2]})`; };
+const vPrice = v => v.per ? `${money(v.start)} per guest` : `${money(v.start)}`;
+const vCost = v => v.per ? v.start * GUESTS : v.start;
+const vOpen = v => v.live && typeof dayStatus === 'function' ? dayStatus('2027-06-12')[0] === 'open' : v.open;
+const vThread = v => S.threads.find(t => t.vendor === v.name);
+const vInit2 = n => n.replace(/^The /, '').split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join('');
+const vAv = (v, cls = 'av sm') => `<span class="${cls}" style="background:${vImg(v)}" aria-hidden="true">${esc(vInit2(v.name))}</span>`;
+const PACKS = {
+  venue: [['Friday or Sunday', 0.8, 'Ceremony and reception, 10 hours'], ['Saturday', 1, 'Ceremony and reception, 10 hours, tables and chairs'], ['Weekend buyout', 1.5, 'Rehearsal dinner the night before plus the full Saturday']],
+  photo: [['Six hours', 1, 'One photographer, online gallery'], ['Eight hours', 1.3, 'Two photographers, engagement session'], ['Full day', 1.7, 'Getting ready to send-off, printed album']],
+  florist: [['Ceremony essentials', 1, 'Bouquets, boutonnieres and aisle flowers'], ['Full wedding', 1.8, 'Plus centerpieces and a sweetheart table'], ['Statement', 3.2, 'Arch or floral ceiling and full reception design']],
+  catering: [['Cocktail style', 1, 'Passed bites and stations, per guest'], ['Family style', 1.25, 'Shared platters at every table, per guest'], ['Plated', 1.45, 'Three courses with choices, per guest']],
+  music: [['Reception', 1, 'Five hours, sound and lights'], ['Ceremony and reception', 1.35, 'Plus ceremony sound and a cocktail hour set'], ['All night', 1.7, 'Seven hours with an MC']],
+  beauty: [['Couple only', 1, 'Trial plus wedding day'], ['Plus four', 2.2, 'Couple and four others'], ['Whole party', 3.4, 'Up to eight people, two artists']],
+  officiant: [['Simple', 1, 'Standard ceremony and paperwork'], ['Personal', 1.5, 'Custom ceremony and one planning call'], ['Full', 2, 'Plus rehearsal']],
+  cake: [['Cake for 100', 1, 'Two tiers plus a sheet cake'], ['Cake for 150', 1.4, 'Three tiers'], ['Dessert table', 2.1, 'Cake plus four dessert types']]
+};
+
+function exFiltered() {
+  const x = S.ex;
+  let list = DIR.filter(v => (!x.cat || v.cat === x.cat) && (!x.open || vOpen(v)) && (!x.boros.size || x.boros.has(v.boro)) && (!x.max || vCost(v) <= x.max) && (!x.styles.size || v.styles.some(st => x.styles.has(st))) && v.rating >= x.rating && (!x.verified || v.ver) && (!x.onlySaved || x.saved.has(v.id)));
+  const rec = v => v.rating * 20 + Math.log(v.reviews) * 3 + (v.ver ? 4 : 0) + (vOpen(v) ? 6 : 0);
+  const srt = { rec: (a, b) => rec(b) - rec(a), rating: (a, b) => b.rating - a.rating || b.reviews - a.reviews, low: (a, b) => vCost(a) - vCost(b), reviews: (a, b) => b.reviews - a.reviews }[x.sort];
+  return list.sort(srt);
+}
+function exCard(v) {
+  const th = vThread(v), op = vOpen(v), sv = S.ex.saved.has(v.id);
+  const badge = th ? `<span class="x-badge mine">In your folder</span>` : op ? `<span class="x-badge">Open June 12</span>` : `<span class="x-badge no">Booked June 12</span>`;
+  return `<article class="x-card" data-xv="${v.id}" tabindex="0" role="button" aria-label="${esc(v.name)}">
+    <div class="x-img" style="background:${vImg(v)}">${badge}<button type="button" class="x-heart${sv ? ' on' : ''}" data-xsave="${v.id}" aria-label="${sv ? 'Remove from saved' : 'Save'}" aria-pressed="${sv}">${ic('heart')}</button><span class="wm">${ic(v.cat)}</span></div>
+    <div class="x-cb"><div class="t"><b>${esc(v.name)}</b><span class="x-rate">${ic('star')}${v.rating.toFixed(1)}<span>(${v.reviews})</span></span></div>
+      <div class="sub">${catName(v.cat)} · ${esc(v.area)}${v.cap ? ` · up to ${v.cap}` : ''}</div>
+      <div class="tags">${v.styles.map(st => `<span>${esc(st)}</span>`).join('')}</div>
+      <div class="pr"><span>${v.ver ? `<span class="x-ver">${ic('check')}On Brixia</span>` : 'Invite by email'}</span><span>from <b>${vPrice(v)}</b></span></div></div>
+  </article>`;
+}
+function renderExplore() {
+  $('xNav').innerHTML = navHtml('explore', true); $('xBNav').innerHTML = navHtml('explore', false);
+  const x = S.ex, list = exFiltered(), base = DIR.filter(v => !x.cat || v.cat === x.cat);
+  const allStyles = [...new Set(base.flatMap(v => v.styles))];
+  const maxes = x.cat === 'venue' ? [0, 10000, 15000, 20000] : x.cat === 'catering' ? [0, 10000, 12000, 15000] : [0, 1000, 3000, 5000];
+  const label = x.cat ? catName(x.cat).toLowerCase().replace(/^dj/, 'DJ') : 'vendors';
+  const plural = !x.cat ? 'vendors' : { venue: 'venues', photo: 'photographers', florist: 'florists', catering: 'caterers', music: 'DJs and bands', beauty: 'hair and makeup artists', officiant: 'officiants', cake: 'bakers' }[x.cat];
+  $('xmain').innerHTML = `<div class="x-wrap">
+    <section class="x-hero">
+      <h1>What are you <em>looking for?</em></h1>
+      <p>Vendors near Brooklyn, checked against your date and guest count.</p>
+      <div class="x-cats"><button type="button" data-xcat="" class="${!x.cat ? 'on' : ''}">${ic('explore')}Everything</button>${CATS.map(c => `<button type="button" data-xcat="${c.id}" class="${x.cat === c.id ? 'on' : ''}">${ic(c.id)}${esc(c.name)}</button>`).join('')}</div>
+      <div class="x-bar">
+        <label><small>Looking for</small><select data-xsel="cat"><option value="">Everything</option>${CATS.map(c => `<option value="${c.id}" ${x.cat === c.id ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>
+        <label><small>Date</small><select data-xsel="open"><option value="1" ${x.open ? 'selected' : ''}>June 12, 2027</option><option value="0" ${!x.open ? 'selected' : ''}>Any date</option></select></label>
+        <label><small>Where</small><select data-xsel="boro"><option value="">Anywhere in NYC</option>${['Brooklyn', 'Manhattan', 'Queens'].map(b => `<option ${x.boros.size === 1 && x.boros.has(b) ? 'selected' : ''}>${b}</option>`).join('')}</select></label>
+        <label><small>Budget</small><select data-xsel="max">${maxes.map(m => `<option value="${m}" ${x.max === m ? 'selected' : ''}>${m ? `Up to ${money(m)}` : 'Any budget'}</option>`).join('')}</select></label>
+        <button type="button" class="btn blush" data-xgo>${ic('search')}Search</button>
+      </div>
+    </section>
+    <div class="x-body">
+      <aside class="x-filters${x.ff ? ' open' : ''}" aria-label="Filters">
+        <div class="x-f"><label class="x-tog"><span>Open on June 12<small>Hide vendors already booked</small></span><input type="checkbox" data-xck="open" ${x.open ? 'checked' : ''}></label></div>
+        <div class="x-f"><label class="x-tog"><span>On Brixia<small>Chat, quotes and booking in one place</small></span><input type="checkbox" data-xck="verified" ${x.verified ? 'checked' : ''}></label></div>
+        <div class="x-f"><h4>Borough</h4>${['Brooklyn', 'Manhattan', 'Queens'].map(b => `<label class="ck"><input type="checkbox" data-xboro="${b}" ${x.boros.has(b) ? 'checked' : ''}>${b}<span class="n">${base.filter(v => v.boro === b).length}</span></label>`).join('')}</div>
+        <div class="x-f"><h4>Rating</h4>${[[0, 'Any'], [4.8, '4.8 and up'], [4.9, '4.9 and up']].map(([r, l]) => `<label class="ck"><input type="radio" name="xr" data-xrate="${r}" ${x.rating === r ? 'checked' : ''}>${l}</label>`).join('')}</div>
+        <div class="x-f"><h4>Style</h4><div class="x-styles">${allStyles.map(st => `<button type="button" data-xstyle="${esc(st)}" class="${x.styles.has(st) ? 'on' : ''}">${esc(st)}</button>`).join('')}</div></div>
+        <div class="x-f"><label class="x-tog"><span>Saved only<small>${x.saved.size} saved</small></span><input type="checkbox" data-xck="onlySaved" ${x.onlySaved ? 'checked' : ''}></label></div>
+      </aside>
+      <div>
+        <div class="x-rhead"><h2>${list.length} ${list.length === 1 ? plural.replace(/s$/, '').replace('DJs and band', 'DJ or band') : plural}${x.open ? ' <span>open June 12</span>' : ''}</h2>
+          <div class="r"><button type="button" class="btn sm line x-ffbtn" data-xff>${ic('filter')}Filters</button><select data-xsel="sort" aria-label="Sort"><option value="rec" ${x.sort === 'rec' ? 'selected' : ''}>Best match</option><option value="rating" ${x.sort === 'rating' ? 'selected' : ''}>Top rated</option><option value="low" ${x.sort === 'low' ? 'selected' : ''}>Lowest price</option><option value="reviews" ${x.sort === 'reviews' ? 'selected' : ''}>Most reviewed</option></select></div></div>
+        ${list.length ? `<div class="x-grid">${list.map(exCard).join('')}</div>` : `<div class="x-empty"><b>No ${esc(label)} match all of that</b>Try another borough or a bigger budget.<div style="margin-top:12px"><button type="button" class="btn sm line" data-xclear>Clear filters</button></div></div>`}
+      </div>
+    </div></div>`;
+  if (!S.exSeen) { S.exSeen = true; exIntro(); }
+}
+function exIntro() {
+  SH = { kind: 'xintro' };
+  openSheet(`<div class="sheet-h"><span class="m-ic">${ic('explore')}</span><div><h2>What are you looking for?</h2><p>Pick one and we'll show vendors who are open on your date.</p></div></div>
+    <div class="x-ctx"><span>June 12, 2027</span><span>Brooklyn</span><span>${GUESTS} guests</span><span>From your wedding folder</span></div>
+    <div class="x-pick">${CATS.map(c => { const st = catState(c.id); const n = DIR.filter(v => v.cat === c.id && vOpen(v)).length; return `<button type="button" data-xpick="${c.id}" class="${st.key === 'booked' ? 'done' : ''}"><span class="ic2">${ic(st.key === 'booked' ? 'check' : c.id)}</span><span><b>${esc(c.name)}</b><span style="display:block">${st.key === 'booked' ? 'Booked' : `${n} open on your date`}</span></span></button>`; }).join('')}</div>
+    <div class="sheet-acts"><button type="button" class="btn line" data-xpick="">Just browsing</button></div>`);
+}
+function exView(id) {
+  const v = D(id), th = vThread(v), op = vOpen(v), plan = PLANS.find(p => Object.values(p.team).includes(id));
+  SH = { kind: 'xview', id, msg: `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about ${GUESTS} guests. We found you on Brixia and love your work. Are you available, and could you share pricing?` };
+  openSheet(`<div class="qv-gal"><div style="background:${vImg(v, 0)}"></div><div style="background:${vImg(v, 1)}"></div><div style="background:${vImg(v, 2)}"></div></div>
+    <div class="qv-h"><div style="flex:1;min-width:0"><span class="eyebrow" style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--rose-ink)">${catName(v.cat)}</span><h2>${esc(v.name)}</h2>
+      <div class="qv-meta"><span class="x-rate">${ic('star')}${v.rating.toFixed(1)}<span>(${v.reviews} reviews)</span></span><span>${esc(v.area)}</span>${v.cap ? `<span>Up to ${v.cap} guests</span>` : ''}<span>${esc(v.resp)}</span>${v.ver ? `<span class="x-ver">${ic('check')}On Brixia</span>` : ''}</div></div></div>
+    <div class="qv-grid">
+      <div style="display:grid;gap:12px">
+        <div class="qv-box"><p style="font-size:14.5px;line-height:1.6">${esc(v.tag)}. ${v.styles.join(', ')} style${v.styles.length > 1 ? 's' : ''}.</p>
+          <div class="conflict ${op ? 'okc' : ''}" style="margin-top:10px">${ic(op ? 'check' : 'cal')}${op ? 'Open on June 12, 2027' : 'Booked on June 12, 2027. You can still ask about other dates.'}</div>
+          ${plan ? `<button type="button" class="qv-plan" data-xplan="${plan.id}"><span class="pl-sw">${plan.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span><span><b>In the plan "${esc(plan.title)}"</b>${esc(plan.who)} used them. See the whole plan.</span></button>` : ''}</div>
+        <div class="qv-box"><h4>Packages</h4>${PACKS[v.cat].map(([n, m, d]) => `<div class="qv-pk"><div><b>${n}</b><span>${d}</span></div><b>${v.per ? `${money(Math.round(v.start * m))} pp` : money(Math.round(v.start * m / 50) * 50)}</b></div>`).join('')}</div>
+      </div>
+      <div class="qv-box qv-msg">${th ? `<h4>Already in your folder</h4><p style="font-size:13.5px;color:var(--muted);margin-bottom:12px">You're talking with ${esc(v.name)} under ${catName(v.cat)}.</p><button type="button" class="btn" style="width:100%" data-xchat="${th.id}">${ic('inbox')}Open chat</button>`
+        : `<h4>Message ${esc(v.name.split(' ')[0] === 'The' ? v.name : v.name)}</h4><textarea data-sh="msg" aria-label="Message">${esc(SH.msg)}</textarea>
+        <p style="font-size:12px;color:var(--muted);margin:8px 0 12px">${v.ver ? 'They get it in their Brixia inbox.' : "They're not on Brixia yet, so they get it by email with a reply link."}</p>
+        <button type="button" class="btn" style="width:100%" data-xsend="${v.id}">${ic('send')}Send and add to my folder</button>`}
+        <button type="button" class="btn line" style="width:100%;margin-top:8px" data-xsave="${v.id}">${ic('heart')}${S.ex.saved.has(v.id) ? 'Saved' : 'Save for later'}</button></div>
+    </div>`);
+}
+function addFromDir(v, text, quiet) {
+  const id = 'x' + v.id + Date.now().toString(36);
+  S.threads.push({ id, cat: v.cat, vendor: v.name, av: [PAL[v.cat][v.pal % PAL[v.cat].length][0], PAL[v.cat][v.pal % PAL[v.cat].length][1]], status: 'waiting', unread: 0, onBrixia: v.ver, email: `hello@${v.name.toLowerCase().replace(/^the /, '').replace(/[^a-z]/g, '')}.com`, msgs: text ? [{ from: 'me', text, when: 'Just now' }] : [] });
+  S.open.add(v.cat);
+  if (S.ex.saved.has(v.id)) S.starred.add(id);
+  if (!quiet) logAct('inbox', `You messaged ${v.name}`);
+  return id;
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('button, article'); if (!el) return;
+  const d = el.dataset;
+  if (d.xsave) { e.stopPropagation(); S.ex.saved.has(d.xsave) ? S.ex.saved.delete(d.xsave) : S.ex.saved.add(d.xsave); const on = S.ex.saved.has(d.xsave); if (SH?.kind === 'xview') exView(SH.id); renderExplore(); toast(on ? `Saved ${D(d.xsave).name}.` : 'Removed from saved.'); return; }
+  if (!el.closest('#s-explore') && !el.closest('#sheetRoot')) return;
+  if (d.xpick !== undefined) { closeSheet(); S.ex.cat = d.xpick || null; S.ex.styles.clear(); S.ex.max = 0; renderExplore(); return; }
+  if (d.xv) { exView(d.xv); return; }
+  if (d.xcat !== undefined) { S.ex.cat = d.xcat || null; S.ex.styles.clear(); S.ex.max = 0; renderExplore(); return; }
+  if (d.xstyle) { S.ex.styles.has(d.xstyle) ? S.ex.styles.delete(d.xstyle) : S.ex.styles.add(d.xstyle); renderExplore(); return; }
+  if (el.hasAttribute('data-xff')) { S.ex.ff = !S.ex.ff; renderExplore(); return; }
+  if (el.hasAttribute('data-xgo')) { renderExplore(); document.querySelector('#xmain .x-body')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
+  if (el.hasAttribute('data-xclear')) { Object.assign(S.ex, { open: false, boros: new Set(), max: 0, styles: new Set(), rating: 0, verified: false, onlySaved: false }); renderExplore(); return; }
+  if (d.xchat) { closeSheet(); go('inbox'); openThread(d.xchat); return; }
+  if (d.xplan) { closeSheet(); S.plan = d.xplan; S.pick = {}; S.swap = null; S.done = null; go('plans'); return; }
+  if (d.xsend) { const v = D(d.xsend); const text = (SH.msg || '').trim(); if (!text) { toast('Write a short message first.'); return; } const id = addFromDir(v, text); closeSheet(); renderExplore(); toast(v.ver ? `Sent to ${v.name}. Their chat is in your inbox under ${catName(v.cat)}.` : `Sent. ${v.name} gets it by email with a reply link.`, { label: 'Open chat', fn: () => { go('inbox'); openThread(id); } }); return; }
+});
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches?.('article[data-xv]')) { e.preventDefault(); exView(e.target.dataset.xv); } });
+document.addEventListener('change', e => {
+  const t = e.target, d = t.dataset; if (!t.closest('#s-explore')) return;
+  if (d.xsel) { const k = d.xsel; if (k === 'cat') { S.ex.cat = t.value || null; S.ex.styles.clear(); S.ex.max = 0; } else if (k === 'open') S.ex.open = t.value === '1'; else if (k === 'boro') S.ex.boros = t.value ? new Set([t.value]) : new Set(); else if (k === 'max') S.ex.max = +t.value; else S.ex[k] = t.value; renderExplore(); return; }
+  if (d.xck) { S.ex[d.xck] = t.checked; renderExplore(); return; }
+  if (d.xboro) { t.checked ? S.ex.boros.add(d.xboro) : S.ex.boros.delete(d.xboro); renderExplore(); return; }
+  if (d.xrate !== undefined) { S.ex.rating = +d.xrate; renderExplore(); return; }
+});
+
+/* ---------- Plans ---------- */
+const PLANS = [
+  { id: 'p1', art: 'sky', title: 'Golden hour on a Queens rooftop', who: 'Sofia and James', when: 'Married September 2026', used: 214, guests: 130, budget: 52000, tags: ['rooftop', 'big'], sw: ['#F3D9B8', '#E2A07A', '#2E3654', '#F6F2F1'],
+    img: 'radial-gradient(ellipse at 70% 25%, rgba(255,210,160,.85), transparent 50%), radial-gradient(ellipse at 20% 80%, rgba(201,120,110,.55), transparent 55%), linear-gradient(160deg, #F2B98C 0%, #B9707A 45%, #2E3654 100%)',
+    story: 'We wanted the skyline and the sunset to do most of the decorating. Ceremony at 6:40 for golden hour, cocktails on the terrace, then dinner and dancing under string lights. Bright, candid photos and a dance floor that never emptied.',
+    team: { venue: 'd3', photo: 'd8', florist: 'd11', catering: 'd13', music: 'd16', beauty: 'd20', officiant: 'd21', cake: 'd24' },
+    tl: [['14 months out', 'Booked Atlas Rooftop for a Saturday in September'], ['12 months out', 'Photographer and caterer, both through Brixia chat'], ['8 months out', 'Florals, DJ and hair and makeup'], ['3 months out', 'Final walkthrough with every vendor in one thread']] },
+  { id: 'p2', art: 'garden', title: 'Garden ceremony, conservatory dinner', who: 'Aisha and Ben', when: 'Married June 2026', used: 128, guests: 110, budget: 61000, tags: ['garden'], sw: ['#DCE7DA', '#9DB394', '#F6D6D3', '#FFFFFF'],
+    img: 'radial-gradient(ellipse at 30% 30%, rgba(236,245,226,.9), transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(246,214,211,.7), transparent 55%), linear-gradient(150deg, #B9C9AE 0%, #6F8A62 60%, #2D3B36 100%)',
+    story: 'Everything green, white and blush. Vows under the old trees at the Conservatory, then one long candlelit table. Strings for the aisle, film photos, and a buttercream cake with pressed flowers.',
+    team: { venue: 'd4', photo: 'd7', florist: 'd10', catering: 'd14', music: 'd17', beauty: 'd19', officiant: 'd21', cake: 'd23' },
+    tl: [['13 months out', 'Venue and photographer in the same week'], ['10 months out', 'Florist mock-up centerpiece review'], ['6 months out', 'Tasting with Little Fig Kitchen'], ['1 month out', 'Shared one timeline with all eight vendors']] },
+  { id: 'p3', art: 'candle', title: 'Candlelit loft for 60', who: 'Lena and Tom', when: 'Married November 2025', used: 96, guests: 60, budget: 31000, tags: ['intimate', 'under40'], sw: ['#2A2230', '#B0847A', '#F3D9B8', '#E9E4E4'],
+    img: 'radial-gradient(ellipse at 50% 30%, rgba(243,200,140,.75), transparent 45%), radial-gradient(ellipse at 15% 85%, rgba(176,132,122,.6), transparent 55%), linear-gradient(170deg, #5A3A35 0%, #2A2230 70%, #111829 100%)',
+    story: 'Sixty people, a hundred candles, and dinner that went on for hours. We skipped the big dance floor for a string quartet and a late-night dessert table. Black and white portraits only.',
+    team: { venue: 'd5', photo: 'd9', florist: 'd12', catering: 'd15', music: 'd17', beauty: 'd19', officiant: 'd22', cake: 'd24' },
+    tl: [['10 months out', 'Booked the loft for a Friday'], ['8 months out', 'Photographer and caterer'], ['4 months out', 'Everything else in two weeks'], ['2 weeks out', 'Final headcount sent to every vendor at once']] },
+  { id: 'p4', art: 'bridge', title: 'Big Brooklyn party, 200 guests', who: 'Nadia and Omar', when: 'Married August 2026', used: 167, guests: 200, budget: 74000, tags: ['big'], sw: ['#2C2A55', '#D4A04F', '#C98F7A', '#F6F2F1'],
+    img: 'radial-gradient(ellipse at 25% 25%, rgba(212,160,79,.75), transparent 50%), radial-gradient(ellipse at 80% 75%, rgba(140,134,200,.6), transparent 55%), linear-gradient(140deg, #8C86C8 0%, #4A2C4A 55%, #2C2A55 100%)',
+    story: 'Two families, two hundred guests, and a horn section. Family-style feast, a live band into a late DJ set, and a hair and makeup team for the whole wedding party.',
+    team: { venue: 'd1', photo: 'd6', florist: 'd11', catering: 'd13', music: 'd18', beauty: 'd20', officiant: 'd21', cake: 'd23' },
+    tl: [['16 months out', 'Venue for 200 on the waterfront'], ['12 months out', 'Band, caterer and photographer'], ['6 months out', 'Hair and makeup trials for eight people'], ['1 week out', 'Load-in times confirmed in one chat']] },
+  { id: 'p5', art: 'hall', title: 'City Hall and a long lunch', who: 'Grace and Leo', when: 'Married May 2026', used: 302, guests: 40, budget: 14000, tags: ['intimate', 'under40'], sw: ['#E4E9F2', '#AAB6D0', '#F7DED8', '#FFFFFF'],
+    img: 'radial-gradient(ellipse at 70% 30%, rgba(247,222,216,.85), transparent 50%), radial-gradient(ellipse at 20% 75%, rgba(170,182,208,.7), transparent 55%), linear-gradient(150deg, #E4E9F2 0%, #8E9EC4 60%, #53638C 100%)',
+    story: 'A morning at City Hall, a walk across the bridge for photos, then a three-hour lunch for forty. No venue rental, no DJ, just good food, a florist we loved and a photographer for the afternoon.',
+    team: { photo: 'd8', florist: 'd12', catering: 'd14', beauty: 'd20', cake: 'd24' },
+    tl: [['6 months out', 'Picked the date and the restaurant-style caterer'], ['4 months out', 'Photographer and florist'], ['1 month out', 'Hair and makeup trial'], ['The week of', 'Everyone confirmed in Brixia']] }
+];
+const ART = {
+  sky: '<g fill="rgba(17,24,41,.55)"><path d="M0 200V150h18v-22h14v22h10v-40h20v40h8v-28h16v28h12v-60h6v-14h6v14h6v60h10v-34h22v34h8v-18h14v18h10v-52h18v52h12v-30h16v30h8v-70h4v-16h4v16h4v70h12v-24h18v24h10v-44h20v44h8v-26h14v26h12v-36h18v36h10V200z"/></g><path d="M-10 60 Q100 110 200 70 T410 66" fill="none" stroke="rgba(255,240,220,.55)" stroke-width="1.2"/>' + Array.from({ length: 14 }, (_, i) => { const x = 10 + i * 28, y = 60 + Math.sin(i / 2.2) * 14 + (i < 7 ? i * 1.6 : (14 - i) * 1.6); return `<circle cx="${x}" cy="${y + 6}" r="3.2" fill="#FFE7B8"/><circle cx="${x}" cy="${y + 6}" r="9" fill="rgba(255,231,184,.18)"/>`; }).join(''),
+  garden: '<path d="M140 200V110a60 60 0 0 1 120 0v90" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="3"/>' + Array.from({ length: 22 }, (_, i) => { const a = Math.PI - i * Math.PI / 21, x = 200 + Math.cos(a) * 62, y = 110 - Math.sin(a) * 62; return `<circle cx="${x}" cy="${y}" r="${5 + (i % 3) * 2}" fill="${['rgba(255,255,255,.75)', 'rgba(246,214,211,.85)', 'rgba(185,201,174,.9)'][i % 3]}"/>`; }).join('') + '<path d="M0 200c40-30 70-20 100-34s50-10 70 4 60 10 90-6 70-4 140 36z" fill="rgba(45,59,54,.45)"/>',
+  candle: Array.from({ length: 9 }, (_, i) => { const x = 40 + i * 40, h = 30 + ((i * 37) % 40); return `<circle cx="${x}" cy="${190 - h - 10}" r="22" fill="rgba(255,200,120,.12)"/><rect x="${x - 5}" y="${190 - h}" width="10" height="${h}" rx="2" fill="rgba(246,242,241,.85)"/><path d="M${x} ${190 - h - 16}c-4 6-4 10 0 12 4-2 4-6 0-12z" fill="#FFD48A"/>`; }).join('') + '<rect x="0" y="188" width="400" height="12" fill="rgba(17,24,41,.5)"/>',
+  bridge: '<g fill="none" stroke="rgba(17,24,41,.55)" stroke-width="2"><path d="M0 150 Q70 60 120 40 M120 40 Q200 120 280 40 M280 40 Q330 60 400 150"/>' + Array.from({ length: 15 }, (_, i) => { const x = 130 + i * 10; const t = (x - 120) / 160; return `<path d="M${x} ${40 + 160 * t * (1 - t)}V150"/>`; }).join('') + '</g><g fill="rgba(17,24,41,.6)"><path d="M108 200V30l6-10 6 10v170h-4v-60h-4v60z"/><path d="M268 200V30l6-10 6 10v170h-4v-60h-4v60z"/><rect x="0" y="150" width="400" height="8"/></g>' + Array.from({ length: 30 }, (_, i) => `<circle cx="${(i * 53) % 400}" cy="${(i * 31) % 120 + 10}" r="${1.5 + (i % 3)}" fill="${['#FFE7B8', '#F3CFCC', '#C7C9E8'][i % 3]}" opacity=".8"/>`).join(''),
+  hall: '<g fill="rgba(255,255,255,.55)"><path d="M90 92 L200 50 L310 92z"/><rect x="96" y="96" width="208" height="8"/>' + Array.from({ length: 7 }, (_, i) => `<rect x="${106 + i * 30}" y="108" width="14" height="72" rx="2"/>`).join('') + '<rect x="86" y="180" width="228" height="8"/><rect x="76" y="190" width="248" height="10"/></g>'
+};
+const planArt = p => `<svg class="pl-art" viewBox="0 0 400 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${ART[p.art]}</svg>`;
+const PFILT = [['all', 'All plans'], ['under40', 'Under $40k'], ['garden', 'Garden'], ['rooftop', 'Rooftop'], ['intimate', 'Intimate'], ['big', 'Big party']];
+const PL = id => PLANS.find(p => p.id === id);
+const planStack = p => `<span class="pl-stack">${Object.values(p.team).slice(0, 6).map(id => vAv(D(id), 'av')).join('')}</span>`;
+function renderPlans() {
+  $('plNav').innerHTML = navHtml('plans', true); $('plBNav').innerHTML = navHtml('plans', false);
+  if (S.plan) return renderPlan();
+  const list = PLANS.filter(p => S.planF === 'all' || p.tags.includes(S.planF));
+  const f = list[0];
+  $('plmain').innerHTML = `<div class="x-wrap">
+    <div class="pl-head"><div><h1>Start from a wedding <em>that already worked.</em></h1><p>Real plans from Brixia couples, with the vendors they booked. Open one, keep what you love, swap the rest, and add it to your folder in one tap.</p></div></div>
+    <div class="pl-chips">${PFILT.map(([k, l]) => `<button type="button" data-plf="${k}" class="${S.planF === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+    ${f ? `<button type="button" class="pl-feat" data-plopen="${f.id}"><span class="im" style="background:${f.img}">${planArt(f)}</span><span class="tx"><span class="eyebrow">Most loved this month</span><h2>${esc(f.title)}</h2><span class="pl-sw">${f.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span><p>${esc(f.story)}</p>
+      <span class="pl-nums"><span><small>Budget</small><b>${money(f.budget)}</b></span><span><small>Guests</small><b>${f.guests}</b></span><span><small>Vendors</small><b>${Object.keys(f.team).length}</b></span><span><small>Used by</small><b>${f.used}</b></span></span>
+      <span class="btn blush" style="align-self:flex-start;margin-top:6px">See the plan</span></span></button>` : ''}
+    <div class="pl-grid">${list.slice(1).map(p => `<button type="button" class="pl-card" data-plopen="${p.id}"><span class="im" style="background:${p.img}">${planArt(p)}<span class="used">Used by ${p.used} couples</span><span class="pl-sw">${p.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span></span>
+      <span class="bd"><h3>${esc(p.title)}</h3><span class="who">${esc(p.who)} · ${esc(p.when)}</span><span class="facts"><span>${money(p.budget)}</span><span>${p.guests} guests</span><span>${Object.keys(p.team).length} vendors</span></span>${planStack(p)}</span></button>`).join('')}</div>
+  </div>`;
+}
+function bookedIn(cat) { const st = catState(cat); return st.key === 'booked' ? st.booked : null; }
+function planChoice(p, cat) {
+  if (bookedIn(cat)) return { mode: 'locked' };
+  const pk = S.pick[cat];
+  if (pk === 'skip') return { mode: 'skip' };
+  if (pk && pk !== 'keep') return { mode: 'swap', v: D(pk) };
+  return { mode: 'keep', v: D(p.team[cat]) };
+}
+function renderPlan() {
+  const p = PL(S.plan), cats = CATS.filter(c => p.team[c.id]);
+  let est = 0, adds = [], already = [];
+  cats.forEach(c => { const ch = planChoice(p, c.id); if (ch.v) { est += vCost(ch.v); if (vThread(ch.v)) already.push(ch.v); else adds.push(ch.v); } else if (ch.mode === 'locked') { const b = bookedIn(c.id); const dv = DIR.find(v => v.name === b.vendor); est += dv ? vCost(dv) : 0; } });
+  const rows = cats.map(c => {
+    const ch = planChoice(p, c.id), orig = D(p.team[c.id]);
+    if (ch.mode === 'locked') { const b = bookedIn(c.id); return `<div class="pd-row"><span class="cic" style="background:${b.av ? `linear-gradient(140deg,${b.av[0]},${b.av[1]})` : vImg(orig)}">${ic('check')}</span><div class="nm"><small>${catName(c.id)}</small><b>${esc(b.vendor)}</b><span class="lock">You already booked this. We'll keep yours.</span></div><span class="pill booked">Yours</span></div>`; }
+    const v = ch.v || orig, inF = ch.v && vThread(ch.v);
+    const swapList = S.swap === c.id ? `<div class="pd-swap">${DIR.filter(x => x.cat === c.id).map(x => `<button type="button" data-plpick="${c.id}:${x.id === p.team[c.id] ? 'keep' : x.id}" class="${(ch.v && ch.v.id === x.id) ? 'on' : ''}"><span class="cic" style="background:${vImg(x)}"></span><span class="tx"><b>${esc(x.name)}${x.id === p.team[c.id] ? ' · in this plan' : ''}</b><span>${x.rating.toFixed(1)} stars · ${esc(x.area)} · from ${vPrice(x)}${vOpen(x) ? ' · open June 12' : ' · booked June 12'}</span></span></button>`).join('')}</div>` : '';
+    return `<div class="pd-row${ch.mode === 'skip' ? ' skip' : ''}"><span class="cic" style="background:${vImg(v)}">${ic(c.id)}</span>
+      <div class="nm"><small>${catName(c.id)}${ch.mode === 'swap' ? ' · swapped' : ''}</small><b>${esc(v.name)}</b><span>${ch.mode === 'skip' ? 'Skipped. Nothing gets added for this one.' : inF ? 'Already in your folder' : `${v.rating.toFixed(1)} stars · from ${vPrice(v)} · ${vOpen(v) ? 'open June 12' : '<b style="color:var(--warn)">booked on your date, try a swap</b>'}`}</span></div>
+      <div class="pd-seg" role="group" aria-label="${catName(c.id)}"><button type="button" data-plpick="${c.id}:keep" class="${ch.mode === 'keep' ? 'on' : ''}">Keep</button><button type="button" data-plswap="${c.id}" class="${ch.mode === 'swap' || S.swap === c.id ? 'on' : ''}">Swap</button><button type="button" data-plpick="${c.id}:skip" class="${ch.mode === 'skip' ? 'on sk' : ''}">Skip</button></div>${swapList}</div>`;
+  }).join('');
+  $('plmain').innerHTML = `<div class="x-wrap">
+    <section class="pd-hero" style="background:${p.img}">${planArt(p)}<button type="button" class="btn ghost sm back2" data-plback>${ic('back')}All plans</button>
+      <span class="pl-sw" style="margin-bottom:12px">${p.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span><h1>${esc(p.title)}</h1><div class="who">${esc(p.who)} · ${esc(p.when)} · ${p.guests} guests · Used by ${p.used} couples</div></section>
+    ${S.done ? `<div class="pd-done"><span class="ic2">${ic('check')}</span><div><b>Added ${S.done.n} vendor${S.done.n === 1 ? '' : 's'} to your wedding folder</b><span>${S.done.intro ? 'Each one got a short intro message from you. Replies land in your inbox.' : 'They are saved in your inbox, ready when you want to reach out.'} Nothing you already had was changed.</span></div><div class="r"><button type="button" class="btn line" data-nav="home">See Home</button><button type="button" class="btn" data-nav="inbox">Open inbox</button></div></div>` : ''}
+    <div class="pd-grid">
+      <div style="display:grid;gap:18px">
+        <div class="v-card"><div class="v-card-h"><h3>Their story</h3></div><p class="pd-story">${esc(p.story)}</p></div>
+        <div class="v-card"><div class="v-card-h"><h3>The team</h3><div class="r"><span style="font-size:12.5px;color:var(--muted);font-weight:700">Keep, swap or skip each one</span></div></div>${rows}</div>
+        <div class="v-card"><div class="v-card-h"><h3>How it came together</h3></div><div class="pd-tl">${p.tl.map(([w, t]) => `<div><small>${w}</small>${esc(t)}</div>`).join('')}</div></div>
+      </div>
+      <aside class="pd-sum">
+        <span style="font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blush)">Your version</span>
+        <h3>${adds.length ? `${adds.length} vendor${adds.length === 1 ? '' : 's'} to add` : 'Nothing new to add'}</h3>
+        ${adds.map(v => `<div class="ln"><span>${catName(v.cat)} · ${esc(v.name)}</span><b>${v.per ? `${money(v.start * GUESTS)}` : money(v.start)}</b></div>`).join('')}
+        ${already.length ? `<div class="ln"><span>Already in your folder</span><b>${already.length}</b></div>` : ''}
+        <div class="ln big"><span>Estimated total<br><small style="font-size:11.5px;opacity:.75">Starting prices, ${GUESTS} guests</small></span><b>${money(est)}</b></div>
+        <div class="ln"><span>${esc(p.who.split(' and ')[0])}'s total was</span><b>${money(p.budget)}</b></div>
+        <label class="ck"><input type="checkbox" data-plintro ${S.intro ? 'checked' : ''}><span>Send each new vendor a short intro with your date, venue and guest count</span></label>
+        <button type="button" class="btn" data-plimport ${adds.length ? '' : 'disabled'}>${ic('plus')}Add to my wedding</button>
+        <p class="fine">Adds chats to your folder. It never replaces a vendor you already have, and anything you booked stays booked.</p>
+      </aside>
+    </div></div>`;
+}
+function importPlan() {
+  const p = PL(S.plan), cats = CATS.filter(c => p.team[c.id]);
+  let n = 0, firstId = null;
+  cats.forEach(c => { const ch = planChoice(p, c.id); if (!ch.v || vThread(ch.v)) return;
+    const txt = S.intro ? `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about ${GUESTS} guests. We loved what you did for ${p.who} and would love to talk about ${CATS.find(x => x.id === c.id).about}. Are you available?` : '';
+    const id = addFromDir(ch.v, txt, true); firstId = firstId || id; n++;
+    if (!S.intro) T(id).status = 'waiting';
+  });
+  logAct('plans', `You added ${n} vendor${n === 1 ? '' : 's'} from "${p.title}"`);
+  if (S.sel == null && firstId) S.sel = firstId;
+  S.done = { n, intro: S.intro };
+  renderPlan(); $('plmain').scrollTop = 0; $('plmain').closest('.hmain')?.scrollTo?.(0, 0);
+  toast(`Added ${n} vendor${n === 1 ? '' : 's'} to your folder.`, { label: 'Open inbox', fn: () => { go('inbox'); } });
+}
+document.addEventListener('click', e => {
+  const el = e.target.closest('button'); if (!el || !el.closest('#s-plans')) return;
+  const d = el.dataset;
+  if (d.plf) { S.planF = d.plf; renderPlans(); return; }
+  if (d.plopen) { S.plan = d.plopen; S.pick = {}; S.swap = null; S.done = null; renderPlans(); $('plmain').scrollTop = 0; return; }
+  if (el.hasAttribute('data-plback')) { S.plan = null; S.done = null; renderPlans(); return; }
+  if (d.plswap) { S.swap = S.swap === d.plswap ? null : d.plswap; renderPlan(); return; }
+  if (d.plpick) { const [c, v] = d.plpick.split(':'); S.pick[c] = v; S.swap = null; S.done = null; renderPlan(); return; }
+  if (el.hasAttribute('data-plimport')) { importPlan(); return; }
+});
+document.addEventListener('change', e => { if (e.target.hasAttribute?.('data-plintro')) { S.intro = e.target.checked; } });
+
 /* ---------- Demo mode ---------- */
 const MODE = document.body.dataset.mode || 'all';
 const TABS = {
-  couple: [['home', "Couple's home"], ['inbox', "Couple's inbox"]],
-  vendor: [['email', "Vendor's email"], ['reply', 'Reply without an account'], ['vinbox', "Vendor's inbox"], ['profile', 'Profile']],
+  couple: [['home', "Couple's home"], ['inbox', "Couple's inbox"], ['explore', 'Explore'], ['plans', 'Plans']],
+  plans: [['plans', 'Plans'], ['home', 'Home'], ['inbox', 'Inbox'], ['explore', 'Explore']],
+  vendor: [['email', "Vendor's email"], ['reply', 'Reply without an account'], ['vinbox', "Vendor's inbox"], ['vcal', 'Calendar'], ['vquotes', 'Quotes'], ['profile', 'Profile']],
 };
 TABS.all = [...TABS.couple, ...TABS.vendor];
 $('seg').innerHTML = TABS[MODE].map(([k, l], i) => `<button type="button" data-go="${k}"><span class="n">${i + 1}</span>${l}</button>`).join('');
-$('demoTag').textContent = MODE === 'couple' ? 'Brixia · Couple demo' : MODE === 'vendor' ? 'Brixia · Vendor demo' : 'Brixia prototype';
-if (MODE === 'vendor') $('catchup').style.display = 'none';
-const START = MODE === 'vendor' ? 'email' : 'home';
+$('demoTag').textContent = MODE === 'couple' ? 'Brixia · Couple demo' : MODE === 'vendor' ? 'Brixia · Vendor demo' : MODE === 'plans' ? 'Brixia · Plans demo' : 'Brixia prototype';
+if (MODE === 'vendor' || MODE === 'plans') $('catchup').style.display = 'none';
+const START = MODE === 'vendor' ? 'email' : MODE === 'plans' ? 'plans' : 'home';
 go(START);
 </script>
 </body>
