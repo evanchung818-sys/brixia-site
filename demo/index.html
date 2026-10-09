@@ -11,6 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F3CFCC'/%3E%3Cg fill='none' stroke='%23111829' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
 <style>
 :root {
+  --outline: #D5DCE9;
   --night: #111829; --night-2: #18213D; --navy: #1F2A4A; --slate: #2F3F66;
   --blush: #F3CFCC; --blush-2: #FBEDEC; --rose: #C99A9C; --rose-ink: #A85F62;
   --paper: #F6F2F1; --card: #FFFFFF; --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E9E4E4; --hover: #F7F4F3; --sel: #EEF1F7;
@@ -83,7 +84,7 @@ body[data-screen="inbox"] #s-inbox, body[data-screen="email"] #s-email, body[dat
 .chips button { border: 0; padding: 6px 12px; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--line); font-size: 12.5px; font-weight: 700; color: var(--muted); }
 .chips button.on { background: var(--navy); color: #fff; box-shadow: none; }
 .scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 10px 24px; }
-.needs { margin: 4px 0 12px; border-radius: 14px; background: var(--blush-2); padding: 10px; }
+.needs-strip { margin: 4px 0 12px; border-radius: 14px; background: var(--blush-2); padding: 10px; }
 .needs-h { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--rose-ink); padding: 2px 4px 8px; }
 .nrow { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: #fff; border-radius: 10px; padding: 8px 10px; text-align: left; }
 .nrow + .nrow { margin-top: 6px; }
@@ -260,6 +261,173 @@ body[data-groups="white"] .cat-b .trow { background: #fff; box-shadow: 0 0 0 1px
 body[data-groups="white"] .cat-b .trow:last-child { margin-bottom: 0; }
 body[data-groups="white"] .cat-b .trow.on { background: var(--sel); }
 
+
+/* ---------- Wedding home ---------- */
+body[data-screen="home"] #s-home { display: flex; }
+.hmain { flex: 1; min-width: 0; min-height: 0; overflow-y: auto; }
+#s-home .wrap { max-width: 1180px; margin: 0 auto; padding: 22px 26px 40px; }
+#s-home .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+#s-home .card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; }
+#s-home .card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px 6px; }
+#s-home .card-h h3 { font-size: 15px; font-weight: 800; }
+#s-home .link { font-size: 12.5px; font-weight: 700; color: var(--slate); background: none; border: 0; padding: 0; }
+#s-home .stack { display: inline-flex; }
+#s-home .stack .av { width: 26px; height: 26px; border-radius: 8px; font-size: 10px; box-shadow: 0 0 0 2px #fff; }
+#s-home .stack .av + .av { margin-left: -6px; }
+.h-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.h-top h1 { font-size: 15px; font-weight: 700; color: var(--muted); }
+.h-top h1 b { color: var(--ink); }
+.h-top .r { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.h-top .stack .av { box-shadow: 0 0 0 2px var(--paper) !important; }
+.btn.ghost { background: rgba(255,255,255,.14); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
+.h-hero { position: relative; border-radius: 24px; min-height: 340px; color: #fff; display: flex; flex-direction: column; background-size: cover; background-position: center; }
+.h-hero .shade { position: absolute; inset: 0; border-radius: 24px; background: linear-gradient(180deg, rgba(17,24,41,.10) 0%, rgba(17,24,41,.18) 50%, rgba(17,24,41,.55) 100%); pointer-events: none; }
+.h-hero > *:not(.shade):not(.h-menu) { position: relative; }
+.h-tools { display: flex; justify-content: flex-end; padding: 14px 14px 0; }
+.h-center { flex: 1; display: grid; place-items: center; text-align: center; padding: 10px 20px 18px; }
+.h-hero .eyebrow { color: var(--blush); }
+.h-names { font-family: var(--serif); font-size: 72px; line-height: 1; margin: 8px 0 14px; text-shadow: 0 2px 18px rgba(17,24,41,.25); }
+.h-names em { color: var(--blush); }
+.h-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.h-chips span { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); font-size: 13px; font-weight: 700; }
+.h-chips span.hl { background: #fff; color: var(--night); box-shadow: none; }
+.h-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0 16px 16px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.h-stat { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(17,24,41,.32); border: 0; color: #fff; text-align: left; }
+.h-stat:hover { background: rgba(17,24,41,.45); }
+.h-stat b { display: block; font-size: 15px; }
+.h-stat span { font-size: 12.5px; color: rgba(255,255,255,.8); }
+.h-stat .ic { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.14); display: grid; place-items: center; flex: none; }
+.h-stat svg.ring { width: 40px; height: 40px; transform: rotate(-90deg); flex: none; }
+.h-menu { position: absolute; top: 56px; right: 14px; z-index: 5; width: 260px; background: #fff; color: var(--ink); border-radius: 16px; box-shadow: 0 12px 40px rgba(17,24,41,.25); padding: 14px; display: none; }
+.h-menu.open { display: block; }
+.h-menu h4 { margin: 0 0 10px; font-size: 13px; font-weight: 800; }
+.h-sw { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.h-sw button { height: 44px; border-radius: 10px; border: 2px solid transparent; padding: 0; }
+.h-sw button.on { border-color: var(--navy); }
+.h-up { margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border-radius: 12px; border: 1.5px dashed var(--outline); background: var(--hover); font-size: 13px; font-weight: 700; color: var(--slate); cursor: pointer; }
+.h-up input { display: none; }
+.h-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; margin-top: 20px; align-items: start; }
+.h-col { display: grid; gap: 20px; }
+.h-needs { background: var(--blush-2); border: 1.5px solid #F0D6D4; border-radius: 18px; padding: 14px; }
+.h-needs .eyebrow { color: var(--rose-ink); display: flex; gap: 8px; align-items: center; margin: 0 2px 10px; }
+.h-needs .clear { font-size: 14px; color: var(--muted); padding: 4px 4px 2px; }
+.h-need { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 12px; background: #fff; border: 0; width: 100%; text-align: left; }
+.h-need + .h-need { margin-top: 6px; }
+.h-need:hover { box-shadow: 0 0 0 1px var(--rose); }
+.h-need .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.h-need b { display: block; font-size: 13.5px; }
+.h-need span { font-size: 12.5px; color: var(--muted); }
+.h-need .act { font-size: 12.5px; font-weight: 800; color: var(--rose-ink); }
+.h-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 8px 16px 16px; }
+.h-tile { text-align: left; border: 1.5px solid var(--outline); background: #fff; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 140px; transition: border-color .15s, transform .15s; }
+.h-tile:hover { border-color: #AEBBD6; transform: translateY(-1px); }
+.h-tile .h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.h-tile .tic { width: 38px; height: 38px; border-radius: 11px; background: #EEF1F7; color: var(--slate); display: grid; place-items: center; }
+.h-tile.booked .tic { background: var(--ok-bg); color: var(--ok); }
+.h-tile b { font-size: 15px; display: block; }
+.h-tile p { font-size: 12.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.h-tile .f { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--faint); font-weight: 700; }
+.h-shortrow { display: flex; flex-wrap: wrap; gap: 10px; padding: 6px 16px 16px; }
+.h-chip { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1.5px solid var(--outline); border-radius: 14px; background: #fff; text-align: left; }
+.h-chip:hover { border-color: #AEBBD6; }
+.h-chip b { font-size: 13.5px; display: block; } .h-chip span.n { font-size: 12px; color: var(--faint); font-weight: 700; }
+.h-empty { font-size: 13.5px; color: var(--muted); padding: 4px 16px 16px; }
+.h-todo { display: flex; align-items: flex-start; gap: 10px; padding: 9px 16px; }
+.h-todo input { width: 18px; height: 18px; accent-color: var(--navy); margin: 1px 0 0; flex: none; }
+.h-todo label { flex: 1; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.h-todo label small { display: block; font-size: 12px; font-weight: 600; color: var(--faint); }
+.h-todo.done label { color: var(--faint); text-decoration: line-through; }
+.h-todo .auto { font-size: 10.5px; font-weight: 800; color: var(--slate); background: #EEF1F7; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+.h-act { display: flex; gap: 10px; padding: 9px 16px; align-items: flex-start; }
+.h-act .ic { width: 28px; height: 28px; border-radius: 8px; background: #F1F3F8; color: var(--slate); display: grid; place-items: center; flex: none; }
+.h-act .ic .i { width: 15px; height: 15px; }
+.h-act p { font-size: 13.5px; flex: 1; line-height: 1.4; }
+.h-act time { display: block; font-size: 12px; color: var(--faint); }
+.h-act.fresh { background: #FBF6F5; }
+@media (max-width: 1180px) { .h-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  #s-home .wrap { padding: 16px 14px 28px; }
+  .h-names { font-size: 44px; } .h-hero { min-height: 300px; }
+  .h-stats { grid-template-columns: minmax(0, 1fr); margin: 0 10px 10px; }
+  .h-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 8px 12px 12px; }
+  .h-tile { min-height: 128px; padding: 12px; }
+  .h-top .r .btn span { display: none; }
+}
+
+
+/* Selected chat */
+.trow.on, body[data-groups="white"] .cat-b .trow.on { background: #E9EEF8; box-shadow: inset 3px 0 0 var(--navy), 0 0 0 1.5px #AEBBD6; }
+.trow.on .top b { color: var(--navy); }
+.nrow.on { box-shadow: 0 0 0 1.5px var(--navy); }
+.trow.flash { animation: flashSel 1.2s ease-out; }
+@keyframes flashSel { 0% { background: #DCE4F5; } 100% { background: #E9EEF8; } }
+/* To-do add */
+.h-add { display: flex; gap: 8px; padding: 6px 16px 8px; flex-wrap: wrap; }
+.h-add input { flex: 1; min-width: 0; border: 1.5px solid var(--outline); border-radius: 10px; padding: 8px 10px; font: inherit; font-size: 13.5px; outline: 0; background: #fff; }
+.h-add input:focus { border-color: var(--slate); }
+.h-add input.due { flex: 0 0 110px; }
+.h-add .btn { padding: 8px 14px; }
+.h-add .err { flex-basis: 100%; font-size: 12.5px; font-weight: 700; color: #B0464C; }
+.h-todo .open, .h-todo .del { border: 0; background: none; padding: 2px 4px; font-size: 12px; font-weight: 800; color: var(--slate); border-radius: 6px; }
+.h-todo .del { color: var(--faint); font-size: 16px; line-height: 1; }
+.h-todo .del:hover { color: #B0464C; }
+.h-todo .open:hover { background: #EEF1F7; }
+.h-todo .tags { display: flex; gap: 4px; align-items: center; }
+.h-left { font-size: 12px; font-weight: 700; color: var(--faint); margin-left: 6px; }
+
+
+/* Add a vendor */
+.add-v { display: flex; align-items: center; gap: 8px; width: 100%; border: 1.5px dashed var(--outline); background: transparent; border-radius: 10px; padding: 8px 10px; margin-top: 6px; font-size: 12.5px; font-weight: 700; color: var(--slate); text-align: left; }
+.add-v:hover { background: #F4F6FB; border-color: #AEBBD6; }
+.add-v .i { width: 15px; height: 15px; }
+.av-panel { flex: 1; min-height: 0; overflow-y: auto; padding: 28px 24px 40px; }
+.av-in { max-width: 760px; margin: 0 auto; }
+.av-in h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.15; }
+.av-in > p { color: var(--muted); margin: 4px 0 20px; font-size: 14.5px; }
+.av-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.av-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.av-card h3 { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.av-card .sub { font-size: 13px; color: var(--muted); margin-top: -6px; }
+.av-card .fld textarea { border: 0; outline: 0; padding: 0; resize: vertical; min-height: 84px; font: inherit; font-size: 14px; line-height: 1.45; background: transparent; width: 100%; }
+.av-card .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.av-card .note2 { font-size: 12.5px; color: var(--faint); display: flex; gap: 6px; align-items: flex-start; }
+.av-card .note2 .i { width: 15px; height: 15px; color: var(--rose-ink); margin-top: 1px; }
+.av-card .err { font-size: 13px; font-weight: 700; color: #B0464C; }
+.av-card .btn { justify-self: start; padding: 11px 18px; }
+.av-card.soon { background: #FAF8F7; }
+.av-card.soon .tag2 { justify-self: start; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); background: #EEF1F7; padding: 3px 9px; border-radius: 999px; }
+.av-card.soon ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--muted); display: grid; gap: 4px; }
+@media (max-width: 1000px) { .av-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .av-panel { padding: 18px 14px 28px; } .av-card .row2 { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* Add vendor modal */
+.modal-bg { position: fixed; inset: 0; z-index: 40; background: rgba(17,24,41,.55); display: grid; place-items: center; padding: 16px; animation: fadeIn .15s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal { position: relative; width: min(860px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; background: var(--paper); border-radius: 22px; padding: 24px; box-shadow: 0 24px 60px rgba(17,24,41,.35); animation: rise .18s ease-out; }
+@keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.m-x { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font-size: 22px; line-height: 1; color: var(--muted); }
+.m-x:hover { color: var(--ink); }
+.m-h { display: flex; gap: 14px; align-items: flex-start; margin: 0 40px 18px 0; }
+.m-ic { width: 46px; height: 46px; border-radius: 13px; background: #fff; border: 1.5px solid var(--outline); color: var(--slate); display: grid; place-items: center; flex: none; }
+.m-h h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.m-h p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.fld select { border: 0; outline: 0; padding: 0; font: inherit; font-size: 15px; font-weight: 600; background: transparent; width: 100%; color: var(--ink); }
+.h-acts { display: flex; gap: 16px; align-items: center; }
+.h-acts .link { display: inline-flex; align-items: center; gap: 4px; }
+.h-acts .link .i { width: 14px; height: 14px; }
+@media (max-width: 760px) { .modal { padding: 18px 14px; } .m-h h2 { font-size: 23px; } .m-ic { display: none; } }
+
+
+.h-stat.calm .ic { background: rgba(225,240,232,.22); color: #BFE3CF; }
+.h-stat.calm b { color: rgba(255,255,255,.92); }
+
+
+.h-calm { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; background: #EEF6F1; border: 1.5px solid #CFE5D8; }
+.h-calm .ic { width: 36px; height: 36px; border-radius: 11px; background: #fff; color: var(--ok); display: grid; place-items: center; flex: none; }
+.h-calm b { display: block; font-size: 14.5px; color: var(--ok); }
+.h-calm span span { font-size: 13px; color: var(--muted); }
+
 /* ---------- Claim + vendor inbox ---------- */
 #s-claim { overflow-y: auto; background: var(--paper); justify-content: center; padding: 32px 16px 48px; }
 .claim-card { width: min(560px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; align-self: flex-start; }
@@ -327,18 +495,31 @@ body[data-groups="white"] .cat-b .trow.on { background: var(--sel); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
-<body data-screen="inbox" data-groups="white">
+<body data-screen="home" data-groups="white">
 
 <div class="demo" role="navigation" aria-label="Prototype screens">
   <span class="tag">Brixia prototype</span>
   <div class="seg" id="seg">
-    <button type="button" data-go="inbox" class="on"><span class="n">1</span>Couple's inbox</button>
-    <button type="button" data-go="email"><span class="n">2</span>Vendor's email</button>
-    <button type="button" data-go="reply"><span class="n">3</span>Vendor reply page</button>
-    <button type="button" data-go="vinbox"><span class="n">4</span>Vendor's inbox</button>
+    <button type="button" data-go="home" class="on"><span class="n">1</span>Couple's home</button>
+    <button type="button" data-go="inbox"><span class="n">2</span>Couple's inbox</button>
+    <button type="button" data-go="email"><span class="n">3</span>Vendor's email</button>
+    <button type="button" data-go="reply"><span class="n">4</span>Vendor reply page</button>
+    <button type="button" data-go="vinbox"><span class="n">5</span>Vendor's inbox</button>
   </div>
-  <button type="button" class="reset" id="reset">Reset demo</button>
+  <button type="button" class="reset" id="catchup" title="Resolve every reply and quote to preview the empty state">Clear alerts</button>
+  <button type="button" class="reset" id="reset" style="margin-left:0">Reset demo</button>
 </div>
+
+<!-- Couple home -->
+<section class="screen app-screen" id="s-home" aria-label="Wedding home">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <nav class="nav" id="hSideNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="hmain"></div>
+  <nav class="bottom-nav" id="hBottomNav"></nav>
+</section>
 
 <!-- Couple inbox -->
 <section class="screen app-screen" id="s-inbox" aria-label="Couple inbox">
@@ -430,6 +611,11 @@ const ICON = {
   back: '<path d="M15 5l-7 7 7 7"/>',
   doc: '<path d="M7 3.5h7l4 4v13H6v-17z"/><path d="M9.5 12h5M9.5 15.5h5"/>',
   bell: '<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  share: '<path d="M8 12h8M12 8l4 4-4 4"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/>',
+  image: '<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M20 16l-5-5-8 8"/>',
+  officiant: '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/>',
+  cake: '<path d="M4 20h16M5 20v-6h14v6M7 14v-3h10v3M12 11V8"/><path d="M12 5.5c.9 0 1.3-.9 0-2.2-1.3 1.3-.9 2.2 0 2.2z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
   archive: '<rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5v11h14v-11M10 12.5h4"/>'
 };
 const ic = (n, extra = '') => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" ${extra}>${ICON[n]}</svg>`;
@@ -440,7 +626,9 @@ const CATS = [
   { id: 'florist', name: 'Florist', about: 'flowers' },
   { id: 'catering', name: 'Catering', about: 'catering' },
   { id: 'music', name: 'DJ and music', about: 'music' },
-  { id: 'beauty', name: 'Hair and makeup', about: 'hair and makeup' }
+  { id: 'beauty', name: 'Hair and makeup', about: 'hair and makeup' },
+  { id: 'officiant', name: 'Officiant', about: 'an officiant' },
+  { id: 'cake', name: 'Cake and desserts', about: 'cake and desserts' }
 ];
 
 const SEED = () => [
@@ -471,7 +659,20 @@ const SEED = () => [
 
 let S;
 function reset() {
-  S = { threads: SEED().map(t => t.id === 't5' ? { ...t, unread: 0 } : t), sel: 't5', filter: 'all', q: '', open: new Set(['photo', 'florist']), showArch: new Set(), starred: new Set(['t3']), mailThread: 't5', replySent: false, fresh: null };
+  S = { threads: SEED().map(t => t.id === 't5' ? { ...t, unread: 0 } : t), sel: 't5', filter: 'all', q: '', open: new Set(['photo', 'florist']), showArch: new Set(), starred: new Set(['t3', 't4', 't5', 't6', 't7']), mailThread: 't5', replySent: false, fresh: null,
+    cover: 0, coverImg: null, menu: false,
+    todos: [
+      { id: 's1', t: 'Book hair and makeup', due: 'Most couples book by Jan 2027', suggest: true },
+      { id: 's2', t: 'Send save the dates', due: 'By Dec 12' },
+      { id: 's3', t: 'Start the guest list', done: true }
+    ],
+    autoSeen: [], adding: false, addErr: '', modal: null,
+    activity: [
+      { i: 'inbox', t: 'Petal and Stem Studio replied', w: '9:12 AM' },
+      { i: 'star', t: 'Daniel shortlisted Hazel Ward Photography', w: 'Yesterday' },
+      { i: 'doc', t: 'Lens and Light Studio sent a quote', w: 'Yesterday' },
+      { i: 'venue', t: 'Harborline Loft: your coordinator reaches out 8 weeks before', w: 'Oct 2' }
+    ] };
 }
 reset();
 
@@ -503,11 +704,17 @@ function matches(t) {
   return true;
 }
 
-function renderNav() {
+function navHtml(active, side) {
   const unread = S.threads.reduce((a, t) => a + t.unread, 0);
   const items = [['home', 'Home'], ['inbox', 'Inbox'], ['explore', 'Explore'], ['plans', 'Plans']];
-  $('sideNav').innerHTML = items.map(([k, l]) => `<button type="button" class="${k === 'inbox' ? 'on' : ''}" data-nav="${k}" aria-label="${l}">${ic(k)}<span>${l}</span>${k === 'inbox' && unread ? `<b class="count">${unread}</b>` : ''}</button>`).join('');
-  $('bottomNav').innerHTML = items.map(([k, l]) => `<button type="button" class="${k === 'inbox' ? 'on' : ''}" data-nav="${k}">${ic(k)}${l}</button>`).join('');
+  return items.map(([k, l]) => side
+    ? `<button type="button" class="${k === active ? 'on' : ''}" data-nav="${k}" aria-label="${l}">${ic(k)}<span>${l}</span>${k === 'inbox' && unread ? `<b class="count">${unread}</b>` : ''}</button>`
+    : `<button type="button" class="${k === active ? 'on' : ''}" data-nav="${k}">${ic(k)}${l}</button>`).join('');
+}
+function renderNav() {
+  const unread = S.threads.reduce((a, t) => a + t.unread, 0);
+  $('sideNav').innerHTML = navHtml('inbox', true);
+  $('bottomNav').innerHTML = navHtml('inbox', false);
   const n = S.threads.filter(t => t.status !== 'archived').length;
   $('listSub').textContent = `${n} conversations in ${CATS.filter(c => S.threads.some(t => t.cat === c.id && t.status !== 'archived')).length} categories${unread ? `, ${unread} unread` : ''}`;
 }
@@ -516,14 +723,15 @@ function renderList() {
   let h = '';
   const needs = S.threads.filter(t => (t.status === 'needs' || (t.status === 'quote' && !t.msgs.some(m => m.accepted))) && matches(t));
   if (needs.length && S.filter === 'all') {
-    h += `<div class="needs"><div class="needs-h">${ic('bell')}Needs you · ${needs.length}</div>` +
-      needs.map(t => `<button type="button" class="nrow" data-open="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(catName(t.cat))}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review quote'}</span></button>`).join('') + '</div>';
+    h += `<div class="needs-strip"><div class="needs-h">${ic('bell')}Needs you · ${needs.length}</div>` +
+      needs.map(t => `<button type="button" class="nrow${t.id === S.sel ? ' on' : ''}" data-open="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(catName(t.cat))}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review quote'}</span></button>`).join('') + '</div>';
   }
   let shown = 0;
   CATS.forEach(c => {
     const all = S.threads.filter(t => t.cat === c.id);
     const active = all.filter(t => t.status !== 'archived' && matches(t));
     const arch = all.filter(t => t.status === 'archived' && matches(t));
+    if (!active.length && !arch.length) return;
     if (S.filter !== 'all' && !active.length) return;
     if (S.q && !active.length && !arch.length) return;
     shown++;
@@ -540,7 +748,7 @@ function renderList() {
         <svg class="i chev" viewBox="0 0 24 24" aria-hidden="true">${ICON.chev}</svg>
       </button>
       <div class="cat-b">` +
-      (active.length ? active.map(threadRow).join('') : `<div class="empty-cat"><span>No ${c.name.toLowerCase()} chats yet.</span><button type="button" class="btn sm line" data-toast="Vendor browse comes in Phase 4. For now you can invite a vendor you found anywhere.">Find one</button></div>`) +
+      (active.length ? active.map(threadRow).join('') : `<div class="empty-cat"><span>No ${c.name.toLowerCase()} vendors yet.</span></div>`) +
       (arch.length && S.filter === 'all' ? `<button type="button" class="arch" data-arch="${c.id}">${S.showArch.has(c.id) ? 'Hide' : 'Show'} archived (${arch.length})</button>` + (S.showArch.has(c.id) ? arch.map(threadRow).join('') : '') : '') +
       `</div></div>`;
   });
@@ -618,6 +826,8 @@ function openThread(id) {
   if (t.status === 'archived') S.showArch.add(t.cat);
   $('s-inbox').classList.add('thread-open');
   renderInbox();
+  const row = document.querySelector(`#list .trow[data-open="${id}"]`);
+  if (row) { row.classList.add('flash'); row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
 }
 
 /* ---------- Vendor email ---------- */
@@ -705,6 +915,7 @@ function go(screen) {
   document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
   if (screen === 'vinbox' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
   if (screen === 'inbox') renderInbox();
+  if (screen === 'home') renderHome();
   if (screen === 'claim') renderClaim();
   if (screen === 'vinbox') renderVInbox();
   if (screen === 'email') renderEmail();
@@ -739,6 +950,7 @@ function sendVendor(text) {
   S.fresh = `${t.id}:${t.msgs.length - 1}`;
   if (t.status !== 'booked') t.status = 'needs';
   t.unread += 1; S.replySent = true;
+  logAct('inbox', `${t.vendor} replied`);
   renderReply();
 }
 
@@ -748,16 +960,17 @@ document.addEventListener('click', e => {
   if (d.go) { if (d.reveal) { const t = T(d.reveal); S.open.add(t.cat); S.sel = t.id; } go(d.go); if (d.reveal) { T(d.reveal).unread = 0; renderInbox(); } return; }
   if (d.toast) { e.preventDefault(); toast(d.toast); return; }
   if (vClick(el, d)) return;
-  if (d.nav) { if (d.nav !== 'inbox') toast(`${d.nav[0].toUpperCase() + d.nav.slice(1)} is the next screen we prototype.`); return; }
+  if (d.nav) { if (d.nav === 'home') go('home'); else if (d.nav === 'inbox') { $('s-inbox').classList.remove('thread-open'); go('inbox'); } else toast(`${d.nav[0].toUpperCase() + d.nav.slice(1)} is a later screen.`); return; }
+  if (hClick(el, d)) return;
   if (d.cat) { S.open.has(d.cat) ? S.open.delete(d.cat) : S.open.add(d.cat); renderList(); return; }
   if (d.arch) { S.showArch.has(d.arch) ? S.showArch.delete(d.arch) : S.showArch.add(d.arch); renderList(); return; }
   if (d.open) { S.fresh = null; openThread(d.open); return; }
   if (d.f) { S.filter = d.f; document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b === el)); renderList(); return; }
   if (el.hasAttribute('data-back')) { el.closest('.app-screen').classList.remove('thread-open'); return; }
   if (d.star) { S.starred.has(d.star) ? S.starred.delete(d.star) : S.starred.add(d.star); renderThread(); return; }
-  if (d.book) { const t = T(d.book); t.status = 'booked'; S.fresh = null; renderInbox(); toast(`${catName(t.cat)} booked with ${t.vendor}.`); return; }
+  if (d.book) { const t = T(d.book); t.status = 'booked'; logAct('check', `You booked ${t.vendor}`); S.fresh = null; renderInbox(); toast(`${catName(t.cat)} booked with ${t.vendor}.`); return; }
   if (d.reqquote) { $('msgIn').value = 'Could you send us a quote for June 12?'; $('msgIn').focus(); return; }
-  if (d.accept) { const [tid, mi] = d.accept.split(':'); const t = T(tid); t.msgs[+mi].accepted = true; t.status = 'booked'; S.fresh = null; renderInbox(); toast(`Quote accepted. ${catName(t.cat)} is booked.`); return; }
+  if (d.accept) { const [tid, mi] = d.accept.split(':'); const t = T(tid); t.msgs[+mi].accepted = true; t.status = 'booked'; logAct('check', `You accepted ${t.vendor}'s quote`); S.fresh = null; renderInbox(); toast(`Quote accepted. ${catName(t.cat)} is booked.`); return; }
   if (d.sugg !== undefined) { const i = $('msgIn'); i.value = d.sugg; i.focus(); return; }
   if (d.vsugg !== undefined) { const i = $('vIn'); i.value = d.vsugg; i.focus(); return; }
 });
@@ -773,7 +986,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey && (e.target.id === 'msgIn' || e.target.id === 'vIn' || e.target.id === 'vinIn')) { e.preventDefault(); e.target.form.requestSubmit(); }
 });
 $('q').addEventListener('input', e => { S.q = e.target.value; renderList(); });
-$('reset').addEventListener('click', () => { reset(); resetV(); $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go('inbox'); });
+$('reset').addEventListener('click', () => { reset(); resetV(); $('hmain').scrollTop = 0; $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go('home'); });
 
 /* ---------- Vendor side: claim + inbox ---------- */
 let VS;
@@ -860,7 +1073,7 @@ function renderVList() {
   let h = '';
   const waiting = VS.couples.filter(c => yourTurn(c) && vMatch(c));
   if (waiting.length && VS.filter === 'all') {
-    h += `<div class="needs"><div class="needs-h">${ic('bell')}Your turn · ${waiting.length}</div>` + waiting.map(c => `<button type="button" class="nrow" data-vopen="${c.id}">${cAv(c)}<span class="tx"><b>${esc(c.names)}</b><span>${esc(c.short)} · ${c.guests} guests</span></span><span class="act">Reply</span></button>`).join('') + '</div>';
+    h += `<div class="needs-strip"><div class="needs-h">${ic('bell')}Your turn · ${waiting.length}</div>` + waiting.map(c => `<button type="button" class="nrow" data-vopen="${c.id}">${cAv(c)}<span class="tx"><b>${esc(c.names)}</b><span>${esc(c.short)} · ${c.guests} guests</span></span><span class="act">Reply</span></button>`).join('') + '</div>';
   }
   let shown = 0;
   STAGES.forEach(st => {
@@ -922,7 +1135,7 @@ function sendVInbox(text) {
   S.fresh = `${t.id}:${t.msgs.length - 1}`;
   if (c.stage === 'new') c.stage = 'talk';
   VS.open.add(c.stage);
-  if (c.link) { const ct = T(c.link); if (ct.status !== 'booked') ct.status = 'needs'; ct.unread += 1; }
+  if (c.link) { const ct = T(c.link); if (ct.status !== 'booked') ct.status = 'needs'; ct.unread += 1; logAct('inbox', `${ct.vendor} replied`); }
   renderVInbox();
   if (c.link) toast('Sent. Maya and Daniel see it in their Brixia inbox.', { label: "See the couple's inbox", fn: () => { S.sel = c.link; S.open.add(T(c.link).cat); T(c.link).unread = 0; go('inbox'); } });
 }
@@ -931,7 +1144,7 @@ function vClick(el, d) {
   if (el.hasAttribute('data-claimback')) { VS.step = 1; renderClaim(); return true; }
   if (d.vnav) { if (d.vnav !== 'Inbox') toast(`${d.vnav} is a later vendor screen.`); return true; }
   if (d.vgrp) { VS.open.has(d.vgrp) ? VS.open.delete(d.vgrp) : VS.open.add(d.vgrp); renderVList(); return true; }
-  if (d.vopen) { const c = C(d.vopen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); S.fresh = null; $('s-vinbox').classList.add('thread-open'); renderVInbox(); return true; }
+  if (d.vopen) { const c = C(d.vopen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); S.fresh = null; $('s-vinbox').classList.add('thread-open'); renderVInbox(); const r = document.querySelector(`#vlist .trow[data-vopen="${c.id}"]`); if (r) { r.classList.add('flash'); r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } return true; }
   if (d.vf) { VS.filter = d.vf; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b === el)); renderVList(); return true; }
   if (d.vbook) { const c = C(d.vbook); c.stage = 'booked'; VS.open.add('booked'); if (c.link) T(c.link).status = 'booked'; renderVInbox(); toast(`${c.names} moved to Booked.`); return true; }
   if (d.visugg !== undefined) { const i = $('vinIn'); i.value = d.visugg; i.focus(); return true; }
@@ -939,7 +1152,245 @@ function vClick(el, d) {
 }
 $('vq').addEventListener('input', e => { VS.q = e.target.value; renderVList(); });
 
-go('inbox');
+/* ---------- Wedding home ---------- */
+const COVERS = [
+  'radial-gradient(ellipse at 20% 20%, rgba(243,207,204,.55), transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(201,154,156,.6), transparent 55%), linear-gradient(135deg, #1A2340 0%, #3C4E78 55%, #8E7C96 100%)',
+  'radial-gradient(ellipse at 75% 25%, rgba(255,214,196,.55), transparent 50%), linear-gradient(135deg, #3A2B3C 0%, #8C6070 55%, #E2B4A6 100%)',
+  'radial-gradient(ellipse at 30% 75%, rgba(150,180,230,.45), transparent 55%), linear-gradient(135deg, #0E1426 0%, #22325A 60%, #4F6699 100%)',
+  'radial-gradient(ellipse at 70% 30%, rgba(236,232,208,.6), transparent 55%), linear-gradient(135deg, #2D3B36 0%, #5E7A6C 55%, #B9C6AE 100%)'
+];
+const BOOKBY = { photo: 'Nov 2026', catering: 'Nov 2026', florist: 'Dec 2026', music: 'Dec 2026', beauty: 'Jan 2027', officiant: 'Feb 2027', cake: 'Mar 2027' };
+function logAct(i, t) { S.activity.unshift({ i, t, w: 'Just now', fresh: true }); }
+const daysLeft = () => { const t = new Date(); t.setHours(12, 0, 0, 0); return Math.max(0, Math.round((new Date('2027-06-12T12:00:00') - t) / 864e5)); };
+const quoteOf = t => t.msgs.find(m => m.type === 'quote' && !m.accepted);
+const needsList = () => S.threads.filter(t => t.status === 'needs' || (t.status === 'quote' && quoteOf(t)));
+
+function tileInfo(c) {
+  const st = catState(c.id);
+  const ts = S.threads.filter(t => t.cat === c.id && t.status !== 'archived');
+  let line = 'No vendors yet', foot = BOOKBY[c.id] ? `Most couples book by ${BOOKBY[c.id]}` : 'Browse vendors';
+  if (st.key === 'booked') { line = st.booked.vendor; foot = 'Booked'; }
+  else if (st.key === 'needs') { line = `${ts.find(t => t.status === 'needs').vendor} replied`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  else if (st.key === 'qin') { const t = ts.find(x => x.status === 'quote'); const q = quoteOf(t); line = q ? `${t.vendor} sent a ${money(total(q.quote))} quote` : `Quote from ${t.vendor}`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  else if (st.key === 'waiting') { line = `Waiting on ${ts[0].vendor}`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  return { st, ts, line, foot };
+}
+
+function renderHome() {
+  $('hSideNav').innerHTML = navHtml('home', true);
+  $('hBottomNav').innerHTML = navHtml('home', false);
+  const needs = needsList();
+  const bookedCats = CATS.filter(c => catState(c.id).key === 'booked');
+  const quotes = S.threads.filter(t => t.status === 'quote' && quoteOf(t));
+  const replies = S.threads.filter(t => t.status === 'needs');
+  const qSum = quotes.reduce((a, t) => a + total(quoteOf(t).quote), 0);
+  const r = 16, circ = 2 * Math.PI * r, pct = bookedCats.length / CATS.length;
+  const cover = S.coverImg ? `background-image:url('${S.coverImg}')` : `background:${COVERS[S.cover]}`;
+  const shortCats = CATS.map(c => ({ c, ts: S.threads.filter(t => t.cat === c.id && S.starred.has(t.id)) })).filter(x => x.ts.length);
+  const live = liveAuto();
+  live.forEach(a => { if (!S.autoSeen.some(x => x.key === a.key)) S.autoSeen.push(a); });
+  const liveKeys = new Set(live.map(a => a.key));
+  const autoRows = S.autoSeen.map(a => ({ ...a, isDone: !liveKeys.has(a.key) }));
+  const rows = [...autoRows.filter(r => !r.isDone), ...S.todos.filter(t => !t.done), ...autoRows.filter(r => r.isDone), ...S.todos.filter(t => t.done)];
+  const left = autoRows.filter(r => !r.isDone).length + S.todos.filter(t => !t.done).length;
+
+  $('hmain').innerHTML = `<div class="wrap">
+  <div class="h-top"><h1>Good morning, <b>Maya</b></h1><div class="r"><span class="stack" title="Maya and Daniel"><span class="av sm" style="background:linear-gradient(140deg,#43537A,#C3979C)">M</span><span class="av sm" style="background:linear-gradient(140deg,#6E86B8,#B6C4E2)">D</span></span><button type="button" class="btn line" data-toast="Sharing the folder with family or a planner comes later.">${ic('share')}<span>Share folder</span></button></div></div>
+
+  <section class="h-hero" style="${cover}">
+    <span class="shade"></span>
+    <div class="h-tools"><button type="button" class="btn ghost" data-cover>${ic('image')}${S.coverImg ? 'Change cover' : 'Add cover photo'}</button></div>
+    <div class="h-menu${S.menu ? ' open' : ''}" id="hMenu">
+      <h4>Cover</h4>
+      <div class="h-sw">${COVERS.map((g, i) => `<button type="button" aria-label="Cover ${i + 1}" data-cv="${i}" class="${!S.coverImg && i === S.cover ? 'on' : ''}" style="background:${g}"></button>`).join('')}</div>
+      <label class="h-up">${ic('image')}Upload a photo<input type="file" accept="image/*" id="coverFile"></label>
+    </div>
+    <div class="h-center"><div><span class="eyebrow">Wedding folder</span><div class="h-names">Maya <em>&amp;</em> Daniel</div>
+      <div class="h-chips"><span class="hl">${daysLeft()} days to go</span><span>June 12, 2027</span><span>Harborline Loft, Brooklyn</span><span>120 guests</span></div></div></div>
+    <div class="h-stats">
+      <button type="button" class="h-stat" data-hinbox="booked"><svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="5"/><circle cx="20" cy="20" r="${r}" fill="none" stroke="#F3CFCC" stroke-width="5" stroke-linecap="round" stroke-dasharray="${circ * pct} ${circ}"/></svg><span><b>${bookedCats.length} of ${CATS.length} booked</b><span>${bookedCats.length ? esc(bookedCats.map(c => c.name).join(', ')) + ' locked in' : 'Nothing booked yet'}</span></span></button>
+      ${needs.length
+        ? `<button type="button" class="h-stat" data-hinbox="waiting"><span class="ic">${ic('bell')}</span><span><b>${needs.length} waiting on you</b><span>${replies.length} repl${replies.length === 1 ? 'y' : 'ies'}${quotes.length ? `, ${quotes.length} quote${quotes.length === 1 ? '' : 's'}` : ''}</span></span></button>`
+        : `<button type="button" class="h-stat calm" data-hinbox="all"><span class="ic">${ic('check')}</span><span><b>All caught up</b><span>No vendors waiting on you</span></span></button>`}
+      ${quotes.length
+        ? `<button type="button" class="h-stat" data-hinbox="quotes"><span class="ic">${ic('doc')}</span><span><b>${quotes.length} quote${quotes.length === 1 ? '' : 's'} to review</b><span>${money(qSum)} total</span></span></button>`
+        : `<button type="button" class="h-stat calm" data-hinbox="quotes"><span class="ic">${ic('check')}</span><span><b>No quotes to review</b><span>New quotes will show up here</span></span></button>`}
+    </div>
+  </section>
+
+  <div class="h-grid">
+    <div class="h-col">
+      ${needs.length ? `<div class="h-needs" id="hNeeds"><div class="eyebrow">${ic('bell')}Needs you · ${needs.length}</div>
+        ${needs.map(t => { const q = quoteOf(t); return `<button type="button" class="h-need" data-hopen="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${t.status === 'needs' ? `Replied about ${esc(CATS.find(c => c.id === t.cat).about)}` : `${esc(catName(t.cat))} quote · ${money(total(q.quote))}`}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review'}</span></button>`; }).join('')}
+      </div>` : `<div class="h-calm" id="hNeeds"><span class="ic">${ic('check')}</span><span><b>All caught up</b><span>No vendors are waiting on you. New replies and quotes will show up here.</span></span></div>`}
+      <div class="card" id="hVendors"><div class="card-h"><h3>Your vendors</h3><span class="h-acts"><button type="button" class="link" data-addv="">${ic('plus')}Add a vendor</button><button type="button" class="link" data-nav="inbox">Open inbox</button></span></div>
+        <div class="h-tiles">${CATS.map(c => { const x = tileInfo(c); return `<button type="button" class="h-tile ${x.st.key}" data-hcat="${c.id}">
+          <span class="h"><span class="tic">${ic(x.st.key === 'booked' ? 'check' : c.id)}</span><span class="pill ${x.st.key}">${x.st.label}</span></span>
+          <span><b>${c.name}</b><p>${esc(x.line)}</p></span>
+          <span class="f"><span>${esc(x.foot)}</span>${x.ts.length ? `<span class="stack">${x.ts.map(t => avatar(t, true)).join('')}</span>` : ''}</span></button>`; }).join('')}</div></div>
+      <div class="card"><div class="card-h"><h3>Shortlists</h3><button type="button" class="link" data-toast="Side-by-side compare comes in Phase 4.">Compare</button></div>
+        ${shortCats.length ? `<div class="h-shortrow">${shortCats.map(x => `<button type="button" class="h-chip" data-hcat="${x.c.id}"><span class="stack">${x.ts.map(t => avatar(t, true)).join('')}</span><span><b>${x.c.name}</b><span class="n">${x.ts.length} saved</span></span></button>`).join('')}</div>` : '<p class="h-empty">Star vendors in a chat to shortlist them.</p>'}</div>
+    </div>
+    <div class="h-col">
+      <div class="card"><div class="card-h"><h3>This week<span class="h-left">${left} left</span></h3><button type="button" class="link" data-hadd>${S.adding ? 'Cancel' : 'Add'}</button></div>
+        ${S.adding ? `<form class="h-add" id="hAddForm"><input id="hAddT" placeholder="Add a to-do, like tasting with the caterer" aria-label="New to-do" maxlength="80"><input id="hAddD" class="due" placeholder="Due (optional)" aria-label="Due date" maxlength="24"><button type="submit" class="btn">Add</button>${S.addErr ? `<span class="err">${esc(S.addErr)}</span>` : ''}</form>` : ''}
+        <div style="padding-bottom:8px">${rows.map(t => todoRow(t)).join('')}</div></div>
+      <div class="card"><div class="card-h"><h3>What's new</h3></div><div style="padding-bottom:8px">${S.activity.slice(0, 5).map(a => `<div class="h-act${a.fresh ? ' fresh' : ''}"><span class="ic">${ic(a.i)}</span><p>${esc(a.t)}<time>${esc(a.w)}</time></p></div>`).join('')}</div></div>
+    </div>
+  </div></div>${S.modal ? modalHtml() : ''}`;
+}
+
+
+function liveAuto() {
+  const out = [];
+  S.threads.forEach(t => {
+    if (t.status === 'needs') out.push({ key: 'reply:' + t.id, t: `Reply to ${t.vendor}`, due: 'Today', open: t.id, auto: true });
+    const q = t.status === 'quote' && quoteOf(t);
+    if (q) out.push({ key: 'quote:' + t.id, t: `Review ${t.vendor}'s quote`, due: `${money(total(q.quote))} · valid until ${q.quote.valid}`, open: t.id, auto: true });
+  });
+  return out;
+}
+function todoRow(t) {
+  const id = t.key || t.id, done = t.auto ? t.isDone : t.done;
+  const box = t.auto
+    ? `<input type="checkbox" id="htd-${id}" ${done ? 'checked' : ''} disabled title="Checks itself off when it's handled">`
+    : `<input type="checkbox" id="htd-${id}" data-htodo="${t.id}" ${done ? 'checked' : ''}>`;
+  const tags = [];
+  if (t.auto && !done) tags.push(`<button type="button" class="open" data-hopen="${t.open}">Open</button>`);
+  if (t.auto || t.suggest) tags.push('<span class="auto">Auto</span>');
+  if (t.custom) tags.push(`<button type="button" class="del" data-hdel="${t.id}" aria-label="Delete to-do">&times;</button>`);
+  return `<div class="h-todo${done ? ' done' : ''}">${box}<label for="htd-${id}">${esc(t.t)}${t.due ? `<small>${esc(t.due)}</small>` : ''}</label><span class="tags">${tags.join('')}</span></div>`;
+}
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'hAddForm') return;
+  const v = $('hAddT').value.trim(), due = $('hAddD').value.trim();
+  if (!v) { S.addErr = 'Type a to-do first.'; renderHome(); $('hAddT').focus(); return; }
+  S.todos.unshift({ id: 'u' + Date.now(), t: v, due, custom: true });
+  S.addErr = ''; renderHome(); $('hAddT').focus();
+  toast('To-do added.');
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.adding && e.target.closest('#hAddForm')) { S.adding = false; S.addErr = ''; renderHome(); } });
+
+
+const aOrAn = w => /^[aeiou]/i.test(w) ? 'an' : 'a';
+const AV_COLORS = [['#E8D9C8', '#C9A98A'], ['#D6E2EA', '#94AFC2'], ['#E9D6E4', '#BE97B4'], ['#DDE6D3', '#9EB28E'], ['#F0DCCB', '#D3A27E']];
+function modalHtml() {
+  const c = CATS.find(x => x.id === S.modal.cat);
+  const msg = S.modal.msg ?? `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about 120 guests. We're looking for ${c.about}. Are you available?`;
+  return `<div class="modal-bg" id="avModal" role="dialog" aria-modal="true" aria-labelledby="avTitle">
+    <div class="modal">
+      <button type="button" class="m-x" data-mclose aria-label="Close">&times;</button>
+      <div class="m-h">
+        <span class="m-ic">${ic(c.id)}</span>
+        <div><h2 id="avTitle">Bring ${aOrAn(c.name)} ${esc(c.name.toLowerCase())} vendor into your folder</h2>
+        <p>Found someone on Instagram or through a friend? Invite them and their chat shows up in your inbox under ${esc(c.name)}.</p></div>
+      </div>
+      <div class="av-grid">
+        <form class="av-card" id="avForm" novalidate>
+          <h3>${ic('inbox')}Invite a vendor you found</h3>
+          <div class="fld"><label for="avCat">Category</label><select id="avCat">${CATS.map(x => `<option value="${x.id}" ${x.id === c.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
+          <div class="row2">
+            <div class="fld"><label for="avName">Business name</label><input id="avName" placeholder="Their business name" autocomplete="organization" value="${esc(S.modal.name || '')}"></div>
+            <div class="fld"><label for="avEmail">Their email</label><input id="avEmail" type="email" placeholder="name@theirbusiness.com" autocomplete="off" value="${esc(S.modal.email || '')}"></div>
+          </div>
+          <div class="fld"><label for="avMsg">Your first message</label><textarea id="avMsg">${esc(msg)}</textarea></div>
+          <div class="err" id="avErr" aria-live="polite"></div>
+          <button type="submit" class="btn">${ic('send')}Send invite</button>
+          <p class="note2">${ic('check')}<span>They get an email with a link to reply. No account needed.</span></p>
+        </form>
+        <div class="av-card soon">
+          <span class="tag2">Coming in Phase 4</span>
+          <h3>${ic('explore')}Browse ${esc(c.name.toLowerCase())} vendors</h3>
+          <ul><li>Only vendors open on June 12</li><li>Filter by budget, style and borough</li><li>Shortlist and compare side by side</li></ul>
+          <button type="button" class="btn line" data-toast="Vendor search opens in its own window in Phase 4, once the team has added vendors.">Browse vendors</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function openModal(cat) { S.modal = { cat }; S.menu = false; renderHome(); setTimeout(() => $('avName')?.focus(), 30); }
+function closeModal() { S.modal = null; renderHome(); }
+function submitAddVendor() {
+  const name = $('avName').value.trim(), email = $('avEmail'), text = $('avMsg').value.trim();
+  const bad = [];
+  if (!name) bad.push($('avName'));
+  if (!email.value.trim() || !email.checkValidity()) bad.push(email);
+  [$('avName'), email].forEach(x => x.closest('.fld').classList.toggle('err', bad.includes(x)));
+  if (bad.length) { $('avErr').textContent = bad.length === 2 ? 'Add their business name and email.' : bad[0] === email ? 'Add a valid email address.' : 'Add their business name.'; bad[0].focus(); return; }
+  if (!text) { $('avErr').textContent = 'Write a first message.'; $('avMsg').focus(); return; }
+  const cat = $('avCat').value, id = 'n' + Date.now();
+  S.threads.push({ id, cat, vendor: name, av: AV_COLORS[S.threads.length % AV_COLORS.length], status: 'waiting', unread: 0, onBrixia: false, email: email.value.trim(), msgs: [{ from: 'me', text, when: 'Just now' }] });
+  logAct('inbox', `You invited ${name}`);
+  S.modal = null; S.mailThread = id; S.replySent = false; S.open.add(cat);
+  renderHome();
+  toast(`Invite sent to ${name}. Their chat is in your inbox under ${catName(cat)}.`, { label: 'Open chat', fn: () => { go('inbox'); openThread(id); } });
+}
+document.addEventListener('submit', e => { if (e.target.id === 'avForm') submitAddVendor(); });
+document.addEventListener('change', e => {
+  if (e.target.id !== 'avCat') return;
+  const c0 = CATS.find(x => x.id === S.modal.cat), edited = $('avMsg').value.trim() !== `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about 120 guests. We're looking for ${c0.about}. Are you available?`;
+  S.modal = { cat: e.target.value, name: $('avName').value, email: $('avEmail').value, msg: edited ? $('avMsg').value : undefined };
+  renderHome(); $('avCat').focus();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.modal) closeModal(); });
+document.addEventListener('mousedown', e => { if (S.modal && e.target.id === 'avModal') closeModal(); });
+
+
+function openInbox(kind) {
+  const filter = kind === 'quotes' ? 'quotes' : kind === 'booked' ? 'booked' : 'all';
+  S.filter = filter; S.q = ''; $('q').value = ''; S.fresh = null;
+  document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === filter));
+  let pick = null;
+  if (kind === 'waiting') pick = S.threads.find(t => t.status === 'needs') || needsList()[0];
+  if (kind === 'quotes') pick = S.threads.find(t => t.status === 'quote' && quoteOf(t)) || S.threads.find(t => hasQuote(t) && t.status !== 'archived');
+  if (kind === 'booked') pick = S.threads.find(t => t.status === 'booked');
+  go('inbox');
+  if (pick) openThread(pick.id); else { $('s-inbox').classList.remove('thread-open'); $('list').scrollTop = 0; }
+}
+function catchUp() {
+  S.threads.forEach(t => {
+    if (t.status === 'needs') { t.msgs.push({ from: 'me', text: 'Thank you! That works for us.', when: 'Just now' }); t.status = 'waiting'; t.unread = 0; }
+    const q = t.status === 'quote' && quoteOf(t);
+    if (q) { q.accepted = true; t.status = 'booked'; logAct('check', `You accepted ${t.vendor}'s quote`); }
+  });
+  logAct('check', 'You caught up on every vendor');
+  go('home'); $('hmain').scrollTop = 0;
+  toast('Caught up. This is what Home looks like with nothing waiting on you.');
+}
+
+function openCat(cid) {
+  S.filter = 'all'; S.q = ''; $('q').value = '';
+  document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all'));
+  S.open.add(cid);
+  const ts = S.threads.filter(t => t.cat === cid && t.status !== 'archived');
+  const pick = ts.find(t => t.status === 'needs') || ts.find(t => t.unread) || ts[0];
+  if (pick) { go('inbox'); openThread(pick.id); }
+  else openModal(cid);
+}
+
+function hClick(el, d) {
+  if (el.hasAttribute('data-cover')) { S.menu = !S.menu; renderHome(); return true; }
+  if (el.hasAttribute('data-hadd')) { S.adding = !S.adding; S.addErr = ''; renderHome(); if (S.adding) $('hAddT').focus(); return true; }
+  if (d.addv !== undefined) { openModal(d.addv || (CATS.find(c => catState(c.id).key === 'todo') || CATS[1]).id); return true; }
+  if (el.hasAttribute('data-mclose')) { closeModal(); return true; }
+  if (d.hdel) { S.todos = S.todos.filter(t => t.id !== d.hdel); renderHome(); return true; }
+  if (d.cv !== undefined) { S.cover = +d.cv; S.coverImg = null; S.menu = false; renderHome(); return true; }
+  if (d.hopen) { S.fresh = null; go('inbox'); openThread(d.hopen); return true; }
+  if (d.hcat) { S.fresh = null; openCat(d.hcat); return true; }
+  if (d.hinbox) { openInbox(d.hinbox); return true; }
+  if (el.id === 'catchup') { catchUp(); return true; }
+  if (d.hscroll) { $(d.hscroll).scrollIntoView({ behavior: 'smooth', block: 'start' }); return true; }
+  return false;
+}
+document.addEventListener('click', e => {
+  if (S.menu && !e.target.closest('#hMenu') && !e.target.closest('[data-cover]')) { S.menu = false; renderHome(); }
+}, true);
+document.addEventListener('change', e => {
+  if (e.target.id === 'coverFile' && e.target.files[0]) { const fr = new FileReader(); fr.onload = () => { S.coverImg = fr.result; S.menu = false; renderHome(); }; fr.readAsDataURL(e.target.files[0]); }
+  if (e.target.dataset.htodo !== undefined) { const t = S.todos.find(x => x.id === e.target.dataset.htodo); if (t) t.done = e.target.checked; renderHome(); }
+});
+
+go('home');
 </script>
 </body>
 </html>
