@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brixia | Your wedding, all in one place</title>
+<meta name="description" content="Brixia gives every wedding its own folder. Find vendors open on your date, shortlist by category, and message every vendor from one organized inbox.">
+<meta property="og:title" content="Brixia | Your wedding, all in one place">
+<meta property="og:description" content="One folder for your whole wedding. Find vendors open on your date and message all of them from one inbox.">
+<meta property="og:url" content="https://brixiaco.com">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231F2A4A'/%3E%3Cg fill='none' stroke='white' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #FFFFFF; --soft: #F8F7F6;
+  --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E7E5E8;
+  --accent: #1F2A4A; --slate: #6B7C97; --mist: #E4E9F0; --blush: #F5DEDC; --rose: #A85F62;
+  --ok: #2C7656; --ok-bg: #E1F0E8; --warn: #8E6210; --warn-bg: #F6EBD3; --info: #3A5687; --info-bg: #E2E8F4;
+  --display: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
+  --body: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --shadow: 0 1px 2px rgba(28,36,64,.05), 0 18px 50px rgba(28,36,64,.11);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--slate); outline-offset: 3px; border-radius: 8px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* Buttons and labels */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border-radius: 999px; background: var(--accent); color: #fff; font: 600 15px var(--body); border: 0; cursor: pointer; text-decoration: none; white-space: nowrap; transition: transform .12s, opacity .12s; }
+.btn:hover { opacity: .92; }
+.btn:active { transform: scale(.98); }
+.btn.sm { padding: 9px 16px; font-size: 14px; }
+.btn[disabled] { opacity: .55; cursor: default; }
+.eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
+
+/* Nav */
+.nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.nav.scrolled { border-bottom-color: var(--line); }
+.nav-in { display: flex; align-items: center; gap: 28px; height: 68px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 25px; font-weight: 500; letter-spacing: -.01em; text-decoration: none; }
+.mark { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; }
+.mark svg { width: 19px; height: 19px; }
+.nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; }
+.nav-links a:not(.btn) { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 14.5px; }
+.nav-links a:not(.btn):hover { color: var(--ink); }
+
+/* Hero */
+.hero { position: relative; isolation: isolate; overflow: hidden; padding: 72px 0 104px; }
+.hero::before { content: ""; position: absolute; top: -260px; right: -220px; width: 760px; height: 760px; background: radial-gradient(circle, var(--blush) 0, transparent 62%); z-index: -1; }
+.hero::after { content: ""; position: absolute; left: -240px; bottom: -300px; width: 660px; height: 660px; background: radial-gradient(circle, var(--mist) 0, transparent 60%); z-index: -1; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 64px; align-items: center; }
+.hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(46px, 6.4vw, 82px); line-height: 1.02; letter-spacing: -.02em; margin: 18px 0 22px; }
+.hero h1 em { font-style: italic; color: var(--rose); }
+.lede { font-size: 18px; color: var(--muted); max-width: 520px; }
+
+/* Waitlist */
+.wl { margin-top: 32px; max-width: 520px; }
+.wl-row { display: flex; gap: 8px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: #fff; box-shadow: 0 1px 2px rgba(28,36,64,.04), 0 8px 24px rgba(28,36,64,.06); transition: border-color .15s; }
+.wl-row:focus-within { border-color: var(--slate); }
+.wl-row input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0 16px; font: 500 15.5px var(--body); color: var(--ink); background: transparent; }
+.wl-role { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; border: 0; padding: 0; }
+.wl-role legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.wl-role label { position: relative; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 13.5px; font-weight: 600; color: var(--muted); cursor: pointer; background: #fff; transition: background .15s, color .15s; }
+.wl-role input { position: absolute; opacity: 0; pointer-events: none; }
+.wl-role label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
+.wl-role label:has(input:focus-visible) { outline: 2px solid var(--slate); outline-offset: 2px; }
+.wl-note { margin-top: 14px; font-size: 13.5px; color: var(--faint); }
+.wl-note.err { color: var(--rose); font-weight: 600; }
+.wl-done { display: none; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 16px; background: var(--ok-bg); color: var(--ok); font-weight: 600; }
+.js-wl.done .wl-fields, .js-wl.done .wl-note { display: none; }
+.js-wl.done .wl-done { display: flex; }
+.hp { position: absolute; left: -9999px; }
+
+/* Hero mock */
+.hero-art { position: relative; padding: 24px 0 78px; }
+.mock { background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
+.mock-cover { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 26px 24px 22px; color: #fff; background: linear-gradient(118deg, #1C2644 0%, #43537A 52%, #C3979C 100%); overflow: hidden; }
+.mock-cover svg.rings { position: absolute; right: -50px; top: -40px; width: 260px; opacity: .18; }
+.mock-cover > div { position: relative; }
+.m-eyebrow { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; opacity: .75; }
+.m-names { font-family: var(--display); font-size: 32px; line-height: 1.1; margin: 4px 0 6px; }
+.m-names em { opacity: .85; }
+.m-meta { font-size: 12.5px; opacity: .88; }
+.m-count { text-align: right; }
+.m-count b { display: block; font-family: var(--display); font-weight: 400; font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums; }
+.m-count span { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.m-list { list-style: none; margin: 0; padding: 6px 14px 10px; }
+.m-list li { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
+.m-list li + li { border-top: 1px solid var(--line); }
+.m-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--mist); color: var(--slate); display: grid; place-items: center; flex: none; }
+.m-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35; }
+.m-tx b { font-size: 14px; }
+.m-tx small { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pill { padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
+.pill.booked { background: var(--ok-bg); color: var(--ok); }
+.pill.quoted { background: var(--info-bg); color: var(--info); }
+.pill.contacted { background: var(--warn-bg); color: var(--warn); }
+.pill.shortlisted { background: var(--blush); color: var(--rose); }
+.bubble { position: absolute; left: -40px; bottom: 0; width: min(310px, 82%); background: #fff; border: 1px solid var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--shadow); padding: 14px 16px; font-size: 13.5px; line-height: 1.5; }
+.b-from { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+.dotlive { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex: none; }
+.chip-float { position: absolute; right: -18px; top: 0; display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); font-size: 13px; font-weight: 700; }
+.chip-float .i { color: var(--rose); width: 16px; height: 16px; }
+
+/* Sections */
+section { padding: 100px 0; }
+.sec-h { max-width: 660px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 4.2vw, 50px); line-height: 1.08; letter-spacing: -.015em; margin: 12px 0 16px; }
+.sec-sub { font-size: 17px; color: var(--muted); }
+.problem { background: var(--soft); }
+.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 48px; }
+.pcard { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
+.pcard .ic { width: 44px; height: 44px; border-radius: 13px; background: var(--blush); color: var(--rose); display: grid; place-items: center; }
+.pcard h3 { font-size: 18px; font-weight: 700; margin: 18px 0 8px; }
+.pcard p { color: var(--muted); font-size: 15px; }
+.steps { list-style: none; padding: 0; margin: 52px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.steps li { border-top: 1px solid var(--ink); padding-top: 22px; }
+.steps .n { font-family: var(--display); font-size: 48px; line-height: 1; color: var(--rose); font-style: italic; }
+.steps h3 { font-size: 19px; font-weight: 700; margin: 16px 0 8px; }
+.steps p { color: var(--muted); font-size: 15px; }
+
+/* Plans teaser */
+.plans { padding-top: 0; }
+.plans-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+.plan-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); max-width: 440px; justify-self: end; width: 100%; }
+.plan-ph { height: 150px; background: radial-gradient(circle at 25% 30%, #F3D9CF 0, transparent 55%), radial-gradient(circle at 85% 85%, #E9C9D3 0, transparent 50%), linear-gradient(140deg, #D9C2B4, #B9A6B8); display: grid; place-items: center; color: rgba(28,36,64,.25); }
+.plan-ph svg { width: 70px; height: 70px; }
+.plan-b { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
+.plan-b h3 { font-family: var(--display); font-weight: 500; font-size: 21px; line-height: 1.2; }
+.plan-b .by { font-size: 13px; color: var(--muted); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { padding: 3px 9px; border-radius: 7px; background: var(--soft); border: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; }
+.plan-v { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; font-weight: 600; color: var(--slate); }
+
+/* Vendors */
+.vendors { padding-top: 0; }
+.v-box { position: relative; overflow: hidden; background: var(--accent); color: #fff; border-radius: 28px; padding: 60px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 56px; align-items: center; }
+.v-box svg.rings { position: absolute; left: -90px; bottom: -120px; width: 380px; opacity: .08; pointer-events: none; }
+.v-box > * { position: relative; }
+.v-box .eyebrow { color: #F0C7C5; }
+.v-box p { color: rgba(255,255,255,.78); font-size: 17px; }
+.checks { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+.checks li { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; font-size: 15px; }
+.checks .i { color: #F0C7C5; margin-top: 3px; }
+.vform { background: #fff; color: var(--ink); border-radius: 20px; padding: 28px; }
+.vform h3 { font-family: var(--display); font-weight: 500; font-size: 24px; margin-bottom: 4px; }
+.vform .sub { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+.vform .wl-fields { display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 700; color: var(--muted); }
+.field input { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; font: 500 15px var(--body); color: var(--ink); background: #fff; }
+.field input:focus { outline: 0; border-color: var(--slate); }
+.vform .btn { width: 100%; margin-top: 4px; }
+
+/* Toast */
+.toast-sec { text-align: center; padding-top: 0; }
+.toast-sec .glass { width: 64px; height: 64px; color: var(--rose); margin: 0 auto 18px; display: block; }
+.toast-line { font-family: var(--display); font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; max-width: 820px; margin: 0 auto 30px; }
+.toast-line em { color: var(--rose); }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); padding: 32px 0 40px; }
+.foot { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.foot .logo { font-size: 21px; color: var(--ink); }
+.foot .mark { width: 28px; height: 28px; }
+.foot .mark svg { width: 16px; height: 16px; }
+.foot-r { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+.foot a { text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+
+@media (max-width: 960px) {
+  .hero-grid, .v-box, .plans-grid { grid-template-columns: minmax(0, 1fr); }
+  .hero { padding: 40px 0 80px; }
+  .hero-grid { gap: 40px; }
+  .cards3, .steps { grid-template-columns: minmax(0, 1fr); }
+  .steps { gap: 28px; }
+  .bubble { left: 12px; }
+  .chip-float { right: 12px; }
+  .plan-card { justify-self: start; }
+  .v-box { padding: 40px 28px; gap: 36px; }
+  section { padding: 76px 0; }
+  .plans, .vendors, .toast-sec { padding-top: 0; }
+}
+@media (max-width: 620px) {
+  .wrap { padding: 0 16px; }
+  .nav-links a:not(.btn) { display: none; }
+  .wl-row { flex-direction: column; border-radius: 18px; }
+  .wl-row input { padding: 12px; }
+  .m-names { font-size: 26px; }
+  .m-count b { font-size: 34px; }
+  .mock-cover { padding: 22px 18px 18px; }
+  .v-box { padding: 32px 20px; border-radius: 22px; }
+  .vform { padding: 22px 18px; }
+  .foot-r { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="#top" aria-label="Brixia home"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></span>Brixia</a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#vendors">For vendors</a>
+      <a class="btn sm" href="#join" data-focus="hero-email">Join the waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Wedding planning, in one place</span>
+        <h1>Plan together.<br><em>Toast</em> together.</h1>
+        <p class="lede">Brixia gives every wedding its own folder. Find vendors who are open on your date, keep a shortlist for every category, and message all of them from one inbox, sorted by vendor type.</p>
+
+        <form class="wl js-wl" id="join" data-source="hero" novalidate>
+          <div class="wl-fields">
+            <div class="wl-row">
+              <input type="email" id="hero-email" name="email" placeholder="Your email address" aria-label="Email address" autocomplete="email" required>
+              <button class="btn" type="submit">Join the waitlist</button>
+            </div>
+            <fieldset class="wl-role">
+              <legend>I am</legend>
+              <label><input type="radio" name="role" value="couple" checked>I'm planning a wedding</label>
+              <label><input type="radio" name="role" value="vendor">I'm a wedding vendor</label>
+            </fieldset>
+            <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+          </div>
+          <p class="wl-note" aria-live="polite">Starting in New York City. We'll only email you about early access.</p>
+          <div class="wl-done" role="status"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>You're on the list. We'll be in touch from hello@brixiaco.com.</div>
+        </form>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="chip-float"><svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="16" rx="1.5"/><rect x="13.5" y="4" width="7" height="16" rx="1.5"/></svg>Compare 3 photographers</div>
+        <div class="mock">
+          <div class="mock-cover">
+            <svg class="rings" viewBox="0 0 260 200" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="100" cy="110" r="80"/><circle cx="160" cy="110" r="80"/></svg>
+            <div>
+              <div class="m-eyebrow">Wedding folder</div>
+              <div class="m-names">Maya <em>&amp;</em> Daniel</div>
+              <div class="m-meta">June 12, 2027 · Brooklyn · 120 guests</div>
+            </div>
+            <div class="m-count"><b id="countdown">246</b><span>days to go</span></div>
+          </div>
+          <ul class="m-list">
+            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 20V10.5L12 4l8 6.5V20"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20"/><path d="M3 20h18"/></svg></span><span class="m-tx"><b>Venue</b><small>The Greenpoint Loft</small></span><span class="pill booked">Booked</span></li>
+            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/></svg></span><span class="m-tx"><b>Photographer</b><small>2 quotes in · 3 shortlisted</small></span><span class="pill quoted">Quote in</span></li>
+            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="9" r="2"/><path d="M12 13.5V21M12 18.5c-1.8 0-3.3-.9-4-2.5"/><path d="M12 7c-1.6-3.2 1.6-4.4 2.4-2.3.6 1.6-.6 2.6-2.4 2.3zM14 9c3.2-1.6 4.4 1.6 2.3 2.4-1.6.6-2.6-.6-2.3-2.4zM12 11c1.6 3.2-1.6 4.4-2.4 2.3-.6-1.6.6-2.6 2.4-2.3zM10 9C6.8 10.6 5.6 7.4 7.7 6.6c1.6-.6 2.6.6 2.3 2.4z"/></svg></span><span class="m-tx"><b>Florist</b><small>2 conversations · 3 shortlisted</small></span><span class="pill contacted">Messaging</span></li>
+            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10"/><path d="M17 21V3c-2.2 1.2-3 4-3 7.5h3"/></svg></span><span class="m-tx"><b>Catering</b><small>2 shortlisted</small></span><span class="pill shortlisted">Shortlisted</span></li>
+          </ul>
+        </div>
+        <div class="bubble">
+          <div class="b-from"><span class="dotlive"></span>Photographer · just now</div>
+          June 12 is still open! Our 8-hour package includes a second shooter. Want to hop on a call this week?
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="problem">
+    <div class="wrap">
+      <div class="sec-h">
+        <span class="eyebrow">Why we're building this</span>
+        <h2>Planning a wedding shouldn't feel like running a call center.</h2>
+        <p class="sec-sub">We've been talking with couples at the New York City Marriage Bureau. The same story keeps coming up.</p>
+      </div>
+      <div class="cards3">
+        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span><h3>Vendors everywhere</h3><p>Quotes in email, updates by text, a voicemail from a number you don't recognize. Nothing lives in one place.</p></div>
+        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9l-5 4z"/><path d="M10 9.5a2 2 0 1 1 2.6 1.9c-.4.1-.6.5-.6.9V13M12 14.8v.1"/></svg></span><h3>Who said what?</h3><p>Was it the second caterer or the third who could do a tasting in November? Good luck finding that thread.</p></div>
+        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><h3>Left on delivered</h3><p>Every unanswered message is one more thing to remember. It's easy to lose track of a vendor you actually loved.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-h">
+        <span class="eyebrow">How it works</span>
+        <h2>One folder for the whole wedding</h2>
+      </div>
+      <ol class="steps">
+        <li><span class="n">1</span><h3>Create your wedding folder</h3><p>Add your date, city, guest count and budget. Brixia uses them to find vendors that actually fit.</p></li>
+        <li><span class="n">2</span><h3>Browse by category</h3><p>Venues, photographers, florists and more, filtered to the ones open on your date. Save your favorites and compare them side by side.</p></li>
+        <li><span class="n">3</span><h3>Message everyone in one inbox</h3><p>Chats are grouped by vendor type, quotes sit next to each other, and you check a category off the moment you book.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="plans">
+    <div class="wrap plans-grid">
+      <div>
+        <span class="eyebrow">Coming soon</span>
+        <h2>Start from a real wedding</h2>
+        <p class="sec-sub">Couples can share the vendors they booked and how their day ran, only what they choose to share. Find a plan that feels like you and start from it.</p>
+      </div>
+      <div class="plan-card" aria-hidden="true">
+        <div class="plan-ph"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></div>
+        <div class="plan-b">
+          <h3>Golden hour on a Williamsburg rooftop</h3>
+          <div class="by">A fall wedding · 100 to 130 guests</div>
+          <div class="tags"><span class="tag">Rooftop</span><span class="tag">Modern</span><span class="tag">Fusion menu</span></div>
+          <div class="plan-v"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>7 vendors · Start from this plan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="vendors" id="vendors">
+    <div class="wrap">
+      <div class="v-box">
+        <svg class="rings" viewBox="0 0 260 200" fill="none" stroke="#fff" stroke-width="1.5" aria-hidden="true"><circle cx="100" cy="110" r="80"/><circle cx="160" cy="110" r="80"/></svg>
+        <div>
+          <span class="eyebrow">For wedding vendors</span>
+          <h2>No new app to learn</h2>
+          <p>When a couple messages you on Brixia, you get an email. Click the link and reply right on the site. Claim your profile whenever you're ready.</p>
+          <ul class="checks">
+            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reply from a link, no account needed</li>
+            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Every inquiry comes with the date, city and guest count</li>
+            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hear from couples who are ready to book</li>
+          </ul>
+        </div>
+        <form class="vform js-wl" data-source="vendor" novalidate>
+          <h3>Get vendor updates</h3>
+          <p class="sub">We'll reach out before we open in your area.</p>
+          <div class="wl-fields">
+            <div class="field"><label for="v-biz">Business name</label><input id="v-biz" name="business" autocomplete="organization" placeholder="Petal and Stem Studio"></div>
+            <div class="field"><label for="v-email">Email</label><input id="v-email" type="email" name="email" autocomplete="email" placeholder="hello@yourbusiness.com" required></div>
+            <input type="hidden" name="role" value="vendor">
+            <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="btn" type="submit">Keep me posted</button>
+          </div>
+          <p class="wl-note" aria-live="polite"></p>
+          <div class="wl-done" role="status"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Thanks! We'll be in touch soon.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="toast-sec">
+    <div class="wrap">
+      <svg class="glass i" viewBox="0 0 64 64" aria-hidden="true">
+        <g transform="rotate(-14 22 36)"><path d="M16 10h12l-1 15a5 5 0 0 1-10 0z"/><path d="M22 30v19M17 49h10"/></g>
+        <g transform="rotate(14 42 36)"><path d="M36 10h12l-1 15a5 5 0 0 1-10 0z"/><path d="M42 30v19M37 49h10"/></g>
+        <path d="M32 6V2M27 7l-2.5-2.5M37 7l2.5-2.5"/>
+      </svg>
+      <p class="toast-line">Brixia is the Roman name for Brescia, home of Franciacorta, Italy's answer to Champagne. We named ourselves after the place that makes the toast, and we raise one to <em>every couple who plans with us.</em></p>
+      <a class="btn" href="#join" data-focus="hero-email">Join the waitlist</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="logo" href="#top"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></span>Brixia</a>
+    <span>Made in New York</span>
+    <div class="foot-r">
+      <a href="mailto:hello@brixiaco.com">hello@brixiaco.com</a>
+      <span>© <span id="yr">2026</span> Brixia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Paste your Formspree form URL between the quotes, for example "https://formspree.io/f/abcdwxyz".
+   Until it's filled in, signups show a message asking people to email you instead. */
+const FORM_ENDPOINT = "";
+
+document.querySelectorAll('.js-wl').forEach(form => {
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const note = form.querySelector('.wl-note');
+    const btn = form.querySelector('button[type=submit]');
+    const email = form.querySelector('input[type=email]');
+    note.classList.remove('err');
+    if (!email.value.trim() || !email.checkValidity()) {
+      note.textContent = 'Please enter a valid email address.';
+      note.classList.add('err');
+      email.focus();
+      return;
+    }
+    if (!FORM_ENDPOINT) {
+      note.textContent = "Signups open very soon. For now, email hello@brixiaco.com and we'll add you.";
+      note.classList.add('err');
+      return;
+    }
+    const data = new FormData(form);
+    data.append('source', form.dataset.source);
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error('Request failed');
+      form.classList.add('done');
+    } catch (err) {
+      note.textContent = 'Something went wrong. Please try again, or email hello@brixiaco.com.';
+      note.classList.add('err');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+  });
+});
+
+document.querySelectorAll('[data-focus]').forEach(a => a.addEventListener('click', () => {
+  setTimeout(() => document.getElementById(a.dataset.focus)?.focus({ preventScroll: true }), 450);
+}));
+
+const days = Math.round((new Date('2027-06-12T12:00:00') - new Date()) / 86400000);
+if (days > 0) document.getElementById('countdown').textContent = days;
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>
