@@ -297,6 +297,25 @@ footer { background: var(--night); color: rgba(255,255,255,.72); padding: 30px 0
   .foot .r { margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* Hero layout: copy + preview left, big form right */
+.hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); grid-template-areas: "copy form" "preview form"; column-gap: 56px; row-gap: 8px; align-items: start; padding: 36px 0 36px; }
+.hero-copy { grid-area: copy; }
+.hero-grid .create { grid-area: form; align-self: start; margin-top: 28px; max-width: none; padding: 30px 30px 24px; border-radius: 26px; }
+.hero-grid .preview { grid-area: preview; padding: 34px 40px 64px 24px; max-width: 560px; }
+.hero-grid .create .create-h { margin-bottom: 18px; }
+.hero-grid .create .create-h h2 { font-size: 34px; line-height: 1.1; }
+.hero-grid .create .create-sub { font-size: 15px; color: var(--muted); margin: -10px 0 18px; }
+.hero-grid .create .grid2 { gap: 12px; }
+.hero-grid .create .fld { padding: 11px 15px 12px; border-radius: 14px; }
+.hero-grid .create .fld input { font-size: 16.5px; }
+.hero-grid .create .btn { padding: 18px 22px; font-size: 17px; margin-top: 18px; }
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "form" "preview"; row-gap: 24px; }
+  .hero-grid .create { padding: 22px 18px 18px; margin-top: 0; }
+  .hero-grid .create .create-h h2 { font-size: 28px; }
+  .hero-grid .preview { padding: 18px 6px 56px; margin: 0 auto; }
+}
 </style>
 </head>
 <body>
@@ -321,14 +340,16 @@ footer { background: var(--night); color: rgba(255,255,255,.72); padding: 30px 0
     </nav>
 
     <div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <span class="eyebrow">Wedding planning, streamlined</span>
         <h1>Every vendor. One chat.<br><em>One place to pay.</em></h1>
         <p class="lede">Stop juggling emails, texts and Venmo. Message all your vendors from one inbox, get official quotes, and pay deposits and balances in the same place. Every detail stays organized in your wedding folder.</p>
+      </div>
 
         <div class="create" id="create">
           <form id="createForm" novalidate>
             <div class="create-h"><h2>Set up your wedding folder</h2><span class="step">Early access · free</span></div>
+            <p class="create-sub">Takes a minute. Bring your vendors in once we open.</p>
             <div class="grid2">
               <div class="fld"><label for="n1">Your name</label><input id="n1" name="name" placeholder="Maya" autocomplete="given-name"></div>
               <div class="fld"><label for="n2">Partner's name</label><input id="n2" name="partner" placeholder="Daniel"></div>
@@ -348,7 +369,6 @@ footer { background: var(--night); color: rgba(255,255,255,.72); padding: 30px 0
             <p id="doneText">Your wedding folder is reserved. We're opening Brixia to New York couples soon, and you'll be among the first in.</p>
           </div>
         </div>
-      </div>
 
       <div class="preview" aria-hidden="true">
         <div class="float two paid"><span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Deposit paid · $1,200<small>Lens and Light Studio</small></span></div>
