@@ -1,0 +1,1668 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Brixia · Couple demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F3CFCC'/%3E%3Cg fill='none' stroke='%23111829' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root {
+  --outline: #D5DCE9;
+  --night: #111829; --night-2: #18213D; --navy: #1F2A4A; --slate: #2F3F66;
+  --blush: #F3CFCC; --blush-2: #FBEDEC; --rose: #C99A9C; --rose-ink: #A85F62;
+  --paper: #F6F2F1; --card: #FFFFFF; --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E9E4E4; --hover: #F7F4F3; --sel: #EEF1F7;
+  --ok: #2C7656; --ok-bg: #E1F0E8; --warn: #8E6210; --warn-bg: #F6EBD3; --info: #3A5687; --info-bg: #E2E8F4;
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --shadow: 0 1px 2px rgba(17,24,41,.06), 0 12px 32px rgba(17,24,41,.10);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; display: flex; flex-direction: column; height: 100dvh; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 2px solid var(--slate); outline-offset: 2px; border-radius: 8px; }
+.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; border-radius: 999px; border: 0; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; white-space: nowrap; transition: transform .1s, opacity .1s; }
+.btn:hover { opacity: .92; } .btn:active { transform: scale(.98); }
+.btn.line { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.line:hover { background: var(--hover); opacity: 1; }
+.btn.blush { background: var(--blush); color: var(--night); }
+.btn.sm { padding: 7px 12px; font-size: 13px; }
+.pill { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
+.pill.booked { background: var(--ok-bg); color: var(--ok); }
+.pill.qin { background: var(--info-bg); color: var(--info); }
+.pill.needs { background: var(--blush-2); color: var(--rose-ink); }
+.pill.waiting { background: #EEF0F4; color: var(--muted); }
+.pill.todo { background: #F1EEED; color: var(--faint); }
+.av { width: 38px; height: 38px; border-radius: 11px; flex: none; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px; }
+.av.sm { width: 30px; height: 30px; border-radius: 9px; font-size: 11.5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose-ink); flex: none; }
+
+/* Demo bar */
+.demo { flex: none; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 16px; background: var(--night); color: #fff; }
+.demo .tag { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--blush); }
+.seg { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.08); flex-wrap: wrap; }
+.seg button { border: 0; background: transparent; color: rgba(255,255,255,.75); padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.seg button.on { background: #fff; color: var(--night); }
+.seg .n { font-size: 11px; opacity: .7; font-weight: 800; }
+.demo .reset { margin-left: auto; border: 0; background: transparent; color: rgba(255,255,255,.7); font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.screen { flex: 1; min-height: 0; display: none; }
+body[data-screen="inbox"] #s-inbox, body[data-screen="email"] #s-email, body[data-screen="reply"] #s-reply, body[data-screen="claim"] #s-claim, body[data-screen="vinbox"] #s-vinbox { display: flex; }
+
+/* ---------- Couple app ---------- */
+#s-inbox { }
+.side { width: 232px; flex: none; background: var(--night); color: #fff; display: flex; flex-direction: column; padding: 18px 14px; gap: 18px; }
+.logo { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 24px; padding: 0 6px; }
+.mark { width: 30px; height: 30px; border-radius: 50%; background: var(--blush); color: var(--night); display: grid; place-items: center; flex: none; }
+.mark .i { width: 18px; height: 18px; }
+.wcard { border-radius: 14px; padding: 14px; background: linear-gradient(125deg, #1C2644, #43537A 60%, #A98A97); }
+.wcard small { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.wcard b { display: block; font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.15; margin: 3px 0 4px; }
+.wcard b em { color: var(--blush); }
+.wcard span { font-size: 12.5px; opacity: .88; }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav button { display: flex; align-items: center; gap: 11px; padding: 10px 10px; border: 0; border-radius: 10px; background: transparent; color: rgba(255,255,255,.75); font-weight: 700; font-size: 14px; text-align: left; }
+.nav button:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav button.on { background: rgba(255,255,255,.1); color: #fff; }
+.nav .count { margin-left: auto; font-size: 11.5px; font-weight: 800; background: var(--blush); color: var(--night); padding: 1px 8px; border-radius: 999px; }
+.side .foot { margin-top: auto; font-size: 12px; color: rgba(255,255,255,.55); padding: 0 6px; }
+
+.list { width: 400px; flex: none; display: flex; flex-direction: column; background: var(--card); border-right: 1px solid var(--line); min-height: 0; }
+.list-h { padding: 18px 18px 12px; border-bottom: 1px solid var(--line); }
+.list-h h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; }
+.list-h p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.search { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 0 12px; height: 40px; border-radius: 12px; background: var(--hover); }
+.search .i { color: var(--faint); }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 14px; font-weight: 600; }
+.chips { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.chips button { border: 0; padding: 6px 12px; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--line); font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.chips button.on { background: var(--navy); color: #fff; box-shadow: none; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 10px 24px; }
+.needs-strip { margin: 4px 0 12px; border-radius: 14px; background: var(--blush-2); padding: 10px; }
+.needs-h { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--rose-ink); padding: 2px 4px 8px; }
+.nrow { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: #fff; border-radius: 10px; padding: 8px 10px; text-align: left; }
+.nrow + .nrow { margin-top: 6px; }
+.nrow:hover { box-shadow: 0 0 0 1px var(--rose); }
+.nrow .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.nrow b { font-size: 13.5px; display: block; }
+.nrow span { font-size: 12px; color: var(--muted); }
+.nrow .act { font-size: 12px; font-weight: 800; color: var(--rose-ink); white-space: nowrap; }
+
+.cat { margin-bottom: 8px; }
+.cat-h { display: flex; align-items: center; gap: 11px; width: 100%; border: 0; background: var(--navy); color: #fff; padding: 12px 12px; text-align: left; border-radius: 14px; transition: background .15s; }
+.cat-h:hover { background: #26335A; }
+.cat.open .cat-h { border-radius: 14px 14px 0 0; }
+.cic { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.12); color: #fff; display: grid; place-items: center; flex: none; }
+.cat.is-booked .cic { background: var(--ok-bg); color: var(--ok); }
+.cat-h .dot { background: var(--blush); }
+.cat-h .count-b { font-size: 11.5px; font-weight: 800; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.14); color: #fff; }
+.cat-h .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.cat-h b { display: block; font-size: 14.5px; }
+.cat-h span.sub { font-size: 12.5px; color: rgba(255,255,255,.72); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chev { color: #fff; transition: transform .15s; }
+.cat.open .chev { transform: rotate(180deg); }
+.cat-b { display: none; position: relative; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 14px 14px; padding: 6px 6px 6px 22px; }
+.cat-b::before { content: ""; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 2px; border-radius: 2px; background: var(--blush); }
+.cat.open .cat-b { display: block; }
+.trow { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: transparent; border-radius: 10px; padding: 9px 8px; text-align: left; }
+.trow:hover { background: var(--hover); }
+.trow.on { background: var(--sel); }
+.trow .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.trow .top { display: flex; gap: 8px; align-items: baseline; }
+.trow .top b { font-size: 13.5px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trow .top time { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+.trow .prev { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.trow.unread .prev { color: var(--ink); font-weight: 700; }
+.trow .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.arch { width: 100%; border: 0; background: transparent; text-align: left; font-size: 12.5px; font-weight: 700; color: var(--faint); padding: 8px 10px; border-radius: 10px; }
+.arch:hover { background: var(--hover); color: var(--muted); }
+.trow.archived { opacity: .6; }
+.empty-cat { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px 10px; font-size: 13px; color: var(--muted); }
+.none { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 14px; }
+
+.thread { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--paper); min-height: 0; }
+.th-h { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: #fff; border-bottom: 1px solid var(--line); }
+.th-h .back { display: none; border: 0; background: transparent; padding: 6px; margin-left: -6px; border-radius: 8px; }
+.th-h .who { flex: 1; min-width: 0; line-height: 1.35; }
+.th-h .who b { font-size: 16px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.th-h .who .sub { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.acts .btn .i { width: 16px; height: 16px; }
+.acts .btn.starred { color: var(--rose-ink); }
+.acts .btn.starred .i { fill: var(--rose-ink); }
+.msgs { flex: 1; min-height: 0; overflow-y: auto; padding: 20px 20px 12px; display: flex; flex-direction: column; gap: 14px; }
+.note { align-self: center; font-size: 12px; color: var(--muted); background: #fff; border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; text-align: center; max-width: 90%; }
+.m { display: flex; gap: 10px; align-items: flex-end; max-width: min(620px, 86%); }
+.m.me { align-self: flex-end; flex-direction: row-reverse; }
+.bub { padding: 11px 14px; border-radius: 16px 16px 16px 6px; background: #fff; border: 1px solid var(--line); font-size: 14.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.m.me .bub { background: var(--navy); color: #fff; border-color: var(--navy); border-radius: 16px 16px 6px 16px; }
+.m .when { font-size: 11.5px; color: var(--faint); margin-top: 4px; display: flex; gap: 6px; align-items: center; }
+.m.me .when { justify-content: flex-end; }
+.via { font-size: 11px; font-weight: 800; color: var(--warn); background: var(--warn-bg); padding: 1px 7px; border-radius: 999px; }
+.m.fresh .bub { animation: pop .5s ease-out; }
+@keyframes pop { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.quote { width: min(420px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); }
+.q-h { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.q-h .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.q-h b { font-size: 14px; display: block; }
+.q-h span { font-size: 12px; color: var(--muted); }
+.q-l { padding: 8px 2px; font-size: 13.5px; }
+.q-l div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.q-l div span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; }
+.q-l .tot { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 9px; font-weight: 800; font-size: 15px; }
+.q-s { background: #F4F5F9; border-radius: 12px; padding: 8px 12px; font-size: 12.5px; color: var(--muted); }
+.q-s div { display: flex; justify-content: space-between; padding: 3px 0; }
+.q-s b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.q-a { display: flex; gap: 8px; margin-top: 12px; }
+.q-a .btn { flex: 1; }
+.q-done { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font-size: 13px; font-weight: 700; }
+
+.compose { padding: 10px 20px 16px; background: var(--paper); }
+.sugg { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.sugg button { border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line); padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: var(--slate); text-align: left; }
+.sugg button:hover { box-shadow: inset 0 0 0 1px var(--slate); }
+.box { display: flex; align-items: flex-end; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 8px 8px 8px 14px; }
+.box:focus-within { border-color: var(--slate); }
+.box textarea { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; font-size: 14.5px; line-height: 1.45; padding: 6px 0; max-height: 140px; background: transparent; }
+.icon-btn { border: 0; background: transparent; color: var(--faint); width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.icon-btn:hover { background: var(--hover); color: var(--ink); }
+.send { width: 40px; height: 40px; border-radius: 12px; border: 0; background: var(--navy); color: #fff; display: grid; place-items: center; flex: none; }
+.send .i { width: 18px; height: 18px; }
+.empty-th { flex: 1; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 24px; }
+.empty-th b { display: block; font-family: var(--serif); font-weight: 400; font-size: 26px; color: var(--ink); margin-bottom: 6px; }
+.bottom-nav { display: none; }
+
+/* ---------- Vendor email ---------- */
+#s-email { overflow-y: auto; background: #E9EBF0; padding: 28px 16px 48px; }
+body[data-screen="email"] #s-email { display: block; }
+.mail { width: min(720px, 100%); background: #fff; border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+.mail-bar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #F4F5F8; border-bottom: 1px solid #E3E5EA; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.mail-bar .d { width: 10px; height: 10px; border-radius: 50%; background: #D6D9E0; }
+.mail-meta { padding: 16px 22px; border-bottom: 1px solid #ECEEF2; font-size: 13.5px; }
+.mail-meta h2 { font-size: 19px; font-weight: 800; margin-bottom: 10px; }
+.mail-meta .r { display: flex; gap: 8px; color: var(--muted); padding: 2px 0; flex-wrap: wrap; }
+.mail-meta .r b { color: var(--ink); font-weight: 700; }
+.mail-body { padding: 26px 22px 30px; background: #F7F5F4; }
+.em { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+.em-top { background: var(--night); color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 22px; }
+.em-in { padding: 24px; }
+.em-in h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.15; margin-bottom: 6px; }
+.em-in .lead { color: var(--muted); font-size: 14.5px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.facts span { font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #F1F3F8; color: var(--slate); }
+.em-q { border-left: 3px solid var(--blush); padding: 4px 0 4px 14px; font-size: 15px; white-space: pre-wrap; margin: 4px 0 20px; }
+.em-cta { display: block; text-align: center; background: var(--navy); color: #fff; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 15px; border: 0; width: 100%; }
+.em-small { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 10px; }
+.em-foot { border-top: 1px solid var(--line); padding: 16px 24px; font-size: 12px; color: var(--faint); line-height: 1.6; }
+.em-foot a { color: var(--slate); font-weight: 700; }
+.explain { width: min(720px, 100%); margin: 0 auto 14px; font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+.explain .i { color: var(--rose-ink); margin-top: 1px; }
+.email-wrap { display: flex; flex-direction: column; width: 100%; align-items: center; }
+
+/* ---------- Vendor reply page ---------- */
+#s-reply { flex-direction: column; overflow-y: auto; background: var(--paper); }
+.vtop { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: #fff; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.vtop .logo { color: var(--ink); font-size: 23px; padding: 0; }
+.vtop .as { font-size: 13px; color: var(--muted); }
+.vtop .as b { color: var(--ink); }
+.vtop .btn { margin-left: auto; }
+.vgrid { width: min(1120px, 100%); margin: 0 auto; padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; align-items: start; }
+.vmain { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+.vmain-h { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.vmain-h h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.vmain-h p { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.vmain .msgs { background: var(--paper); min-height: 260px; max-height: 52vh; }
+.vmain .compose { background: #fff; border-top: 1px solid var(--line); padding-top: 12px; }
+.vrow { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.vrow .hint { font-size: 12px; color: var(--faint); margin-left: auto; }
+.sent { display: none; align-items: center; gap: 12px; margin: 12px 20px 0; padding: 12px 14px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font-weight: 700; font-size: 14px; flex-wrap: wrap; }
+.sent.show { display: flex; }
+.sent .btn { margin-left: auto; }
+.aside { display: flex; flex-direction: column; gap: 16px; }
+.acard { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+.acard h3 { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
+.det { display: grid; gap: 10px; font-size: 14px; }
+.det div { display: flex; justify-content: space-between; gap: 12px; }
+.det span { color: var(--muted); }
+.det b { text-align: right; }
+.claim { background: var(--navy); color: #fff; border-color: var(--navy); }
+.claim h3 { color: var(--blush); }
+.claim p { font-size: 14px; color: rgba(255,255,255,.82); }
+.claim ul { list-style: none; padding: 0; margin: 12px 0 16px; display: grid; gap: 8px; font-size: 13.5px; font-weight: 600; }
+.claim li { display: flex; gap: 8px; }
+.claim li .i { color: var(--blush); width: 16px; height: 16px; margin-top: 2px; }
+.claim .btn { width: 100%; }
+
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 11px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow); z-index: 50; display: flex; gap: 12px; align-items: center; max-width: calc(100% - 32px); }
+.toast button { border: 0; background: var(--blush); color: var(--night); font-weight: 800; font-size: 12.5px; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+
+
+
+/* Group style variants */
+.gstyle { display: flex; align-items: center; gap: 8px; }
+.gstyle span { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.6); }
+body[data-groups="white"] .cat-h { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #C5CFE2, inset 5px 0 0 var(--navy); }
+body[data-groups="white"] .cat-h:hover { background: #F7F8FC; }
+body[data-groups="white"] .cic { background: #EEF1F7; color: var(--slate); }
+body[data-groups="white"] .cat-h span.sub { color: var(--muted); }
+body[data-groups="white"] .chev { color: var(--slate); }
+body[data-groups="white"] .cat-h .dot { background: var(--rose-ink); }
+body[data-groups="white"] .cat-h .count-b { background: #EEF1F7; color: var(--slate); }
+body[data-groups="white"] .cat.is-booked .cic { background: var(--ok-bg); color: var(--ok); }
+body[data-groups="white"] .cat-b { background: #F4F2F1; border: 1.5px solid #C5CFE2; border-top: 0; padding: 8px 8px 8px 22px; }
+body[data-groups="white"] .cat-b .trow { background: #fff; box-shadow: 0 0 0 1px var(--line); margin-bottom: 6px; }
+body[data-groups="white"] .cat-b .trow:last-child { margin-bottom: 0; }
+body[data-groups="white"] .cat-b .trow.on { background: var(--sel); }
+
+
+/* ---------- Wedding home ---------- */
+body[data-screen="home"] #s-home { display: flex; }
+.hmain { flex: 1; min-width: 0; min-height: 0; overflow-y: auto; }
+#s-home .wrap { max-width: 1180px; margin: 0 auto; padding: 22px 26px 40px; }
+#s-home .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+#s-home .card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; }
+#s-home .card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px 6px; }
+#s-home .card-h h3 { font-size: 15px; font-weight: 800; }
+#s-home .link { font-size: 12.5px; font-weight: 700; color: var(--slate); background: none; border: 0; padding: 0; }
+#s-home .stack { display: inline-flex; }
+#s-home .stack .av { width: 26px; height: 26px; border-radius: 8px; font-size: 10px; box-shadow: 0 0 0 2px #fff; }
+#s-home .stack .av + .av { margin-left: -6px; }
+.h-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.h-top h1 { font-size: 15px; font-weight: 700; color: var(--muted); }
+.h-top h1 b { color: var(--ink); }
+.h-top .r { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.h-top .stack .av { box-shadow: 0 0 0 2px var(--paper) !important; }
+.btn.ghost { background: rgba(255,255,255,.14); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
+.h-hero { position: relative; border-radius: 24px; min-height: 340px; color: #fff; display: flex; flex-direction: column; background-size: cover; background-position: center; }
+.h-hero .shade { position: absolute; inset: 0; border-radius: 24px; background: linear-gradient(180deg, rgba(17,24,41,.10) 0%, rgba(17,24,41,.18) 50%, rgba(17,24,41,.55) 100%); pointer-events: none; }
+.h-hero > *:not(.shade):not(.h-menu) { position: relative; }
+.h-tools { display: flex; justify-content: flex-end; padding: 14px 14px 0; }
+.h-center { flex: 1; display: grid; place-items: center; text-align: center; padding: 10px 20px 18px; }
+.h-hero .eyebrow { color: var(--blush); }
+.h-names { font-family: var(--serif); font-size: 72px; line-height: 1; margin: 8px 0 14px; text-shadow: 0 2px 18px rgba(17,24,41,.25); }
+.h-names em { color: var(--blush); }
+.h-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.h-chips span { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); font-size: 13px; font-weight: 700; }
+.h-chips span.hl { background: #fff; color: var(--night); box-shadow: none; }
+.h-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 0 16px 16px; border-radius: 16px; overflow: hidden; background: rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.h-stat { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(17,24,41,.32); border: 0; color: #fff; text-align: left; }
+.h-stat:hover { background: rgba(17,24,41,.45); }
+.h-stat b { display: block; font-size: 15px; }
+.h-stat span { font-size: 12.5px; color: rgba(255,255,255,.8); }
+.h-stat .ic { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.14); display: grid; place-items: center; flex: none; }
+.h-stat svg.ring { width: 40px; height: 40px; transform: rotate(-90deg); flex: none; }
+.h-menu { position: absolute; top: 56px; right: 14px; z-index: 5; width: 260px; background: #fff; color: var(--ink); border-radius: 16px; box-shadow: 0 12px 40px rgba(17,24,41,.25); padding: 14px; display: none; }
+.h-menu.open { display: block; }
+.h-menu h4 { margin: 0 0 10px; font-size: 13px; font-weight: 800; }
+.h-sw { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.h-sw button { height: 44px; border-radius: 10px; border: 2px solid transparent; padding: 0; }
+.h-sw button.on { border-color: var(--navy); }
+.h-up { margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px; border-radius: 12px; border: 1.5px dashed var(--outline); background: var(--hover); font-size: 13px; font-weight: 700; color: var(--slate); cursor: pointer; }
+.h-up input { display: none; }
+.h-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; margin-top: 20px; align-items: start; }
+.h-col { display: grid; gap: 20px; }
+.h-needs { background: var(--blush-2); border: 1.5px solid #F0D6D4; border-radius: 18px; padding: 14px; }
+.h-needs .eyebrow { color: var(--rose-ink); display: flex; gap: 8px; align-items: center; margin: 0 2px 10px; }
+.h-needs .clear { font-size: 14px; color: var(--muted); padding: 4px 4px 2px; }
+.h-need { display: flex; align-items: center; gap: 11px; padding: 10px 12px; border-radius: 12px; background: #fff; border: 0; width: 100%; text-align: left; }
+.h-need + .h-need { margin-top: 6px; }
+.h-need:hover { box-shadow: 0 0 0 1px var(--rose); }
+.h-need .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.h-need b { display: block; font-size: 13.5px; }
+.h-need span { font-size: 12.5px; color: var(--muted); }
+.h-need .act { font-size: 12.5px; font-weight: 800; color: var(--rose-ink); }
+.h-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 8px 16px 16px; }
+.h-tile { text-align: left; border: 1.5px solid var(--outline); background: #fff; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 140px; transition: border-color .15s, transform .15s; }
+.h-tile:hover { border-color: #AEBBD6; transform: translateY(-1px); }
+.h-tile .h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.h-tile .tic { width: 38px; height: 38px; border-radius: 11px; background: #EEF1F7; color: var(--slate); display: grid; place-items: center; }
+.h-tile.booked .tic { background: var(--ok-bg); color: var(--ok); }
+.h-tile b { font-size: 15px; display: block; }
+.h-tile p { font-size: 12.5px; color: var(--muted); line-height: 1.35; margin-top: 2px; }
+.h-tile .f { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--faint); font-weight: 700; }
+.h-shortrow { display: flex; flex-wrap: wrap; gap: 10px; padding: 6px 16px 16px; }
+.h-chip { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1.5px solid var(--outline); border-radius: 14px; background: #fff; text-align: left; }
+.h-chip:hover { border-color: #AEBBD6; }
+.h-chip b { font-size: 13.5px; display: block; } .h-chip span.n { font-size: 12px; color: var(--faint); font-weight: 700; }
+.h-empty { font-size: 13.5px; color: var(--muted); padding: 4px 16px 16px; }
+.h-todo { display: flex; align-items: flex-start; gap: 10px; padding: 9px 16px; }
+.h-todo input { width: 18px; height: 18px; accent-color: var(--navy); margin: 1px 0 0; flex: none; }
+.h-todo label { flex: 1; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+.h-todo label small { display: block; font-size: 12px; font-weight: 600; color: var(--faint); }
+.h-todo.done label { color: var(--faint); text-decoration: line-through; }
+.h-todo .auto { font-size: 10.5px; font-weight: 800; color: var(--slate); background: #EEF1F7; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+.h-act { display: flex; gap: 10px; padding: 9px 16px; align-items: flex-start; }
+.h-act .ic { width: 28px; height: 28px; border-radius: 8px; background: #F1F3F8; color: var(--slate); display: grid; place-items: center; flex: none; }
+.h-act .ic .i { width: 15px; height: 15px; }
+.h-act p { font-size: 13.5px; flex: 1; line-height: 1.4; }
+.h-act time { display: block; font-size: 12px; color: var(--faint); }
+.h-act.fresh { background: #FBF6F5; }
+@media (max-width: 1180px) { .h-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  #s-home .wrap { padding: 16px 14px 28px; }
+  .h-names { font-size: 44px; } .h-hero { min-height: 300px; }
+  .h-stats { grid-template-columns: minmax(0, 1fr); margin: 0 10px 10px; }
+  .h-tiles { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 8px 12px 12px; }
+  .h-tile { min-height: 128px; padding: 12px; }
+  .h-top .r .btn span { display: none; }
+}
+
+
+/* Selected chat */
+.trow.on, body[data-groups="white"] .cat-b .trow.on { background: #E9EEF8; box-shadow: inset 3px 0 0 var(--navy), 0 0 0 1.5px #AEBBD6; }
+.trow.on .top b { color: var(--navy); }
+.nrow.on { box-shadow: 0 0 0 1.5px var(--navy); }
+.trow.flash { animation: flashSel 1.2s ease-out; }
+@keyframes flashSel { 0% { background: #DCE4F5; } 100% { background: #E9EEF8; } }
+/* To-do add */
+.h-add { display: flex; gap: 8px; padding: 6px 16px 8px; flex-wrap: wrap; }
+.h-add input { flex: 1; min-width: 0; border: 1.5px solid var(--outline); border-radius: 10px; padding: 8px 10px; font: inherit; font-size: 13.5px; outline: 0; background: #fff; }
+.h-add input:focus { border-color: var(--slate); }
+.h-add input.due { flex: 0 0 110px; }
+.h-add .btn { padding: 8px 14px; }
+.h-add .err { flex-basis: 100%; font-size: 12.5px; font-weight: 700; color: #B0464C; }
+.h-todo .open, .h-todo .del { border: 0; background: none; padding: 2px 4px; font-size: 12px; font-weight: 800; color: var(--slate); border-radius: 6px; }
+.h-todo .del { color: var(--faint); font-size: 16px; line-height: 1; }
+.h-todo .del:hover { color: #B0464C; }
+.h-todo .open:hover { background: #EEF1F7; }
+.h-todo .tags { display: flex; gap: 4px; align-items: center; }
+.h-left { font-size: 12px; font-weight: 700; color: var(--faint); margin-left: 6px; }
+
+
+/* Add a vendor */
+.add-v { display: flex; align-items: center; gap: 8px; width: 100%; border: 1.5px dashed var(--outline); background: transparent; border-radius: 10px; padding: 8px 10px; margin-top: 6px; font-size: 12.5px; font-weight: 700; color: var(--slate); text-align: left; }
+.add-v:hover { background: #F4F6FB; border-color: #AEBBD6; }
+.add-v .i { width: 15px; height: 15px; }
+.av-panel { flex: 1; min-height: 0; overflow-y: auto; padding: 28px 24px 40px; }
+.av-in { max-width: 760px; margin: 0 auto; }
+.av-in h2 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.15; }
+.av-in > p { color: var(--muted); margin: 4px 0 20px; font-size: 14.5px; }
+.av-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.av-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; padding: 18px; display: grid; gap: 12px; }
+.av-card h3 { font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.av-card .sub { font-size: 13px; color: var(--muted); margin-top: -6px; }
+.av-card .fld textarea { border: 0; outline: 0; padding: 0; resize: vertical; min-height: 84px; font: inherit; font-size: 14px; line-height: 1.45; background: transparent; width: 100%; }
+.av-card .row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.av-card .note2 { font-size: 12.5px; color: var(--faint); display: flex; gap: 6px; align-items: flex-start; }
+.av-card .note2 .i { width: 15px; height: 15px; color: var(--rose-ink); margin-top: 1px; }
+.av-card .err { font-size: 13px; font-weight: 700; color: #B0464C; }
+.av-card .btn { justify-self: start; padding: 11px 18px; }
+.av-card.soon { background: #FAF8F7; }
+.av-card.soon .tag2 { justify-self: start; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); background: #EEF1F7; padding: 3px 9px; border-radius: 999px; }
+.av-card.soon ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--muted); display: grid; gap: 4px; }
+@media (max-width: 1000px) { .av-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) { .av-panel { padding: 18px 14px 28px; } .av-card .row2 { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* Add vendor modal */
+.modal-bg { position: fixed; inset: 0; z-index: 40; background: rgba(17,24,41,.55); display: grid; place-items: center; padding: 16px; animation: fadeIn .15s ease-out; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal { position: relative; width: min(860px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; background: var(--paper); border-radius: 22px; padding: 24px; box-shadow: 0 24px 60px rgba(17,24,41,.35); animation: rise .18s ease-out; }
+@keyframes rise { from { transform: translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+.m-x { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line); font-size: 22px; line-height: 1; color: var(--muted); }
+.m-x:hover { color: var(--ink); }
+.m-h { display: flex; gap: 14px; align-items: flex-start; margin: 0 40px 18px 0; }
+.m-ic { width: 46px; height: 46px; border-radius: 13px; background: #fff; border: 1.5px solid var(--outline); color: var(--slate); display: grid; place-items: center; flex: none; }
+.m-h h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.m-h p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.fld select { border: 0; outline: 0; padding: 0; font: inherit; font-size: 15px; font-weight: 600; background: transparent; width: 100%; color: var(--ink); }
+.h-acts { display: flex; gap: 16px; align-items: center; }
+.h-acts .link { display: inline-flex; align-items: center; gap: 4px; }
+.h-acts .link .i { width: 14px; height: 14px; }
+@media (max-width: 760px) { .modal { padding: 18px 14px; } .m-h h2 { font-size: 23px; } .m-ic { display: none; } }
+
+
+.h-stat.calm .ic { background: rgba(225,240,232,.22); color: #BFE3CF; }
+.h-stat.calm b { color: rgba(255,255,255,.92); }
+
+
+.h-calm { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 18px; background: #EEF6F1; border: 1.5px solid #CFE5D8; }
+.h-calm .ic { width: 36px; height: 36px; border-radius: 11px; background: #fff; color: var(--ok); display: grid; place-items: center; flex: none; }
+.h-calm b { display: block; font-size: 14.5px; color: var(--ok); }
+.h-calm span span { font-size: 13px; color: var(--muted); }
+
+
+/* ---------- Vendor profile ---------- */
+body[data-screen="profile"] #s-profile { display: flex; }
+.p-wrap { max-width: 1120px; margin: 0 auto; padding: 18px 26px 48px; }
+.p-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.p-bar .r { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.p-seg { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); }
+.p-seg button { border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--muted); }
+.p-seg button.on { background: var(--navy); color: #fff; }
+.p-editing { font-size: 12.5px; font-weight: 800; color: var(--warn); background: var(--warn-bg); padding: 5px 10px; border-radius: 999px; }
+.p-cover { position: relative; height: 230px; border-radius: 22px; background-size: cover; background-position: center; overflow: hidden; }
+.p-cover .p-cbtn { position: absolute; right: 14px; top: 14px; }
+.file-btn { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+.file-btn input { display: none; }
+.p-head { position: relative; margin: -56px 18px 0; background: #fff; border: 1.5px solid var(--outline); border-radius: 20px; padding: 18px 20px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 18px; align-items: center; box-shadow: var(--shadow); }
+.p-logo { width: 84px; height: 84px; border-radius: 22px; display: grid; place-items: center; font-family: var(--serif); font-size: 32px; color: #fff; background: linear-gradient(140deg, #E7B9B7, #A85F62); box-shadow: 0 0 0 4px #fff; }
+.p-head h1 { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1.1; }
+.p-head .meta { font-size: 14px; color: var(--muted); margin-top: 2px; }
+.p-head .tagline { font-size: 15px; margin-top: 6px; }
+.p-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.p-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: #EEF1F7; color: var(--slate); }
+.p-badge.ok { background: var(--ok-bg); color: var(--ok); }
+.p-badge .i { width: 13px; height: 13px; }
+.p-price { text-align: right; display: grid; gap: 8px; justify-items: end; }
+.p-price small { font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.p-price b { font-family: var(--serif); font-weight: 400; font-size: 34px; line-height: 1; }
+.p-price .acts { display: flex; gap: 8px; }
+.p-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; margin-top: 20px; align-items: start; }
+.p-col { display: grid; gap: 18px; }
+.p-card { background: #fff; border: 1.5px solid var(--outline); border-radius: 18px; padding: 18px; }
+.p-card > h2 { font-size: 16px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.p-card > h2 small { font-size: 12.5px; font-weight: 700; color: var(--faint); }
+.p-about { font-size: 15px; line-height: 1.65; white-space: pre-wrap; }
+.p-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.p-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: var(--blush-2); color: var(--rose-ink); font-size: 13px; font-weight: 700; }
+.p-chip button { border: 0; background: none; padding: 0; color: inherit; font-size: 15px; line-height: 1; }
+.p-pkgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.p-pkg { border: 1.5px solid var(--outline); border-radius: 14px; padding: 14px; display: grid; gap: 6px; align-content: start; position: relative; }
+.p-pkg b { font-size: 15px; }
+.p-pkg .from { font-size: 13px; font-weight: 800; color: var(--slate); }
+.p-pkg p { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.p-pkg .rm { position: absolute; top: 8px; right: 8px; }
+.p-photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.p-photo { position: relative; aspect-ratio: 4 / 3; border-radius: 14px; background-size: cover; background-position: center; overflow: hidden; }
+.p-photo .rm { position: absolute; top: 6px; right: 6px; }
+.p-photo.add { display: grid; place-items: center; border: 1.5px dashed var(--outline); background: var(--hover); color: var(--slate); font-size: 13px; font-weight: 700; text-align: center; cursor: pointer; }
+.p-photo.add input { display: none; }
+.rm { width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(17,24,41,.6); color: #fff; font-size: 16px; line-height: 1; display: grid; place-items: center; }
+.p-rev-sum { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--muted); }
+.p-rev-sum b { font-family: var(--serif); font-weight: 400; font-size: 30px; color: var(--ink); }
+.stars { color: #C79A3A; letter-spacing: 1px; font-size: 14px; }
+.p-rev { border-top: 1px solid var(--line); padding: 12px 0; display: grid; gap: 4px; }
+.p-rev .who { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13.5px; font-weight: 800; }
+.p-rev .who span { font-weight: 600; color: var(--faint); font-size: 12.5px; }
+.p-rev p { font-size: 14px; line-height: 1.55; }
+.p-rev .src { font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: #F1EEED; color: var(--muted); }
+.p-rev .src.brx { background: var(--ok-bg); color: var(--ok); }
+.p-sub { font-size: 12.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin: 14px 0 2px; }
+.p-note { font-size: 12.5px; color: var(--faint); margin-top: 6px; }
+.p-imp { display: grid; gap: 8px; margin-top: 10px; padding: 12px; border-radius: 12px; background: var(--hover); }
+.p-imp .row { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 8px; }
+.p-det { display: grid; gap: 12px; font-size: 14px; }
+.p-det div { display: grid; gap: 2px; }
+.p-det span { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.p-meter { height: 8px; border-radius: 8px; background: #EEF1F7; overflow: hidden; margin: 6px 0 12px; }
+.p-meter i { display: block; height: 100%; background: var(--ok); border-radius: 8px; }
+.p-todo { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 13.5px; }
+.p-todo li { display: flex; gap: 8px; align-items: flex-start; }
+.p-todo li .i { width: 16px; height: 16px; margin-top: 2px; }
+.p-todo li.ok { color: var(--faint); text-decoration: line-through; }
+.p-todo li.ok .i { color: var(--ok); }
+.p-in, .p-ta, .p-sel { width: 100%; border: 1.5px solid var(--outline); border-radius: 10px; padding: 8px 10px; font: inherit; font-size: 14px; background: #fff; color: var(--ink); outline: 0; }
+.p-in:focus, .p-ta:focus, .p-sel:focus { border-color: var(--slate); }
+.p-ta { min-height: 120px; resize: vertical; line-height: 1.55; }
+.p-head .p-in.big { font-family: var(--serif); font-size: 26px; padding: 4px 10px; }
+.p-lbl { display: block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+.p-err { color: #B0464C; font-size: 13px; font-weight: 700; }
+.p-inline { display: flex; gap: 8px; margin-top: 10px; }
+@media (max-width: 1000px) { .p-grid { grid-template-columns: minmax(0, 1fr); } .p-head { grid-template-columns: auto minmax(0, 1fr); } .p-price { grid-column: 1 / -1; justify-items: start; text-align: left; } }
+@media (max-width: 760px) { .p-wrap { padding: 14px 12px 32px; } .p-cover { height: 170px; } .p-head { margin: -40px 8px 0; grid-template-columns: minmax(0, 1fr); } .p-logo { width: 64px; height: 64px; font-size: 24px; } .p-head h1 { font-size: 28px; } .p-imp .row { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- Claim + vendor inbox ---------- */
+#s-claim { overflow-y: auto; background: var(--paper); justify-content: center; padding: 32px 16px 48px; }
+.claim-card { width: min(560px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; align-self: flex-start; }
+.claim-top { background: var(--night); color: #fff; padding: 22px 24px; }
+.claim-top .steps { display: flex; gap: 6px; margin-bottom: 14px; }
+.claim-top .steps span { height: 4px; flex: 1; border-radius: 4px; background: rgba(255,255,255,.18); }
+.claim-top .steps span.on { background: var(--blush); }
+.claim-top h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.claim-top p { font-size: 14px; color: rgba(255,255,255,.78); margin-top: 6px; }
+.claim-in { padding: 22px 24px 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.claim-in .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.fld { display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px 9px; }
+.fld:focus-within { border-color: var(--slate); }
+.fld label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.fld input { border: 0; outline: 0; padding: 0; font-size: 15px; font-weight: 600; background: transparent; min-width: 0; width: 100%; }
+.fld.code input { font-size: 24px; letter-spacing: .4em; font-variant-numeric: tabular-nums; }
+.fld.err { border-color: #C0545A; }
+.found { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); background: var(--hover); border-radius: 12px; padding: 10px 12px; }
+.found .i { color: var(--rose-ink); margin-top: 1px; width: 16px; height: 16px; }
+.claim-in .errmsg { color: #B0464C; font-size: 13px; font-weight: 700; min-height: 0; }
+.claim-in .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.claim-in .row .btn { flex: 1; padding: 13px 16px; font-size: 15px; }
+.claim-in .small { font-size: 12.5px; color: var(--faint); text-align: center; }
+.claim-in .small button { border: 0; background: none; color: var(--slate); font-weight: 700; font-size: 12.5px; text-decoration: underline; padding: 0; }
+.vbiz { border-radius: 14px; padding: 14px; background: linear-gradient(125deg, #3A2E3A, #7B5D6A 60%, #C99A9C); }
+.vbiz small { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.vbiz b { display: block; font-family: var(--serif); font-weight: 400; font-size: 20px; line-height: 1.15; margin: 3px 0 6px; }
+.vbiz .ver { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 800; background: rgba(255,255,255,.16); padding: 2px 8px; border-radius: 999px; }
+.vbiz .ver .i { width: 12px; height: 12px; }
+.wchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 3px; }
+.wchips span { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #F1F3F8; color: var(--slate); }
+.sent .acts2 { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.trow .wd { font-size: 11px; font-weight: 800; color: var(--slate); background: #EEF1F7; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+@media (max-width: 1180px) { .vbiz { display: none; } }
+@media (max-width: 760px) { .claim-in .grid2 { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 1180px) {
+  .side { width: 76px; padding: 18px 10px; align-items: center; }
+  .side .logo span:last-child, .wcard, .nav button span, .nav .count, .side .foot { display: none; }
+  .logo { padding: 0; }
+  .nav button { justify-content: center; position: relative; }
+  .list { width: 360px; }
+}
+@media (max-width: 1000px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .app-screen { flex-direction: column; }
+  .side { display: none; }
+  .list { width: 100%; flex: 1; border-right: 0; }
+  .thread { display: none; }
+  .app-screen.thread-open .list { display: none; }
+  .app-screen.thread-open .thread { display: flex; }
+  .th-h { padding: 10px 14px; flex-wrap: wrap; }
+  .th-h .back { display: grid; }
+  .acts { width: 100%; }
+  .msgs { padding: 14px; }
+  .compose { padding: 8px 12px 12px; }
+  .bottom-nav { display: flex; flex: none; justify-content: space-around; background: var(--night); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+  .app-screen.thread-open .bottom-nav { display: none; }
+  .bottom-nav button { border: 0; background: transparent; color: rgba(255,255,255,.65); display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 10px; }
+  .bottom-nav button.on { color: #fff; }
+  .vgrid { padding: 14px; }
+  .vtop { padding: 12px 14px; }
+  .vtop .btn { margin-left: 0; }
+  .demo .reset { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body data-screen="home" data-groups="white" data-mode="couple">
+
+<div class="demo" role="navigation" aria-label="Prototype screens">
+  <span class="tag" id="demoTag">Brixia prototype</span>
+  <div class="seg" id="seg"></div>
+  <button type="button" class="reset" id="catchup" title="Resolve every reply and quote to preview the empty state">Clear alerts</button>
+  <button type="button" class="reset" id="reset" style="margin-left:0">Reset demo</button>
+</div>
+
+<!-- Couple home -->
+<section class="screen app-screen" id="s-home" aria-label="Wedding home">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <nav class="nav" id="hSideNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="hmain"></div>
+  <nav class="bottom-nav" id="hBottomNav"></nav>
+</section>
+
+<!-- Couple inbox -->
+<section class="screen app-screen" id="s-inbox" aria-label="Couple inbox">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="wcard"><small>Wedding folder</small><b>Maya <em>&amp;</em> Daniel</b><span>June 12, 2027 · Brooklyn</span></div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+
+  <div class="list">
+    <div class="list-h">
+      <h1>Inbox</h1>
+      <p id="listSub">Every vendor, grouped by category</p>
+      <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="q" placeholder="Search vendors" aria-label="Search vendors"></label>
+      <div class="chips" id="chips">
+        <button type="button" data-f="all" class="on">All</button>
+        <button type="button" data-f="unread">Unread</button>
+        <button type="button" data-f="quotes">Quotes</button>
+        <button type="button" data-f="booked">Booked</button>
+      </div>
+    </div>
+    <div class="scroll" id="list"></div>
+  </div>
+
+  <div class="thread" id="thread"></div>
+  <nav class="bottom-nav" id="bottomNav"></nav>
+</section>
+
+<!-- Vendor email -->
+<section class="screen" id="s-email" aria-label="Vendor's email">
+  <div class="email-wrap">
+    <p class="explain"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span>This is what lands in the vendor's normal inbox when a couple messages them. They don't need a Brixia account to reply.</span></p>
+    <div class="mail" id="mail"></div>
+  </div>
+</section>
+
+<!-- Vendor reply page -->
+<section class="screen" id="s-reply" aria-label="Vendor reply page"></section>
+
+<!-- Claim profile -->
+<section class="screen" id="s-claim" aria-label="Claim profile"></section>
+
+<!-- Vendor profile -->
+<section class="screen app-screen" id="s-profile" aria-label="Vendor profile">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="vbiz"><small>Vendor account</small><b>Petal and Stem Studio</b><span class="ver"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Verified florist</span></div>
+    <nav class="nav" id="pNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="hmain" id="pmain"></div>
+</section>
+
+<!-- Vendor inbox -->
+<section class="screen app-screen" id="s-vinbox" aria-label="Vendor inbox">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="vbiz"><small>Vendor account</small><b>Petal and Stem Studio</b><span class="ver"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Verified florist</span></div>
+    <nav class="nav" id="vNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="list">
+    <div class="list-h">
+      <h1>Your couples</h1>
+      <p id="vListSub">Every inquiry, grouped by stage</p>
+      <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="vq" placeholder="Search couples" aria-label="Search couples"></label>
+      <div class="chips" id="vchips">
+        <button type="button" data-vf="all" class="on">All</button>
+        <button type="button" data-vf="turn">Your turn</button>
+        <button type="button" data-vf="booked">Booked</button>
+      </div>
+    </div>
+    <div class="scroll" id="vlist"></div>
+  </div>
+  <div class="thread" id="vthread"></div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => '$' + n.toLocaleString('en-US');
+
+const ICON = {
+  venue: '<path d="M4 20V10.5L12 4l8 6.5V20"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20"/><path d="M3 20h18"/>',
+  photo: '<rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/>',
+  florist: '<circle cx="12" cy="9" r="2"/><path d="M12 13.5V21"/><path d="M12 7c-1.6-3.2 1.6-4.4 2.4-2.3.6 1.6-.6 2.6-2.4 2.3zM14 9c3.2-1.6 4.4 1.6 2.3 2.4-1.6.6-2.6-.6-2.3-2.4zM12 11c1.6 3.2-1.6 4.4-2.4 2.3-.6-1.6.6-2.6 2.4-2.3zM10 9C6.8 10.6 5.6 7.4 7.7 6.6c1.6-.6 2.6.6 2.3 2.4z"/>',
+  catering: '<path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10"/><path d="M17 21V3c-2.2 1.2-3 4-3 7.5h3"/>',
+  music: '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  beauty: '<path d="M14.5 3.5l6 6-9 9a3 3 0 0 1-4.2 0l-1.8-1.8a3 3 0 0 1 0-4.2z"/><path d="M3.5 20.5c.8-2.4 2.4-3.5 4-3.5"/>',
+  home: '<path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z"/>',
+  inbox: '<path d="M4 5.5h16v10.5H9l-5 4z"/>',
+  explore: '<circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  plans: '<path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/>',
+  chev: '<path d="M6 9l6 6 6-6"/>',
+  send: '<path d="M4 12l16-8-6 16-2.5-6.5z"/>',
+  clip: '<path d="M20 11.5l-7.8 7.8a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/>',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  back: '<path d="M15 5l-7 7 7 7"/>',
+  doc: '<path d="M7 3.5h7l4 4v13H6v-17z"/><path d="M9.5 12h5M9.5 15.5h5"/>',
+  bell: '<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  share: '<path d="M8 12h8M12 8l4 4-4 4"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/>',
+  image: '<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M20 16l-5-5-8 8"/>',
+  officiant: '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/>',
+  cake: '<path d="M4 20h16M5 20v-6h14v6M7 14v-3h10v3M12 11V8"/><path d="M12 5.5c.9 0 1.3-.9 0-2.2-1.3 1.3-.9 2.2 0 2.2z"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  archive: '<rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5v11h14v-11M10 12.5h4"/>'
+};
+const ic = (n, extra = '') => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" ${extra}>${ICON[n]}</svg>`;
+
+const CATS = [
+  { id: 'venue', name: 'Venue', about: 'their venue' },
+  { id: 'photo', name: 'Photographer', about: 'photography' },
+  { id: 'florist', name: 'Florist', about: 'flowers' },
+  { id: 'catering', name: 'Catering', about: 'catering' },
+  { id: 'music', name: 'DJ and music', about: 'music' },
+  { id: 'beauty', name: 'Hair and makeup', about: 'hair and makeup' },
+  { id: 'officiant', name: 'Officiant', about: 'an officiant' },
+  { id: 'cake', name: 'Cake and desserts', about: 'cake and desserts' }
+];
+
+const SEED = () => [
+  { id: 't1', cat: 'venue', vendor: 'Harborline Loft', av: ['#C9D2E6', '#8E9EC4'], status: 'booked', unread: 0, onBrixia: true, email: 'events@harborlineloft.com', msgs: [
+    { from: 'vendor', text: 'Thanks for touring the space! June 12 is yours. The contract is attached.', when: 'Sep 20' },
+    { from: 'me', text: 'Signed and sent back. So excited!', when: 'Sep 21' },
+    { from: 'vendor', text: 'Wonderful. Your coordinator will reach out about 8 weeks before the date.', when: 'Oct 2' } ] },
+  { id: 't2', cat: 'venue', vendor: 'The Glasshouse on Kent', av: ['#D7D0C4', '#A99C8A'], status: 'archived', unread: 0, onBrixia: false, email: 'hello@glasshouseonkent.com', msgs: [
+    { from: 'me', text: 'Hi! Is June 12, 2027 available?', when: 'Sep 8' },
+    { from: 'vendor', text: "Unfortunately we're booked that weekend. Best of luck!", when: 'Sep 9', via: true } ] },
+  { id: 't3', cat: 'photo', vendor: 'Lens and Light Studio', av: ['#B9C3DA', '#8C9BC0'], status: 'quote', unread: 1, onBrixia: true, email: 'studio@lensandlight.com', msgs: [
+    { from: 'me', text: "Hi! We're getting married June 12 at Harborline Loft. Are you available, and what do your packages look like?", when: 'Oct 3' },
+    { from: 'vendor', text: 'Congrats! June 12 is open. I put together a quote for 8 hours with a second shooter.', when: 'Yesterday' },
+    { from: 'vendor', type: 'quote', when: 'Yesterday', quote: { title: 'Photography quote', lines: [['8 hours of coverage', 3900], ['Second shooter', 600], ['Engagement session', 300]], deposit: 1200, due: 'May 12, 2027', valid: 'Oct 30' } } ] },
+  { id: 't4', cat: 'photo', vendor: 'Hazel Ward Photography', av: ['#D8C3D6', '#A98EB0'], status: 'waiting', unread: 0, onBrixia: false, email: 'hazel@hazelwardphoto.com', msgs: [
+    { from: 'me', text: 'Hi Hazel! Are you available on June 12, 2027 in Brooklyn?', when: 'Oct 5' } ] },
+  { id: 't5', cat: 'florist', vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], status: 'needs', unread: 1, onBrixia: false, email: 'hello@petalandstem.com', msgs: [
+    { from: 'me', text: "Hi! We're planning a June 12 wedding at Harborline Loft for about 120 guests. We'd love a soft, garden feel. Are you available?", when: 'Oct 6' },
+    { from: 'vendor', text: "Congratulations! We're free on June 12 and we love a garden look. Could you share a few inspiration photos and a rough budget for florals?", when: '9:12 AM', via: true } ] },
+  { id: 't6', cat: 'florist', vendor: 'Wildbloom Florals', av: ['#DCE6D2', '#9DB394'], status: 'waiting', unread: 0, onBrixia: false, email: 'orders@wildbloomflorals.com', msgs: [
+    { from: 'me', text: 'Hi! Do you have June 12, 2027 open? About 120 guests in Brooklyn.', when: 'Oct 6' } ] },
+  { id: 't7', cat: 'catering', vendor: 'Saffron Table Catering', av: ['#F1DDB8', '#D2A867'], status: 'quote', unread: 0, onBrixia: true, email: 'events@saffrontable.com', msgs: [
+    { from: 'me', text: "We'd love a family-style dinner for about 120. Could you send a quote?", when: 'Oct 1' },
+    { from: 'vendor', type: 'quote', when: 'Oct 4', quote: { title: 'Catering quote', lines: [['Family-style dinner, 120 guests', 9600], ['Cocktail hour passed bites', 2400], ['Staffing and rentals', 1800]], deposit: 3450, due: 'Apr 12, 2027', valid: 'Nov 1' } } ] },
+  { id: 't8', cat: 'music', vendor: 'Night Shift Sound', av: ['#C7C9E8', '#8B8FC8'], status: 'waiting', unread: 0, onBrixia: false, email: 'book@nightshiftsound.com', msgs: [
+    { from: 'me', text: 'Hi! Do you have June 12 open? The reception runs 6 to 11 pm.', when: 'Oct 8' } ] }
+];
+
+let S;
+function reset() {
+  S = { threads: SEED().map(t => t.id === 't5' ? { ...t, unread: 0 } : t), sel: 't5', filter: 'all', q: '', open: new Set(['photo', 'florist']), showArch: new Set(), starred: new Set(['t3', 't4', 't5', 't6', 't7']), mailThread: 't5', replySent: false, fresh: null,
+    cover: 0, coverImg: null, menu: false,
+    todos: [
+      { id: 's1', t: 'Book hair and makeup', due: 'Most couples book by Jan 2027', suggest: true },
+      { id: 's2', t: 'Send save the dates', due: 'By Dec 12' },
+      { id: 's3', t: 'Start the guest list', done: true }
+    ],
+    autoSeen: [], adding: false, addErr: '', modal: null,
+    activity: [
+      { i: 'inbox', t: 'Petal and Stem Studio replied', w: '9:12 AM' },
+      { i: 'star', t: 'Daniel shortlisted Hazel Ward Photography', w: 'Yesterday' },
+      { i: 'doc', t: 'Lens and Light Studio sent a quote', w: 'Yesterday' },
+      { i: 'venue', t: 'Harborline Loft: your coordinator reaches out 8 weeks before', w: 'Oct 2' }
+    ] };
+}
+reset();
+
+const T = id => S.threads.find(t => t.id === id);
+const catName = id => CATS.find(c => c.id === id).name;
+const initials = name => name.split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join('');
+const avatar = (t, sm) => `<span class="av${sm ? ' sm' : ''}" style="background:linear-gradient(140deg,${t.av[0]},${t.av[1]})" aria-hidden="true">${esc(initials(t.vendor))}</span>`;
+const STATUS = { booked: ['booked', 'Booked'], quote: ['qin', 'Quote in'], needs: ['needs', 'Needs reply'], waiting: ['waiting', 'Waiting on vendor'] };
+const total = q => q.lines.reduce((a, l) => a + l[1], 0);
+const lastMsg = t => t.msgs.at(-1);
+const preview = t => { const m = lastMsg(t); if (!m) return ''; if (m.type === 'quote') return m.accepted ? 'Quote accepted' : `Sent you a quote for ${money(total(m.quote))}`; return (m.from === 'me' ? 'You: ' : '') + m.text; };
+const hasQuote = t => t.msgs.some(m => m.type === 'quote');
+
+function catState(cid) {
+  const ts = S.threads.filter(t => t.cat === cid && t.status !== 'archived');
+  const booked = ts.find(t => t.status === 'booked');
+  if (booked) return { key: 'booked', label: 'Booked', booked };
+  if (ts.some(t => t.status === 'needs')) return { key: 'needs', label: 'Needs reply' };
+  if (ts.some(t => t.status === 'quote')) return { key: 'qin', label: 'Quote in' };
+  if (ts.length) return { key: 'waiting', label: 'Messaging' };
+  return { key: 'todo', label: 'To do' };
+}
+
+function matches(t) {
+  if (S.q && !t.vendor.toLowerCase().includes(S.q.toLowerCase())) return false;
+  if (S.filter === 'unread') return t.unread > 0;
+  if (S.filter === 'quotes') return hasQuote(t) && t.status !== 'archived';
+  if (S.filter === 'booked') return t.status === 'booked';
+  return true;
+}
+
+function navHtml(active, side) {
+  const unread = S.threads.reduce((a, t) => a + t.unread, 0);
+  const items = [['home', 'Home'], ['inbox', 'Inbox'], ['explore', 'Explore'], ['plans', 'Plans']];
+  return items.map(([k, l]) => side
+    ? `<button type="button" class="${k === active ? 'on' : ''}" data-nav="${k}" aria-label="${l}">${ic(k)}<span>${l}</span>${k === 'inbox' && unread ? `<b class="count">${unread}</b>` : ''}</button>`
+    : `<button type="button" class="${k === active ? 'on' : ''}" data-nav="${k}">${ic(k)}${l}</button>`).join('');
+}
+function renderNav() {
+  const unread = S.threads.reduce((a, t) => a + t.unread, 0);
+  $('sideNav').innerHTML = navHtml('inbox', true);
+  $('bottomNav').innerHTML = navHtml('inbox', false);
+  const n = S.threads.filter(t => t.status !== 'archived').length;
+  $('listSub').textContent = `${n} conversations in ${CATS.filter(c => S.threads.some(t => t.cat === c.id && t.status !== 'archived')).length} categories${unread ? `, ${unread} unread` : ''}`;
+}
+
+function renderList() {
+  let h = '';
+  const needs = S.threads.filter(t => (t.status === 'needs' || (t.status === 'quote' && !t.msgs.some(m => m.accepted))) && matches(t));
+  if (needs.length && S.filter === 'all') {
+    h += `<div class="needs-strip"><div class="needs-h">${ic('bell')}Needs you · ${needs.length}</div>` +
+      needs.map(t => `<button type="button" class="nrow${t.id === S.sel ? ' on' : ''}" data-open="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(catName(t.cat))}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review quote'}</span></button>`).join('') + '</div>';
+  }
+  let shown = 0;
+  CATS.forEach(c => {
+    const all = S.threads.filter(t => t.cat === c.id);
+    const active = all.filter(t => t.status !== 'archived' && matches(t));
+    const arch = all.filter(t => t.status === 'archived' && matches(t));
+    if (!active.length && !arch.length) return;
+    if (S.filter !== 'all' && !active.length) return;
+    if (S.q && !active.length && !arch.length) return;
+    shown++;
+    const st = catState(c.id);
+    const unread = active.reduce((a, t) => a + t.unread, 0);
+    const open = S.open.has(c.id) || (S.q && active.length);
+    const sub = st.booked ? `Booked with ${st.booked.vendor}` : active.length ? `${active.length} chat${active.length > 1 ? 's' : ''}${unread ? ` · ${unread} unread` : ''}` : 'No vendors yet';
+    h += `<div class="cat${open ? ' open' : ''}${st.key === 'booked' ? ' is-booked' : ''}">
+      <button type="button" class="cat-h" data-cat="${c.id}" aria-expanded="${open ? 'true' : 'false'}">
+        <span class="cic">${ic(st.key === 'booked' ? 'check' : c.id)}</span>
+        <span class="tx"><b>${c.name}</b><span class="sub">${esc(sub)}</span></span>
+        ${unread ? '<span class="dot" aria-label="Unread"></span>' : ''}
+        <span class="pill ${st.key}">${st.label}</span>
+        <svg class="i chev" viewBox="0 0 24 24" aria-hidden="true">${ICON.chev}</svg>
+      </button>
+      <div class="cat-b">` +
+      (active.length ? active.map(threadRow).join('') : `<div class="empty-cat"><span>No ${c.name.toLowerCase()} vendors yet.</span></div>`) +
+      (arch.length && S.filter === 'all' ? `<button type="button" class="arch" data-arch="${c.id}">${S.showArch.has(c.id) ? 'Hide' : 'Show'} archived (${arch.length})</button>` + (S.showArch.has(c.id) ? arch.map(threadRow).join('') : '') : '') +
+      `</div></div>`;
+  });
+  if (!shown) h += `<div class="none">No conversations match. Try another filter.</div>`;
+  $('list').innerHTML = h;
+}
+
+function threadRow(t) {
+  const st = STATUS[t.status];
+  return `<button type="button" class="trow${t.id === S.sel ? ' on' : ''}${t.unread ? ' unread' : ''}${t.status === 'archived' ? ' archived' : ''}" data-open="${t.id}">
+    ${avatar(t, true)}
+    <span class="tx"><span class="top"><b>${esc(t.vendor)}</b><time>${esc(lastMsg(t).when)}</time></span><span class="prev">${esc(preview(t))}</span></span>
+    <span class="meta">${t.unread ? '<span class="dot"></span>' : ''}${st ? `<span class="pill ${st[0]}">${st[1]}</span>` : ''}</span>
+  </button>`;
+}
+
+function quoteCard(t, m, mi, vendorView) {
+  const q = m.quote, tot = total(q);
+  return `<div class="quote">
+    <div class="q-h">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(q.title)}</span></span><span class="pill waiting">Valid until ${esc(q.valid)}</span></div>
+    <div class="q-l">${q.lines.map(l => `<div><span>${esc(l[0])}</span><span>${money(l[1])}</span></div>`).join('')}<div class="tot"><span>Total</span><span>${money(tot)}</span></div></div>
+    <div class="q-s"><div><span>Deposit, due on booking</span><b>${money(q.deposit)}</b></div><div><span>Balance, due ${esc(q.due)}</span><b>${money(tot - q.deposit)}</b></div></div>
+    ${m.accepted ? `<div class="q-done">${ic('check')}Accepted. Paying deposits in Brixia is coming soon.</div>` : vendorView ? '' : `<div class="q-a"><button type="button" class="btn" data-accept="${t.id}:${mi}">Accept quote</button><button type="button" class="btn line" data-sugg="Quick question about the quote:">Ask a question</button></div>`}
+  </div>`;
+}
+
+function renderMsgs(t, vendorView, showNote = true) {
+  let h = '';
+  if (!vendorView && !t.onBrixia) h += `<div class="note">${esc(t.vendor)} isn't on Brixia yet. They get your messages by email and reply through a link.</div>`;
+  if (vendorView && showNote) h += `<div class="note">Maya and Daniel are planning on Brixia. Your replies go straight to their inbox.</div>`;
+  t.msgs.forEach((m, mi) => {
+    const mine = vendorView ? m.from === 'vendor' : m.from === 'me';
+    const fresh = S.fresh === `${t.id}:${mi}` ? ' fresh' : '';
+    const ca = t.coupleAv || ['#43537A', '#C3979C'];
+    const who = mine ? '' : vendorView ? `<span class="av sm" style="background:linear-gradient(140deg,${ca[0]},${ca[1]})" aria-hidden="true">${esc(t.coupleInit || 'MD')}</span>` : avatar(t, true);
+    if (m.type === 'quote') { h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div>${quoteCard(t, m, mi, vendorView)}<div class="when">${esc(m.when)}</div></div></div>`; return; }
+    const via = !vendorView && m.from === 'vendor' && m.via ? '<span class="via">via email link</span>' : '';
+    h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div><div class="bub">${esc(m.text)}</div><div class="when">${esc(m.when)}${via}</div></div></div>`;
+  });
+  return h;
+}
+
+function renderThread() {
+  const t = T(S.sel);
+  if (!t) { $('thread').innerHTML = `<div class="empty-th"><div><b>Pick a conversation</b>Every vendor chat lives in its category on the left.</div></div>`; return; }
+  const st = STATUS[t.status];
+  const sugg = t.status === 'needs' && t.id === 't5' && t.msgs.length === 2 ? ["Sure! We're thinking around $4,000. I'll send a few photos we love tonight.", 'Could you send us a quote?'] :
+    t.status === 'waiting' ? ['Just following up on our date. Any update?'] : t.status === 'booked' ? ['Quick question about the timeline'] : t.status === 'quote' ? ['Could we adjust the hours?', 'Is the deposit refundable?'] : ['Could you send us a quote?', 'Are you available June 12?'];
+  $('thread').innerHTML = `
+    <div class="th-h">
+      <button type="button" class="back" data-back aria-label="Back to inbox">${ic('back')}</button>
+      ${avatar(t)}
+      <div class="who"><b>${esc(t.vendor)}</b><span class="sub">${st ? `<span class="pill ${st[0]}">${st[1]}</span>` : '<span class="pill todo">Archived</span>'}<span>${esc(catName(t.cat))} · ${t.onBrixia ? 'On Brixia' : 'Replies by email link'}</span></span></div>
+      <div class="acts">
+        <button type="button" class="btn sm line${S.starred.has(t.id) ? ' starred' : ''}" data-star="${t.id}">${ic('star')}${S.starred.has(t.id) ? 'Shortlisted' : 'Shortlist'}</button>
+        ${t.status !== 'booked' ? `<button type="button" class="btn sm line" data-reqquote="${t.id}">${ic('doc')}Request quote</button><button type="button" class="btn sm" data-book="${t.id}">${ic('check')}Mark booked</button>` : ''}
+      </div>
+    </div>
+    <div class="msgs" id="msgs">${renderMsgs(t, false)}</div>
+    <div class="compose">
+      <div class="sugg">${sugg.map(s => `<button type="button" data-sugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+      <form class="box" id="sendForm">
+        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        <textarea id="msgIn" rows="1" placeholder="Message ${esc(t.vendor)}" aria-label="Message"></textarea>
+        <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
+      </form>
+    </div>`;
+  const box = $('msgs'); box.scrollTop = box.scrollHeight;
+}
+
+function renderInbox() { renderNav(); renderList(); renderThread(); }
+
+function openThread(id) {
+  const t = T(id); S.sel = id; t.unread = 0; S.open.add(t.cat);
+  if (t.status === 'archived') S.showArch.add(t.cat);
+  $('s-inbox').classList.add('thread-open');
+  renderInbox();
+  const row = document.querySelector(`#list .trow[data-open="${id}"]`);
+  if (row) { row.classList.add('flash'); row.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+}
+
+/* ---------- Vendor email ---------- */
+function renderEmail() {
+  const t = T(S.mailThread);
+  const m = [...t.msgs].reverse().find(x => x.from === 'me');
+  $('mail').innerHTML = `
+    <div class="mail-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span style="margin-left:8px">Inbox · ${esc(t.email)}</span></div>
+    <div class="mail-meta">
+      <h2>Maya and Daniel sent you a message</h2>
+      <div class="r"><b>Brixia</b><span>&lt;messages@brixiaco.com&gt;</span></div>
+      <div class="r"><span>to</span><b>${esc(t.email)}</b><span style="margin-left:auto">${esc(m.when)}</span></div>
+    </div>
+    <div class="mail-body">
+      <div class="em">
+        <div class="em-top"><span class="mark">${ic('check').replace(ICON.check, '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/>')}</span>Brixia</div>
+        <div class="em-in">
+          <h3>New message from Maya and Daniel</h3>
+          <p class="lead">They're planning their wedding on Brixia and reached out to ${esc(t.vendor)} about ${esc(CATS.find(c => c.id === t.cat).about)}.</p>
+          <div class="facts"><span>June 12, 2027</span><span>Brooklyn</span><span>About 120 guests</span><span>Venue booked</span></div>
+          <div class="em-q">${esc(m.text)}</div>
+          <button type="button" class="em-cta" data-go="reply">Reply to Maya and Daniel</button>
+          <p class="em-small">No account needed. Your reply goes straight to their inbox.</p>
+        </div>
+        <div class="em-foot">Is this your business? <a href="#" data-go="claim">Claim your free Brixia profile</a> to manage every inquiry in one place.<br>Don't want messages from couples on Brixia? <a href="#" data-toast="Every email will include a one-click opt out.">Stop these emails</a>.</div>
+      </div>
+    </div>`;
+}
+
+/* ---------- Vendor reply page ---------- */
+function renderReply() {
+  const t = T(S.mailThread);
+  const sugg = ["We're available! Happy to put together a quote.", "Sorry, we're already booked that date.", 'Could we set up a quick call this week?'];
+  $('s-reply').innerHTML = `
+    <div class="vtop">
+      <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+      <span class="as">Replying as <b>${esc(t.vendor)}</b> · ${esc(t.email)}</span>
+      ${VS.claimed ? '<button type="button" class="btn sm blush" data-go="vinbox">Open my inbox</button>' : '<button type="button" class="btn sm blush" data-go="claim">Claim your free profile</button>'}
+    </div>
+    <div class="vgrid">
+      <div class="vmain">
+        <div class="vmain-h"><h1>Maya and Daniel</h1><p>${esc(catName(t.cat))} inquiry · June 12, 2027 · Brooklyn</p></div>
+        <div class="msgs" id="vmsgs">${renderMsgs(t, true)}</div>
+        <div class="sent${S.replySent ? ' show' : ''}" id="sentBanner">${ic('check')}<span>Sent. Maya and Daniel will see your reply in their Brixia inbox.</span><span class="acts2">${MODE === 'vendor' ? '' : `<button type="button" class="btn sm line" data-go="inbox" data-reveal="${t.id}">See the couple's inbox</button>`}${VS.claimed ? '' : '<button type="button" class="btn sm" data-go="claim">Keep all your couples in one inbox</button>'}</span></div>
+        <div class="compose">
+          <div class="sugg">${sugg.map(s => `<button type="button" data-vsugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+          <form class="box" id="vForm">
+            <textarea id="vIn" rows="2" placeholder="Write your reply to Maya and Daniel" aria-label="Your reply"></textarea>
+            <button type="submit" class="send" aria-label="Send reply">${ic('send')}</button>
+          </form>
+          <div class="vrow"><button type="button" class="btn sm line" data-toast="The quote builder comes in Phase 5.">${ic('doc')}Send a quote</button><span class="hint">Replies also work from your phone.</span></div>
+        </div>
+      </div>
+      <div class="aside">
+        <div class="acard">
+          <h3>Their wedding</h3>
+          <div class="det">
+            <div><span>Date</span><b>June 12, 2027</b></div>
+            <div><span>Location</span><b>Brooklyn, NY</b></div>
+            <div><span>Venue</span><b>Harborline Loft (booked)</b></div>
+            <div><span>Guests</span><b>About 120</b></div>
+            <div><span>Style</span><b>Soft, garden feel</b></div>
+          </div>
+        </div>
+        <div class="acard claim">
+          <h3>Free for vendors</h3>
+          <p>Claim your profile to keep every couple's inquiry in one place.</p>
+          <ul>
+            <li>${ic('check')}Every inquiry comes with the date and guest count</li>
+            <li>${ic('check')}Send official quotes couples accept in one tap</li>
+            <li>${ic('check')}Get paid deposits through Brixia (coming soon)</li>
+          </ul>
+          <button type="button" class="btn blush" data-go="claim">Claim ${esc(t.vendor)}</button>
+        </div>
+      </div>
+    </div>`;
+  const box = $('vmsgs'); if (box) box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- Screens ---------- */
+function go(screen) {
+  document.querySelector('.toast')?.remove();
+  document.body.dataset.screen = screen;
+  const tab = screen === 'claim' ? 'vinbox' : screen;
+  if (screen === 'profile' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
+  if (screen === 'profile') renderProfile();
+  document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
+  if (screen === 'vinbox' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
+  if (screen === 'inbox') renderInbox();
+  if (screen === 'home') renderHome();
+  if (screen === 'claim') renderClaim();
+  if (screen === 'vinbox') renderVInbox();
+  if (screen === 'email') renderEmail();
+  if (screen === 'reply') renderReply();
+  window.scrollTo(0, 0);
+}
+
+let toastTimer;
+function toast(msg, action) {
+  document.querySelector('.toast')?.remove();
+  const el = document.createElement('div');
+  el.className = 'toast'; el.setAttribute('role', 'status');
+  el.innerHTML = `<span>${esc(msg)}</span>` + (action ? `<button type="button">${esc(action.label)}</button>` : '');
+  if (action) el.querySelector('button').addEventListener('click', () => { el.remove(); action.fn(); });
+  document.body.appendChild(el);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.remove(), action ? 6000 : 3000);
+}
+
+function sendCouple(text) {
+  const t = T(S.sel); if (!t || !text.trim()) return;
+  t.msgs.push({ from: 'me', text: text.trim(), when: 'Just now' });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (t.status === 'needs' || t.status === 'quote') t.status = t.status === 'quote' ? 'quote' : 'waiting';
+  S.mailThread = t.id; S.replySent = false;
+  renderInbox();
+  toast(t.onBrixia ? `Sent to ${t.vendor}.` : `Sent. ${t.vendor} gets it by email with a reply link.`, MODE === 'couple' ? null : { label: "See the vendor's email", fn: () => go('email') });
+}
+
+function sendVendor(text) {
+  const t = T(S.mailThread); if (!text.trim()) return;
+  t.msgs.push({ from: 'vendor', text: text.trim(), when: 'Just now', via: !t.onBrixia });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (t.status !== 'booked') t.status = 'needs';
+  t.unread += 1; S.replySent = true;
+  logAct('inbox', `${t.vendor} replied`);
+  renderReply();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('button, a'); if (!el) return;
+  const d = el.dataset;
+  if (d.go) { if (d.reveal) { const t = T(d.reveal); S.open.add(t.cat); S.sel = t.id; } go(d.go); if (d.reveal) { T(d.reveal).unread = 0; renderInbox(); } return; }
+  if (d.toast) { e.preventDefault(); toast(d.toast); return; }
+  if (vClick(el, d)) return;
+  if (pClick(el, d)) return;
+  if (d.nav) { if (d.nav === 'home') go('home'); else if (d.nav === 'inbox') { $('s-inbox').classList.remove('thread-open'); go('inbox'); } else toast(`${d.nav[0].toUpperCase() + d.nav.slice(1)} is a later screen.`); return; }
+  if (hClick(el, d)) return;
+  if (d.cat) { S.open.has(d.cat) ? S.open.delete(d.cat) : S.open.add(d.cat); renderList(); return; }
+  if (d.arch) { S.showArch.has(d.arch) ? S.showArch.delete(d.arch) : S.showArch.add(d.arch); renderList(); return; }
+  if (d.open) { S.fresh = null; openThread(d.open); return; }
+  if (d.f) { S.filter = d.f; document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b === el)); renderList(); return; }
+  if (el.hasAttribute('data-back')) { el.closest('.app-screen').classList.remove('thread-open'); return; }
+  if (d.star) { S.starred.has(d.star) ? S.starred.delete(d.star) : S.starred.add(d.star); renderThread(); return; }
+  if (d.book) { const t = T(d.book); t.status = 'booked'; logAct('check', `You booked ${t.vendor}`); S.fresh = null; renderInbox(); toast(`${catName(t.cat)} booked with ${t.vendor}.`); return; }
+  if (d.reqquote) { $('msgIn').value = 'Could you send us a quote for June 12?'; $('msgIn').focus(); return; }
+  if (d.accept) { const [tid, mi] = d.accept.split(':'); const t = T(tid); t.msgs[+mi].accepted = true; t.status = 'booked'; logAct('check', `You accepted ${t.vendor}'s quote`); S.fresh = null; renderInbox(); toast(`Quote accepted. ${catName(t.cat)} is booked.`); return; }
+  if (d.sugg !== undefined) { const i = $('msgIn'); i.value = d.sugg; i.focus(); return; }
+  if (d.vsugg !== undefined) { const i = $('vIn'); i.value = d.vsugg; i.focus(); return; }
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'sendForm') sendCouple($('msgIn').value);
+  if (e.target.id === 'vForm') sendVendor($('vIn').value);
+  if (e.target.id === 'vinForm') sendVInbox($('vinIn').value);
+  if (e.target.id === 'claimForm') claimSubmit();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && (e.target.id === 'msgIn' || e.target.id === 'vIn' || e.target.id === 'vinIn')) { e.preventDefault(); e.target.form.requestSubmit(); }
+});
+$('q').addEventListener('input', e => { S.q = e.target.value; renderList(); });
+$('reset').addEventListener('click', () => { reset(); resetV(); $('hmain').scrollTop = 0; $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go(START); });
+
+/* ---------- Vendor side: claim + inbox ---------- */
+let VS;
+const VSEED = () => [
+  { id: 'c1', link: 't5', names: 'Maya and Daniel', init: 'MD', av: ['#43537A', '#C3979C'], date: 'June 12, 2027', short: 'Jun 12, 2027', area: 'Brooklyn', guests: 120, style: 'Soft, garden feel', budget: 'Around $4,000', stage: 'talk', unread: 0 },
+  { id: 'c2', names: 'Priya and Sam', init: 'PS', av: ['#6E86B8', '#B6C4E2'], date: 'September 18, 2027', short: 'Sep 18, 2027', area: 'Queens', guests: 90, style: 'Bright and colorful', budget: 'Not shared yet', stage: 'new', unread: 1, msgs: [
+    { from: 'me', text: "Hi! We're getting married September 18, 2027 in Astoria with about 90 guests. We love bright, colorful flowers. Are you available?", when: '8:40 AM' } ] },
+  { id: 'c3', names: 'Chloe and Marcus', init: 'CM', av: ['#5B4A6E', '#A58BB8'], date: 'October 23, 2027', short: 'Oct 23, 2027', area: 'Manhattan', guests: 140, style: 'Moody, candlelit', budget: '$6,000 to $8,000', stage: 'new', unread: 1, msgs: [
+    { from: 'me', text: 'Hello! Do you do ceremony and reception florals for about 140 guests? Our date is October 23, 2027.', when: 'Yesterday' } ] },
+  { id: 'c4', names: 'Jordan and Alex', init: 'JA', av: ['#3F6B6A', '#8DB8B0'], date: 'May 2, 2027', short: 'May 2, 2027', area: 'Manhattan', guests: 150, style: 'Modern, all white', budget: 'Around $5,000', stage: 'quoted', unread: 0, msgs: [
+    { from: 'me', text: 'Could you send a quote for a ceremony arch, 15 centerpieces and two bouquets?', when: 'Oct 2' },
+    { from: 'vendor', type: 'quote', when: 'Oct 4', quote: { title: 'Florals quote', lines: [['Ceremony arch', 1800], ['15 centerpieces', 2700], ['Two bouquets and boutonnieres', 700]], deposit: 1300, due: 'Apr 2, 2027', valid: 'Oct 31' } } ] },
+  { id: 'c5', names: 'Emma and Luis', init: 'EL', av: ['#8A6A3E', '#D2B07C'], date: 'April 10, 2027', short: 'Apr 10, 2027', area: 'Brooklyn', guests: 80, style: 'Wildflower, relaxed', budget: '$3,500', stage: 'booked', unread: 0, msgs: [
+    { from: 'vendor', text: "You're all set for April 10! We'll do a final walkthrough in March.", when: 'Sep 28' },
+    { from: 'me', text: 'Perfect, thank you so much!', when: 'Sep 28' } ] }
+];
+const STAGES = [
+  { id: 'new', name: 'New inquiries', icon: 'bell' },
+  { id: 'talk', name: 'In conversation', icon: 'inbox' },
+  { id: 'quoted', name: 'Quote sent', icon: 'doc' },
+  { id: 'booked', name: 'Booked', icon: 'check' }
+];
+function resetV() { VS = { couples: VSEED(), sel: 'c1', open: new Set(['new', 'talk']), filter: 'all', q: '', claimed: false, step: 1, profile: VPSEED(), editing: false, draft: null, pview: 'vendor', pErr: '' }; }
+resetV();
+
+const C = id => VS.couples.find(c => c.id === id);
+const vt = c => c.link ? Object.assign(T(c.link), { coupleInit: c.init, coupleAv: c.av }) : { id: c.id, vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], onBrixia: true, cat: 'florist', msgs: c.msgs, coupleInit: c.init, coupleAv: c.av };
+const cMsgs = c => vt(c).msgs;
+const yourTurn = c => { const m = cMsgs(c).at(-1); return m && m.from === 'me' && c.stage !== 'booked'; };
+const cUnread = c => c.link ? (yourTurn(c) && VS.sel !== c.id ? 1 : 0) : c.unread;
+const cAv = c => `<span class="av sm" style="background:linear-gradient(140deg,${c.av[0]},${c.av[1]})" aria-hidden="true">${esc(c.init)}</span>`;
+const cPrev = c => { const m = cMsgs(c).at(-1); if (!m) return ''; if (m.type === 'quote') return `You sent a quote for ${money(total(m.quote))}`; return (m.from === 'vendor' ? 'You: ' : '') + m.text; };
+const vMatch = c => (!VS.q || c.names.toLowerCase().includes(VS.q.toLowerCase())) && (VS.filter === 'all' || (VS.filter === 'turn' && yourTurn(c)) || (VS.filter === 'booked' && c.stage === 'booked'));
+
+function renderClaim() {
+  const step = VS.step;
+  $('s-claim').innerHTML = `<form class="claim-card" id="claimForm" novalidate>
+    <div class="claim-top">
+      <div class="steps"><span class="on"></span><span class="${step === 2 ? 'on' : ''}"></span></div>
+      <h1>${step === 1 ? 'Claim Petal and Stem Studio' : 'Verify your email'}</h1>
+      <p>${step === 1 ? 'We set up your profile from your public info so couples can find you. Check it over, then verify your email.' : "We sent a 6-digit code to hello@petalandstem.com. Enter it to open your inbox."}</p>
+    </div>
+    <div class="claim-in">
+      ${step === 1 ? `
+        <div class="found">${ic('check')}<span>Found from your website and Instagram. Fix anything we got wrong.</span></div>
+        <div class="grid2">
+          <div class="fld"><label for="cf1">Business name</label><input id="cf1" value="Petal and Stem Studio"></div>
+          <div class="fld"><label for="cf2">Category</label><input id="cf2" value="Florist"></div>
+          <div class="fld"><label for="cf3">Areas you serve</label><input id="cf3" value="Brooklyn, Manhattan, Queens"></div>
+          <div class="fld"><label for="cf4">Typical price range</label><input id="cf4" value="$2,500 to $8,000"></div>
+          <div class="fld"><label for="cf5">Instagram</label><input id="cf5" value="@petalandstemstudio"></div>
+          <div class="fld"><label for="cf6">Business email</label><input id="cf6" value="hello@petalandstem.com"></div>
+        </div>
+        <div class="row"><button type="submit" class="btn">Looks right, continue</button></div>
+        <p class="small">Not your business? <button type="button" data-toast="We'd remove the profile or pass it to the right owner.">Let us know</button></p>` : `
+        <div class="fld code" id="codeFld"><label for="code">6-digit code</label><input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code"></div>
+        <div class="errmsg" id="codeErr" aria-live="polite"></div>
+        <div class="row"><button type="button" class="btn line" data-claimback>Back</button><button type="submit" class="btn">Verify and open my inbox</button></div>
+        <p class="small">Prototype: any 6 digits work. <button type="button" data-toast="A new code would be emailed.">Resend code</button></p>`}
+    </div>
+  </form>`;
+  setTimeout(() => (step === 2 ? $('code') : $('cf1'))?.focus(), 50);
+}
+
+function claimSubmit() {
+  if (VS.step === 1) { VS.step = 2; renderClaim(); return; }
+  const v = $('code').value.trim();
+  if (!/^\d{6}$/.test(v)) { $('codeErr').textContent = 'Enter the 6-digit code from your email.'; $('codeFld').classList.add('err'); $('code').focus(); return; }
+  VS.claimed = true; T('t5').onBrixia = true; VS.sel = 'c1';
+  go('vinbox');
+  toast("Profile claimed. Every couple who messages you lands here now.");
+}
+
+function vNavHtml(active) {
+  const turn = VS.couples.filter(yourTurn).length;
+  const items = [['inbox', 'Inbox'], ['calendar', 'Calendar'], ['quotes', 'Quotes'], ['profile', 'Profile']];
+  const icn = { inbox: 'inbox', calendar: 'plans', quotes: 'doc', profile: 'home' };
+  document.querySelectorAll('.vbiz b').forEach(b => { b.textContent = VS.profile.name; });
+  return items.map(([k, l]) => `<button type="button" class="${k === active ? 'on' : ''}" data-vnav="${l}" aria-label="${l}">${ic(icn[k])}<span>${l}</span>${k === 'inbox' && turn ? `<b class="count">${turn}</b>` : ''}</button>`).join('');
+}
+function renderVInbox() {
+  const turn = VS.couples.filter(yourTurn).length;
+  $('vNav').innerHTML = vNavHtml('inbox');
+  $('vListSub').textContent = `${VS.couples.length} couples${turn ? `, ${turn} waiting on you` : ''}`;
+  renderVList(); renderVThread();
+}
+
+function renderVList() {
+  let h = '';
+  const waiting = VS.couples.filter(c => yourTurn(c) && vMatch(c));
+  if (waiting.length && VS.filter === 'all') {
+    h += `<div class="needs-strip"><div class="needs-h">${ic('bell')}Your turn · ${waiting.length}</div>` + waiting.map(c => `<button type="button" class="nrow" data-vopen="${c.id}">${cAv(c)}<span class="tx"><b>${esc(c.names)}</b><span>${esc(c.short)} · ${c.guests} guests</span></span><span class="act">Reply</span></button>`).join('') + '</div>';
+  }
+  let shown = 0;
+  STAGES.forEach(st => {
+    const cs = VS.couples.filter(c => c.stage === st.id && vMatch(c));
+    if (!cs.length) return;
+    shown++;
+    const open = VS.open.has(st.id) || VS.q;
+    const w = cs.filter(yourTurn).length;
+    const sub = `${cs.length} couple${cs.length > 1 ? 's' : ''}${w ? ` · ${w} waiting on you` : ''}`;
+    h += `<div class="cat${open ? ' open' : ''}${st.id === 'booked' ? ' is-booked' : ''}">
+      <button type="button" class="cat-h" data-vgrp="${st.id}" aria-expanded="${open ? 'true' : 'false'}">
+        <span class="cic">${ic(st.icon)}</span>
+        <span class="tx"><b>${st.name}</b><span class="sub">${sub}</span></span>
+        ${w ? '<span class="dot" aria-label="Waiting on you"></span>' : ''}
+        <span class="count-b">${cs.length}</span>
+        <svg class="i chev" viewBox="0 0 24 24" aria-hidden="true">${ICON.chev}</svg>
+      </button>
+      <div class="cat-b">${cs.map(c => `<button type="button" class="trow${c.id === VS.sel ? ' on' : ''}${cUnread(c) ? ' unread' : ''}" data-vopen="${c.id}">
+        ${cAv(c)}
+        <span class="tx"><span class="top"><b>${esc(c.names)}</b><time>${esc(cMsgs(c).at(-1).when)}</time></span><span class="prev">${esc(cPrev(c))}</span></span>
+        <span class="meta">${cUnread(c) ? '<span class="dot"></span>' : ''}<span class="wd">${esc(c.short)}</span></span>
+      </button>`).join('')}</div></div>`;
+  });
+  if (!shown) h += '<div class="none">No couples match. Try another filter.</div>';
+  $('vlist').innerHTML = h;
+}
+
+function renderVThread() {
+  const c = C(VS.sel);
+  if (!c) { $('vthread').innerHTML = '<div class="empty-th"><div><b>Pick a couple</b>Every inquiry is grouped by stage on the left.</div></div>'; return; }
+  const t = vt(c);
+  const sugg = c.stage === 'new' ? ["Congratulations! We're available that date.", "Sorry, we're already booked that date."] : c.stage === 'booked' ? ['Looking forward to it!'] : ['Happy to put together a quote.', 'Could we set up a quick call?'];
+  $('vthread').innerHTML = `
+    <div class="th-h">
+      <button type="button" class="back" data-back aria-label="Back to couples">${ic('back')}</button>
+      ${cAv(c).replace('av sm', 'av')}
+      <div class="who"><b>${esc(c.names)}</b><span class="sub"><span class="wchips"><span>${esc(c.date)}</span><span>${esc(c.area)}</span><span>${c.guests} guests</span><span>${esc(c.style)}</span><span>Budget: ${esc(c.budget)}</span></span></span></div>
+      <div class="acts">
+        <button type="button" class="btn sm line" data-toast="The quote builder comes in Phase 5.">${ic('doc')}Send quote</button>
+        ${c.stage !== 'booked' ? `<button type="button" class="btn sm" data-vbook="${c.id}">${ic('check')}Mark booked</button>` : ''}
+      </div>
+    </div>
+    <div class="msgs" id="vinMsgs">${renderMsgs(t, true, false)}</div>
+    <div class="compose">
+      <div class="sugg">${sugg.map(x => `<button type="button" data-visugg="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+      <form class="box" id="vinForm">
+        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        <textarea id="vinIn" rows="1" placeholder="Message ${esc(c.names)}" aria-label="Message"></textarea>
+        <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
+      </form>
+    </div>`;
+  const box = $('vinMsgs'); box.scrollTop = box.scrollHeight;
+}
+
+function sendVInbox(text) {
+  const c = C(VS.sel); if (!c || !text.trim()) return;
+  const t = vt(c);
+  t.msgs.push({ from: 'vendor', text: text.trim(), when: 'Just now' });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (c.stage === 'new') c.stage = 'talk';
+  VS.open.add(c.stage);
+  if (c.link) { const ct = T(c.link); if (ct.status !== 'booked') ct.status = 'needs'; ct.unread += 1; logAct('inbox', `${ct.vendor} replied`); }
+  renderVInbox();
+  if (c.link && MODE === 'vendor') toast('Sent. Maya and Daniel see it in their Brixia inbox.');
+  else if (c.link) toast('Sent. Maya and Daniel see it in their Brixia inbox.', { label: "See the couple's inbox", fn: () => { S.sel = c.link; S.open.add(T(c.link).cat); T(c.link).unread = 0; go('inbox'); } });
+}
+
+function vClick(el, d) {
+  if (el.hasAttribute('data-claimback')) { VS.step = 1; renderClaim(); return true; }
+  if (d.vnav) { if (d.vnav === 'Inbox') { $('s-vinbox').classList.remove('thread-open'); go('vinbox'); } else if (d.vnav === 'Profile') go('profile'); else toast(`${d.vnav} is a later vendor screen.`); return true; }
+  if (d.vgrp) { VS.open.has(d.vgrp) ? VS.open.delete(d.vgrp) : VS.open.add(d.vgrp); renderVList(); return true; }
+  if (d.vopen) { const c = C(d.vopen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); S.fresh = null; $('s-vinbox').classList.add('thread-open'); renderVInbox(); const r = document.querySelector(`#vlist .trow[data-vopen="${c.id}"]`); if (r) { r.classList.add('flash'); r.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } return true; }
+  if (d.vf) { VS.filter = d.vf; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b === el)); renderVList(); return true; }
+  if (d.vbook) { const c = C(d.vbook); c.stage = 'booked'; VS.open.add('booked'); if (c.link) T(c.link).status = 'booked'; renderVInbox(); toast(`${c.names} moved to Booked.`); return true; }
+  if (d.visugg !== undefined) { const i = $('vinIn'); i.value = d.visugg; i.focus(); return true; }
+  return false;
+}
+$('vq').addEventListener('input', e => { VS.q = e.target.value; renderVList(); });
+
+/* ---------- Wedding home ---------- */
+const COVERS = [
+  'radial-gradient(ellipse at 20% 20%, rgba(243,207,204,.55), transparent 50%), radial-gradient(ellipse at 85% 80%, rgba(201,154,156,.6), transparent 55%), linear-gradient(135deg, #1A2340 0%, #3C4E78 55%, #8E7C96 100%)',
+  'radial-gradient(ellipse at 75% 25%, rgba(255,214,196,.55), transparent 50%), linear-gradient(135deg, #3A2B3C 0%, #8C6070 55%, #E2B4A6 100%)',
+  'radial-gradient(ellipse at 30% 75%, rgba(150,180,230,.45), transparent 55%), linear-gradient(135deg, #0E1426 0%, #22325A 60%, #4F6699 100%)',
+  'radial-gradient(ellipse at 70% 30%, rgba(236,232,208,.6), transparent 55%), linear-gradient(135deg, #2D3B36 0%, #5E7A6C 55%, #B9C6AE 100%)'
+];
+const BOOKBY = { photo: 'Nov 2026', catering: 'Nov 2026', florist: 'Dec 2026', music: 'Dec 2026', beauty: 'Jan 2027', officiant: 'Feb 2027', cake: 'Mar 2027' };
+function logAct(i, t) { S.activity.unshift({ i, t, w: 'Just now', fresh: true }); }
+const daysLeft = () => { const t = new Date(); t.setHours(12, 0, 0, 0); return Math.max(0, Math.round((new Date('2027-06-12T12:00:00') - t) / 864e5)); };
+const quoteOf = t => t.msgs.find(m => m.type === 'quote' && !m.accepted);
+const needsList = () => S.threads.filter(t => t.status === 'needs' || (t.status === 'quote' && quoteOf(t)));
+
+function tileInfo(c) {
+  const st = catState(c.id);
+  const ts = S.threads.filter(t => t.cat === c.id && t.status !== 'archived');
+  let line = 'No vendors yet', foot = BOOKBY[c.id] ? `Most couples book by ${BOOKBY[c.id]}` : 'Browse vendors';
+  if (st.key === 'booked') { line = st.booked.vendor; foot = 'Booked'; }
+  else if (st.key === 'needs') { line = `${ts.find(t => t.status === 'needs').vendor} replied`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  else if (st.key === 'qin') { const t = ts.find(x => x.status === 'quote'); const q = quoteOf(t); line = q ? `${t.vendor} sent a ${money(total(q.quote))} quote` : `Quote from ${t.vendor}`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  else if (st.key === 'waiting') { line = `Waiting on ${ts[0].vendor}`; foot = `${ts.length} chat${ts.length > 1 ? 's' : ''}`; }
+  return { st, ts, line, foot };
+}
+
+function renderHome() {
+  $('hSideNav').innerHTML = navHtml('home', true);
+  $('hBottomNav').innerHTML = navHtml('home', false);
+  const needs = needsList();
+  const bookedCats = CATS.filter(c => catState(c.id).key === 'booked');
+  const quotes = S.threads.filter(t => t.status === 'quote' && quoteOf(t));
+  const replies = S.threads.filter(t => t.status === 'needs');
+  const qSum = quotes.reduce((a, t) => a + total(quoteOf(t).quote), 0);
+  const r = 16, circ = 2 * Math.PI * r, pct = bookedCats.length / CATS.length;
+  const cover = S.coverImg ? `background-image:url('${S.coverImg}')` : `background:${COVERS[S.cover]}`;
+  const shortCats = CATS.map(c => ({ c, ts: S.threads.filter(t => t.cat === c.id && S.starred.has(t.id)) })).filter(x => x.ts.length);
+  const live = liveAuto();
+  live.forEach(a => { if (!S.autoSeen.some(x => x.key === a.key)) S.autoSeen.push(a); });
+  const liveKeys = new Set(live.map(a => a.key));
+  const autoRows = S.autoSeen.map(a => ({ ...a, isDone: !liveKeys.has(a.key) }));
+  const rows = [...autoRows.filter(r => !r.isDone), ...S.todos.filter(t => !t.done), ...autoRows.filter(r => r.isDone), ...S.todos.filter(t => t.done)];
+  const left = autoRows.filter(r => !r.isDone).length + S.todos.filter(t => !t.done).length;
+
+  $('hmain').innerHTML = `<div class="wrap">
+  <div class="h-top"><h1>Good morning, <b>Maya</b></h1><div class="r"><span class="stack" title="Maya and Daniel"><span class="av sm" style="background:linear-gradient(140deg,#43537A,#C3979C)">M</span><span class="av sm" style="background:linear-gradient(140deg,#6E86B8,#B6C4E2)">D</span></span><button type="button" class="btn line" data-toast="Sharing the folder with family or a planner comes later.">${ic('share')}<span>Share folder</span></button></div></div>
+
+  <section class="h-hero" style="${cover}">
+    <span class="shade"></span>
+    <div class="h-tools"><button type="button" class="btn ghost" data-cover>${ic('image')}${S.coverImg ? 'Change cover' : 'Add cover photo'}</button></div>
+    <div class="h-menu${S.menu ? ' open' : ''}" id="hMenu">
+      <h4>Cover</h4>
+      <div class="h-sw">${COVERS.map((g, i) => `<button type="button" aria-label="Cover ${i + 1}" data-cv="${i}" class="${!S.coverImg && i === S.cover ? 'on' : ''}" style="background:${g}"></button>`).join('')}</div>
+      <label class="h-up">${ic('image')}Upload a photo<input type="file" accept="image/*" id="coverFile"></label>
+    </div>
+    <div class="h-center"><div><span class="eyebrow">Wedding folder</span><div class="h-names">Maya <em>&amp;</em> Daniel</div>
+      <div class="h-chips"><span class="hl">${daysLeft()} days to go</span><span>June 12, 2027</span><span>Harborline Loft, Brooklyn</span><span>120 guests</span></div></div></div>
+    <div class="h-stats">
+      <button type="button" class="h-stat" data-hinbox="booked"><svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="${r}" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="5"/><circle cx="20" cy="20" r="${r}" fill="none" stroke="#F3CFCC" stroke-width="5" stroke-linecap="round" stroke-dasharray="${circ * pct} ${circ}"/></svg><span><b>${bookedCats.length} of ${CATS.length} booked</b><span>${bookedCats.length ? esc(bookedCats.map(c => c.name).join(', ')) + ' locked in' : 'Nothing booked yet'}</span></span></button>
+      ${needs.length
+        ? `<button type="button" class="h-stat" data-hinbox="waiting"><span class="ic">${ic('bell')}</span><span><b>${needs.length} waiting on you</b><span>${replies.length} repl${replies.length === 1 ? 'y' : 'ies'}${quotes.length ? `, ${quotes.length} quote${quotes.length === 1 ? '' : 's'}` : ''}</span></span></button>`
+        : `<button type="button" class="h-stat calm" data-hinbox="all"><span class="ic">${ic('check')}</span><span><b>All caught up</b><span>No vendors waiting on you</span></span></button>`}
+      ${quotes.length
+        ? `<button type="button" class="h-stat" data-hinbox="quotes"><span class="ic">${ic('doc')}</span><span><b>${quotes.length} quote${quotes.length === 1 ? '' : 's'} to review</b><span>${money(qSum)} total</span></span></button>`
+        : `<button type="button" class="h-stat calm" data-hinbox="quotes"><span class="ic">${ic('check')}</span><span><b>No quotes to review</b><span>New quotes will show up here</span></span></button>`}
+    </div>
+  </section>
+
+  <div class="h-grid">
+    <div class="h-col">
+      ${needs.length ? `<div class="h-needs" id="hNeeds"><div class="eyebrow">${ic('bell')}Needs you · ${needs.length}</div>
+        ${needs.map(t => { const q = quoteOf(t); return `<button type="button" class="h-need" data-hopen="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${t.status === 'needs' ? `Replied about ${esc(CATS.find(c => c.id === t.cat).about)}` : `${esc(catName(t.cat))} quote · ${money(total(q.quote))}`}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review'}</span></button>`; }).join('')}
+      </div>` : `<div class="h-calm" id="hNeeds"><span class="ic">${ic('check')}</span><span><b>All caught up</b><span>No vendors are waiting on you. New replies and quotes will show up here.</span></span></div>`}
+      <div class="card" id="hVendors"><div class="card-h"><h3>Your vendors</h3><span class="h-acts"><button type="button" class="link" data-addv="">${ic('plus')}Add a vendor</button><button type="button" class="link" data-nav="inbox">Open inbox</button></span></div>
+        <div class="h-tiles">${CATS.map(c => { const x = tileInfo(c); return `<button type="button" class="h-tile ${x.st.key}" data-hcat="${c.id}">
+          <span class="h"><span class="tic">${ic(x.st.key === 'booked' ? 'check' : c.id)}</span><span class="pill ${x.st.key}">${x.st.label}</span></span>
+          <span><b>${c.name}</b><p>${esc(x.line)}</p></span>
+          <span class="f"><span>${esc(x.foot)}</span>${x.ts.length ? `<span class="stack">${x.ts.map(t => avatar(t, true)).join('')}</span>` : ''}</span></button>`; }).join('')}</div></div>
+      <div class="card"><div class="card-h"><h3>Shortlists</h3><button type="button" class="link" data-toast="Side-by-side compare comes in Phase 4.">Compare</button></div>
+        ${shortCats.length ? `<div class="h-shortrow">${shortCats.map(x => `<button type="button" class="h-chip" data-hcat="${x.c.id}"><span class="stack">${x.ts.map(t => avatar(t, true)).join('')}</span><span><b>${x.c.name}</b><span class="n">${x.ts.length} saved</span></span></button>`).join('')}</div>` : '<p class="h-empty">Star vendors in a chat to shortlist them.</p>'}</div>
+    </div>
+    <div class="h-col">
+      <div class="card"><div class="card-h"><h3>This week<span class="h-left">${left} left</span></h3><button type="button" class="link" data-hadd>${S.adding ? 'Cancel' : 'Add'}</button></div>
+        ${S.adding ? `<form class="h-add" id="hAddForm"><input id="hAddT" placeholder="Add a to-do, like tasting with the caterer" aria-label="New to-do" maxlength="80"><input id="hAddD" class="due" placeholder="Due (optional)" aria-label="Due date" maxlength="24"><button type="submit" class="btn">Add</button>${S.addErr ? `<span class="err">${esc(S.addErr)}</span>` : ''}</form>` : ''}
+        <div style="padding-bottom:8px">${rows.map(t => todoRow(t)).join('')}</div></div>
+      <div class="card"><div class="card-h"><h3>What's new</h3></div><div style="padding-bottom:8px">${S.activity.slice(0, 5).map(a => `<div class="h-act${a.fresh ? ' fresh' : ''}"><span class="ic">${ic(a.i)}</span><p>${esc(a.t)}<time>${esc(a.w)}</time></p></div>`).join('')}</div></div>
+    </div>
+  </div></div>${S.modal ? modalHtml() : ''}`;
+}
+
+
+function liveAuto() {
+  const out = [];
+  S.threads.forEach(t => {
+    if (t.status === 'needs') out.push({ key: 'reply:' + t.id, t: `Reply to ${t.vendor}`, due: 'Today', open: t.id, auto: true });
+    const q = t.status === 'quote' && quoteOf(t);
+    if (q) out.push({ key: 'quote:' + t.id, t: `Review ${t.vendor}'s quote`, due: `${money(total(q.quote))} · valid until ${q.quote.valid}`, open: t.id, auto: true });
+  });
+  return out;
+}
+function todoRow(t) {
+  const id = t.key || t.id, done = t.auto ? t.isDone : t.done;
+  const box = t.auto
+    ? `<input type="checkbox" id="htd-${id}" ${done ? 'checked' : ''} disabled title="Checks itself off when it's handled">`
+    : `<input type="checkbox" id="htd-${id}" data-htodo="${t.id}" ${done ? 'checked' : ''}>`;
+  const tags = [];
+  if (t.auto && !done) tags.push(`<button type="button" class="open" data-hopen="${t.open}">Open</button>`);
+  if (t.auto || t.suggest) tags.push('<span class="auto">Auto</span>');
+  if (t.custom) tags.push(`<button type="button" class="del" data-hdel="${t.id}" aria-label="Delete to-do">&times;</button>`);
+  return `<div class="h-todo${done ? ' done' : ''}">${box}<label for="htd-${id}">${esc(t.t)}${t.due ? `<small>${esc(t.due)}</small>` : ''}</label><span class="tags">${tags.join('')}</span></div>`;
+}
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'hAddForm') return;
+  const v = $('hAddT').value.trim(), due = $('hAddD').value.trim();
+  if (!v) { S.addErr = 'Type a to-do first.'; renderHome(); $('hAddT').focus(); return; }
+  S.todos.unshift({ id: 'u' + Date.now(), t: v, due, custom: true });
+  S.addErr = ''; renderHome(); $('hAddT').focus();
+  toast('To-do added.');
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.adding && e.target.closest('#hAddForm')) { S.adding = false; S.addErr = ''; renderHome(); } });
+
+
+const aOrAn = w => /^[aeiou]/i.test(w) ? 'an' : 'a';
+const AV_COLORS = [['#E8D9C8', '#C9A98A'], ['#D6E2EA', '#94AFC2'], ['#E9D6E4', '#BE97B4'], ['#DDE6D3', '#9EB28E'], ['#F0DCCB', '#D3A27E']];
+function modalHtml() {
+  const c = CATS.find(x => x.id === S.modal.cat);
+  const msg = S.modal.msg ?? `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about 120 guests. We're looking for ${c.about}. Are you available?`;
+  return `<div class="modal-bg" id="avModal" role="dialog" aria-modal="true" aria-labelledby="avTitle">
+    <div class="modal">
+      <button type="button" class="m-x" data-mclose aria-label="Close">&times;</button>
+      <div class="m-h">
+        <span class="m-ic">${ic(c.id)}</span>
+        <div><h2 id="avTitle">Bring ${aOrAn(c.name)} ${esc(c.name.toLowerCase())} vendor into your folder</h2>
+        <p>Found someone on Instagram or through a friend? Invite them and their chat shows up in your inbox under ${esc(c.name)}.</p></div>
+      </div>
+      <div class="av-grid">
+        <form class="av-card" id="avForm" novalidate>
+          <h3>${ic('inbox')}Invite a vendor you found</h3>
+          <div class="fld"><label for="avCat">Category</label><select id="avCat">${CATS.map(x => `<option value="${x.id}" ${x.id === c.id ? 'selected' : ''}>${esc(x.name)}</option>`).join('')}</select></div>
+          <div class="row2">
+            <div class="fld"><label for="avName">Business name</label><input id="avName" placeholder="Their business name" autocomplete="organization" value="${esc(S.modal.name || '')}"></div>
+            <div class="fld"><label for="avEmail">Their email</label><input id="avEmail" type="email" placeholder="name@theirbusiness.com" autocomplete="off" value="${esc(S.modal.email || '')}"></div>
+          </div>
+          <div class="fld"><label for="avMsg">Your first message</label><textarea id="avMsg">${esc(msg)}</textarea></div>
+          <div class="err" id="avErr" aria-live="polite"></div>
+          <button type="submit" class="btn">${ic('send')}Send invite</button>
+          <p class="note2">${ic('check')}<span>They get an email with a link to reply. No account needed.</span></p>
+        </form>
+        <div class="av-card soon">
+          <span class="tag2">Coming in Phase 4</span>
+          <h3>${ic('explore')}Browse ${esc(c.name.toLowerCase())} vendors</h3>
+          <ul><li>Only vendors open on June 12</li><li>Filter by budget, style and borough</li><li>Shortlist and compare side by side</li></ul>
+          <button type="button" class="btn line" data-toast="Vendor search opens in its own window in Phase 4, once the team has added vendors.">Browse vendors</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function openModal(cat) { S.modal = { cat }; S.menu = false; renderHome(); setTimeout(() => $('avName')?.focus(), 30); }
+function closeModal() { S.modal = null; renderHome(); }
+function submitAddVendor() {
+  const name = $('avName').value.trim(), email = $('avEmail'), text = $('avMsg').value.trim();
+  const bad = [];
+  if (!name) bad.push($('avName'));
+  if (!email.value.trim() || !email.checkValidity()) bad.push(email);
+  [$('avName'), email].forEach(x => x.closest('.fld').classList.toggle('err', bad.includes(x)));
+  if (bad.length) { $('avErr').textContent = bad.length === 2 ? 'Add their business name and email.' : bad[0] === email ? 'Add a valid email address.' : 'Add their business name.'; bad[0].focus(); return; }
+  if (!text) { $('avErr').textContent = 'Write a first message.'; $('avMsg').focus(); return; }
+  const cat = $('avCat').value, id = 'n' + Date.now();
+  S.threads.push({ id, cat, vendor: name, av: AV_COLORS[S.threads.length % AV_COLORS.length], status: 'waiting', unread: 0, onBrixia: false, email: email.value.trim(), msgs: [{ from: 'me', text, when: 'Just now' }] });
+  logAct('inbox', `You invited ${name}`);
+  S.modal = null; S.mailThread = id; S.replySent = false; S.open.add(cat);
+  renderHome();
+  toast(`Invite sent to ${name}. Their chat is in your inbox under ${catName(cat)}.`, { label: 'Open chat', fn: () => { go('inbox'); openThread(id); } });
+}
+document.addEventListener('submit', e => { if (e.target.id === 'avForm') submitAddVendor(); });
+document.addEventListener('change', e => {
+  if (e.target.id !== 'avCat') return;
+  const c0 = CATS.find(x => x.id === S.modal.cat), edited = $('avMsg').value.trim() !== `Hi! We're Maya and Daniel, getting married June 12, 2027 at Harborline Loft in Brooklyn with about 120 guests. We're looking for ${c0.about}. Are you available?`;
+  S.modal = { cat: e.target.value, name: $('avName').value, email: $('avEmail').value, msg: edited ? $('avMsg').value : undefined };
+  renderHome(); $('avCat').focus();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && S.modal) closeModal(); });
+document.addEventListener('mousedown', e => { if (S.modal && e.target.id === 'avModal') closeModal(); });
+
+
+function openInbox(kind) {
+  const filter = kind === 'quotes' ? 'quotes' : kind === 'booked' ? 'booked' : 'all';
+  S.filter = filter; S.q = ''; $('q').value = ''; S.fresh = null;
+  document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === filter));
+  let pick = null;
+  if (kind === 'waiting') pick = S.threads.find(t => t.status === 'needs') || needsList()[0];
+  if (kind === 'quotes') pick = S.threads.find(t => t.status === 'quote' && quoteOf(t)) || S.threads.find(t => hasQuote(t) && t.status !== 'archived');
+  if (kind === 'booked') pick = S.threads.find(t => t.status === 'booked');
+  go('inbox');
+  if (pick) openThread(pick.id); else { $('s-inbox').classList.remove('thread-open'); $('list').scrollTop = 0; }
+}
+function catchUp() {
+  S.threads.forEach(t => {
+    if (t.status === 'needs') { t.msgs.push({ from: 'me', text: 'Thank you! That works for us.', when: 'Just now' }); t.status = 'waiting'; t.unread = 0; }
+    const q = t.status === 'quote' && quoteOf(t);
+    if (q) { q.accepted = true; t.status = 'booked'; logAct('check', `You accepted ${t.vendor}'s quote`); }
+  });
+  logAct('check', 'You caught up on every vendor');
+  go('home'); $('hmain').scrollTop = 0;
+  toast('Caught up. This is what Home looks like with nothing waiting on you.');
+}
+
+function openCat(cid) {
+  S.filter = 'all'; S.q = ''; $('q').value = '';
+  document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all'));
+  S.open.add(cid);
+  const ts = S.threads.filter(t => t.cat === cid && t.status !== 'archived');
+  const pick = ts.find(t => t.status === 'needs') || ts.find(t => t.unread) || ts[0];
+  if (pick) { go('inbox'); openThread(pick.id); }
+  else openModal(cid);
+}
+
+function hClick(el, d) {
+  if (el.hasAttribute('data-cover')) { S.menu = !S.menu; renderHome(); return true; }
+  if (el.hasAttribute('data-hadd')) { S.adding = !S.adding; S.addErr = ''; renderHome(); if (S.adding) $('hAddT').focus(); return true; }
+  if (d.addv !== undefined) { openModal(d.addv || (CATS.find(c => catState(c.id).key === 'todo') || CATS[1]).id); return true; }
+  if (el.hasAttribute('data-mclose')) { closeModal(); return true; }
+  if (d.hdel) { S.todos = S.todos.filter(t => t.id !== d.hdel); renderHome(); return true; }
+  if (d.cv !== undefined) { S.cover = +d.cv; S.coverImg = null; S.menu = false; renderHome(); return true; }
+  if (d.hopen) { S.fresh = null; go('inbox'); openThread(d.hopen); return true; }
+  if (d.hcat) { S.fresh = null; openCat(d.hcat); return true; }
+  if (d.hinbox) { openInbox(d.hinbox); return true; }
+  if (el.id === 'catchup') { catchUp(); return true; }
+  if (d.hscroll) { $(d.hscroll).scrollIntoView({ behavior: 'smooth', block: 'start' }); return true; }
+  return false;
+}
+document.addEventListener('click', e => {
+  if (S.menu && !e.target.closest('#hMenu') && !e.target.closest('[data-cover]')) { S.menu = false; renderHome(); }
+}, true);
+document.addEventListener('change', e => {
+  if (e.target.id === 'coverFile' && e.target.files[0]) { const fr = new FileReader(); fr.onload = () => { S.coverImg = fr.result; S.menu = false; renderHome(); }; fr.readAsDataURL(e.target.files[0]); }
+  if (e.target.dataset.htodo !== undefined) { const t = S.todos.find(x => x.id === e.target.dataset.htodo); if (t) t.done = e.target.checked; renderHome(); }
+});
+
+/* ---------- Vendor profile ---------- */
+function photoG() { return [
+  'radial-gradient(circle at 30% 35%, #F6D6D3 0, transparent 45%), radial-gradient(circle at 70% 70%, #E9B7B9 0, transparent 45%), linear-gradient(140deg, #F3E4DE, #D9B7B6)',
+  'radial-gradient(circle at 60% 30%, #EFE3C8 0, transparent 45%), radial-gradient(circle at 25% 75%, #CBD8BF 0, transparent 45%), linear-gradient(140deg, #E9EEDF, #B8C7A8)',
+  'radial-gradient(circle at 40% 40%, #F4E1E9 0, transparent 45%), radial-gradient(circle at 75% 65%, #D6B4C8 0, transparent 45%), linear-gradient(140deg, #F2E7EE, #C9A7BC)',
+  'radial-gradient(circle at 30% 70%, #FBE9D7 0, transparent 45%), radial-gradient(circle at 70% 30%, #F2C9A9 0, transparent 45%), linear-gradient(140deg, #F8EADF, #E2BC9C)',
+  'radial-gradient(circle at 55% 45%, #E3E8F4 0, transparent 45%), radial-gradient(circle at 20% 25%, #F3D9D7 0, transparent 40%), linear-gradient(140deg, #EDF0F7, #BFC9DE)',
+  'radial-gradient(circle at 35% 30%, #F1F0E4 0, transparent 45%), radial-gradient(circle at 70% 75%, #D9C9A8 0, transparent 45%), linear-gradient(140deg, #F2EEE2, #CDBB98)'
+]; }
+function VPSEED() { return ({
+  name: 'Petal and Stem Studio', category: 'Florist', base: 'Greenpoint, Brooklyn', areas: 'Brooklyn, Manhattan, Queens', start: 2500,
+  tagline: 'Loose, seasonal, garden-style flowers for New York weddings',
+  response: 'Usually replies within a few hours',
+  styles: ['Garden', 'Romantic', 'Seasonal', 'Minimal'],
+  about: "We're a two-person studio in Greenpoint designing loose, seasonal flowers for weddings of 50 to 250 guests. We source from local growers whenever we can, and every couple gets a design call and a mock-up centerpiece before the big day.",
+  packages: [
+    { t: 'Ceremony essentials', p: 2500, d: 'Bridal bouquet, 4 bridesmaid bouquets, boutonnieres and two aisle arrangements.' },
+    { t: 'Full wedding', p: 4500, d: 'Everything in Ceremony essentials, plus centerpieces for up to 15 tables and a sweetheart table.' },
+    { t: 'Statement installations', p: 8000, d: 'A ceremony arch or floral ceiling, full reception design and day-of styling.' }
+  ],
+  cover: photoG()[0], coverImg: null,
+  photos: photoG().slice(0, 4),
+  reviews: [
+    { who: 'Sofia and James', when: 'Married September 2026', stars: 5, text: 'They turned a plain loft into a garden. Every message, quote and payment was in one place, and they never once made us chase them.' },
+    { who: 'Aisha and Ben', when: 'Married June 2026', stars: 5, text: 'The mock-up centerpiece sold us. On the day, everything matched what we approved, down to the ribbon color.' }
+  ],
+  imported: [{ src: 'Google', who: 'Rachel M.', text: 'Beautiful arrangements for our engagement party, and they stayed under budget.' }]
+}); }
+const P = () => VS.editing ? VS.draft : VS.profile;
+const vInit = n => n.split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join('');
+function strength(pr) {
+  const checks = [
+    ['Write an about section (120+ characters)', pr.about.trim().length >= 120],
+    ['Add 3 or more style tags', pr.styles.length >= 3],
+    ['Add at least one package', pr.packages.length >= 1],
+    ['Add at least 6 photos', pr.photos.length >= 6],
+    ['Upload your own cover photo', !!pr.coverImg],
+    ['Import a past review', pr.imported.length >= 1]
+  ];
+  return { checks, pct: Math.round(checks.filter(c => c[1]).length / checks.length * 100) };
+}
+
+function renderProfile() {
+  $('pNav').innerHTML = vNavHtml('profile');
+  const pr = P(), ed = VS.editing, couple = VS.pview === 'couple' && !ed;
+  const st = strength(pr);
+  const avg = pr.reviews.length ? (pr.reviews.reduce((a, r) => a + r.stars, 0) / pr.reviews.length).toFixed(1) : null;
+  const cover = pr.coverImg ? `background-image:url('${pr.coverImg}')` : `background:${pr.cover}`;
+  $('pmain').innerHTML = `<div class="p-wrap">
+  <div class="p-bar">
+    ${ed ? '<span class="p-editing">Editing your profile</span>' : `<div class="p-seg"><button type="button" data-pview="vendor" class="${!couple ? 'on' : ''}">Your view</button><button type="button" data-pview="couple" class="${couple ? 'on' : ''}">What couples see</button></div>`}
+    <div class="r">${ed ? '<button type="button" class="btn line" data-pcancel>Cancel</button><button type="button" class="btn" data-psave>' + ic('check') + 'Save changes</button>' : couple ? '' : '<button type="button" class="btn" data-pedit>' + ic('doc') + 'Edit profile</button>'}</div>
+  </div>
+  ${VS.pErr ? `<p class="p-err" style="margin:-4px 0 12px">${esc(VS.pErr)}</p>` : ''}
+  <section class="p-cover" style="${cover}">${ed ? `<label class="btn ghost file-btn p-cbtn">${ic('image')}Change cover photo<input type="file" accept="image/*" id="pCoverFile"></label>` : ''}</section>
+  <section class="p-head">
+    <div class="p-logo">${esc(vInit(pr.name) || 'PS')}</div>
+    <div>
+      ${ed ? `<label class="p-lbl" for="pfName">Business name</label><input class="p-in big" id="pfName" data-pf="name" value="${esc(pr.name)}">
+        <div class="row2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px"><div><label class="p-lbl" for="pfCat">Category</label><input class="p-in" id="pfCat" data-pf="category" value="${esc(pr.category)}"></div><div><label class="p-lbl" for="pfBase">Based in</label><input class="p-in" id="pfBase" data-pf="base" value="${esc(pr.base)}"></div></div>
+        <label class="p-lbl" for="pfTag" style="margin-top:8px">One-line tagline</label><input class="p-in" id="pfTag" data-pf="tagline" maxlength="90" value="${esc(pr.tagline)}">`
+      : `<h1>${esc(pr.name)}</h1><p class="meta">${esc(pr.category)} · ${esc(pr.base)}</p><p class="tagline">${esc(pr.tagline)}</p>`}
+      <div class="p-badges"><span class="p-badge ok">${ic('check')}Verified ${esc(pr.category.toLowerCase())}</span><span class="p-badge">${ic('inbox')}${esc(pr.response)}</span>${avg ? `<span class="p-badge">${ic('star')}${avg} from ${pr.reviews.length} Brixia reviews</span>` : ''}</div>
+    </div>
+    <div class="p-price">
+      <small>Starting at</small>
+      ${ed ? `<input class="p-in" id="pfStart" data-pf="start" type="number" min="0" step="50" value="${pr.start}" style="width:140px;text-align:right" aria-label="Starting price in dollars">` : `<b>${money(pr.start)}</b>`}
+      ${couple ? `<div class="acts"><button type="button" class="btn line" data-toast="Saved to the couple's florist shortlist.">${ic('star')}Shortlist</button><button type="button" class="btn" data-toast="Couples message vendors from their wedding folder.">${ic('inbox')}Message</button></div>` : ''}
+    </div>
+  </section>
+
+  <div class="p-grid">
+    <div class="p-col">
+      <div class="p-card"><h2>About</h2>${ed ? `<textarea class="p-ta" data-pf="about" aria-label="About your business">${esc(pr.about)}</textarea><p class="p-note">${pr.about.trim().length} characters. Aim for 120 or more.</p>` : `<p class="p-about">${esc(pr.about)}</p>`}</div>
+
+      <div class="p-card"><h2>Style</h2>
+        <div class="p-chips">${pr.styles.map((x, i) => `<span class="p-chip">${esc(x)}${ed ? `<button type="button" data-prmstyle="${i}" aria-label="Remove ${esc(x)}">&times;</button>` : ''}</span>`).join('')}</div>
+        ${ed ? `<form class="p-inline" id="pStyleForm"><input class="p-in" id="pStyleIn" placeholder="Add a style, like Boho" maxlength="24" aria-label="New style"><button type="submit" class="btn line">Add</button></form>` : ''}
+      </div>
+
+      <div class="p-card"><h2>Packages <small>Starting prices</small></h2>
+        <div class="p-pkgs">${pr.packages.map((k, i) => ed ? `<div class="p-pkg"><button type="button" class="rm" data-prmpkg="${i}" aria-label="Remove package">&times;</button>
+            <label class="p-lbl">Name</label><input class="p-in" data-pk="${i}:t" value="${esc(k.t)}">
+            <label class="p-lbl">From ($)</label><input class="p-in" data-pk="${i}:p" type="number" min="0" step="50" value="${k.p}">
+            <label class="p-lbl">What's included</label><textarea class="p-ta" style="min-height:80px" data-pk="${i}:d">${esc(k.d)}</textarea></div>`
+          : `<div class="p-pkg"><b>${esc(k.t)}</b><span class="from">From ${money(+k.p || 0)}</span><p>${esc(k.d)}</p></div>`).join('')}
+          ${ed ? `<button type="button" class="p-photo add" style="aspect-ratio:auto;min-height:150px" data-paddpkg>${ic('plus')}<br>Add a package</button>` : ''}
+        </div>
+      </div>
+
+      <div class="p-card"><h2>Photos <small>${pr.photos.length} photo${pr.photos.length === 1 ? '' : 's'}</small></h2>
+        <div class="p-photos">${pr.photos.map((ph, i) => `<div class="p-photo" style="${ph.startsWith('data:') ? `background-image:url('${ph}')` : `background:${ph}`}">${ed ? `<button type="button" class="rm" data-prmphoto="${i}" aria-label="Remove photo">&times;</button>` : ''}</div>`).join('')}
+          ${ed ? `<label class="p-photo add">${ic('image')}<span>Add photos</span><input type="file" accept="image/*" multiple id="pPhotoFile"></label>` : ''}
+        </div>
+      </div>
+
+      <div class="p-card"><h2>Reviews</h2>
+        ${avg ? `<div class="p-rev-sum"><b>${avg}</b><span class="stars">${'★'.repeat(Math.round(avg))}</span><span>${pr.reviews.length} reviews from couples who booked on Brixia</span></div>` : ''}
+        ${pr.reviews.map(r => `<div class="p-rev"><div class="who">${esc(r.who)}<span class="src brx">Booked on Brixia</span><span>${esc(r.when)}</span><span class="stars">${'★'.repeat(r.stars)}</span></div><p>${esc(r.text)}</p></div>`).join('')}
+        ${couple ? `<div class="p-inline"><button type="button" class="btn line" data-toast="Only couples who booked through Brixia can review, after their wedding date.">${ic('star')}Write a review</button></div>` : ''}
+        <p class="p-sub">Imported highlights</p>
+        <p class="p-note" style="margin-top:0">Shared by the vendor from other sites. Not counted in the Brixia rating.</p>
+        ${pr.imported.map((r, i) => `<div class="p-rev"><div class="who">${esc(r.who)}<span class="src">From ${esc(r.src)}</span>${ed ? `<button type="button" class="rm" style="background:#B0464C;width:22px;height:22px;font-size:14px" data-prmimp="${i}" aria-label="Remove imported review">&times;</button>` : ''}</div><p>${esc(r.text)}</p></div>`).join('') || '<p class="p-note">None yet.</p>'}
+        ${ed && pr.imported.length < 3 ? `<form class="p-imp" id="pImpForm"><div class="row"><select class="p-sel" id="pImpSrc" aria-label="Review source"><option>Google</option><option>The Knot</option><option>Instagram</option><option>Yelp</option></select><input class="p-in" id="pImpWho" placeholder="Reviewer name" maxlength="40" aria-label="Reviewer name"></div><textarea class="p-ta" id="pImpText" style="min-height:70px" placeholder="Paste the review" maxlength="400" aria-label="Review text"></textarea><div class="p-inline" style="margin-top:0"><button type="submit" class="btn line">${ic('plus')}Import review</button><span class="p-note" style="margin:0;align-self:center">Up to 3. Each links back to its source.</span></div></form>` : ''}
+      </div>
+    </div>
+
+    <aside class="p-col">
+      ${!couple ? `<div class="p-card"><h2>Profile strength <small>${st.pct}%</small></h2><div class="p-meter"><i style="width:${st.pct}%"></i></div>
+        <ul class="p-todo">${st.checks.map(c => `<li class="${c[1] ? 'ok' : ''}">${ic(c[1] ? 'check' : 'plus')}<span>${c[0]}</span></li>`).join('')}</ul>
+        ${!ed ? '<p class="p-note">Complete profiles show up higher when couples browse.</p>' : ''}</div>` : ''}
+      <div class="p-card"><h2>Details</h2>
+        <div class="p-det">
+          <div><span>Serves</span>${ed ? `<input class="p-in" data-pf="areas" value="${esc(pr.areas)}" aria-label="Areas you serve">` : `<b>${esc(pr.areas)}</b>`}</div>
+          <div><span>Starting at</span><b>${money(+pr.start || 0)}</b></div>
+          <div><span>Response time</span>${ed ? `<input class="p-in" data-pf="response" value="${esc(pr.response)}" aria-label="Response time">` : `<b>${esc(pr.response)}</b>`}</div>
+          <div><span>On Brixia</span><b>${pr.reviews.length} weddings booked</b></div>
+        </div>
+      </div>
+      ${couple ? `<div class="p-card"><h2>Is your date open?</h2><p class="p-note" style="margin:0 0 10px">Ask in one tap. Your date, venue and guest count go with the message.</p><button type="button" class="btn" style="width:100%;justify-content:center" data-toast="Sent from the couple's folder with their date and guest count.">${ic('inbox')}Check June 12, 2027</button></div>` : ''}
+    </aside>
+  </div></div>`;
+}
+
+function readFiles(files, cb) { [...files].forEach(f => { const fr = new FileReader(); fr.onload = () => cb(fr.result); fr.readAsDataURL(f); }); }
+
+function pClick(el, d) {
+  if (d.pview) { VS.pview = d.pview; renderProfile(); return true; }
+  if (el.hasAttribute('data-pedit')) { VS.draft = JSON.parse(JSON.stringify(VS.profile)); VS.editing = true; VS.pErr = ''; renderProfile(); $('pmain').scrollTop = 0; return true; }
+  if (el.hasAttribute('data-pcancel')) { VS.editing = false; VS.draft = null; VS.pErr = ''; renderProfile(); return true; }
+  if (el.hasAttribute('data-psave')) {
+    const dr = VS.draft;
+    if (!dr.name.trim()) VS.pErr = 'Add your business name.';
+    else if (!(+dr.start > 0)) VS.pErr = 'Add a starting price above $0.';
+    else if (dr.packages.some(k => !k.t.trim())) VS.pErr = 'Give every package a name.';
+    else VS.pErr = '';
+    if (VS.pErr) { renderProfile(); $('pmain').scrollTop = 0; return true; }
+    dr.start = +dr.start; dr.packages.forEach(k => { k.p = +k.p || 0; });
+    VS.profile = dr; VS.editing = false; VS.draft = null; renderProfile(); toast('Profile saved. Couples see the new version right away.'); return true;
+  }
+  if (d.prmstyle !== undefined) { VS.draft.styles.splice(+d.prmstyle, 1); renderProfile(); return true; }
+  if (d.prmpkg !== undefined) { VS.draft.packages.splice(+d.prmpkg, 1); renderProfile(); return true; }
+  if (el.hasAttribute('data-paddpkg')) { VS.draft.packages.push({ t: 'New package', p: VS.draft.start, d: '' }); renderProfile(); return true; }
+  if (d.prmphoto !== undefined) { VS.draft.photos.splice(+d.prmphoto, 1); renderProfile(); return true; }
+  if (d.prmimp !== undefined) { VS.draft.imported.splice(+d.prmimp, 1); renderProfile(); return true; }
+  return false;
+}
+document.addEventListener('input', e => {
+  if (!VS || !VS.editing) return;
+  const f = e.target.dataset.pf, k = e.target.dataset.pk;
+  if (f) { VS.draft[f] = e.target.value; if (f === 'about') { const n = e.target.parentElement.querySelector('.p-note'); if (n) n.textContent = `${e.target.value.trim().length} characters. Aim for 120 or more.`; } }
+  if (k) { const [i, key] = k.split(':'); VS.draft.packages[+i][key] = e.target.value; }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'pCoverFile' && e.target.files[0]) readFiles([e.target.files[0]], url => { VS.draft.coverImg = url; renderProfile(); });
+  if (e.target.id === 'pPhotoFile' && e.target.files.length) readFiles(e.target.files, url => { VS.draft.photos.push(url); renderProfile(); });
+});
+document.addEventListener('submit', e => {
+  if (e.target.id === 'pStyleForm') { const v = $('pStyleIn').value.trim(); if (v && !VS.draft.styles.includes(v)) { VS.draft.styles.push(v); renderProfile(); $('pStyleIn').focus(); } else $('pStyleIn').focus(); }
+  if (e.target.id === 'pImpForm') {
+    const who = $('pImpWho').value.trim(), text = $('pImpText').value.trim();
+    if (!who || !text) { toast('Add the reviewer name and the review text.'); (who ? $('pImpText') : $('pImpWho')).focus(); return; }
+    VS.draft.imported.push({ src: $('pImpSrc').value, who, text }); renderProfile();
+  }
+});
+
+/* ---------- Demo mode ---------- */
+const MODE = document.body.dataset.mode || 'all';
+const TABS = {
+  couple: [['home', "Couple's home"], ['inbox', "Couple's inbox"]],
+  vendor: [['email', "Vendor's email"], ['reply', 'Reply without an account'], ['vinbox', "Vendor's inbox"], ['profile', 'Profile']],
+};
+TABS.all = [...TABS.couple, ...TABS.vendor];
+$('seg').innerHTML = TABS[MODE].map(([k, l], i) => `<button type="button" data-go="${k}"><span class="n">${i + 1}</span>${l}</button>`).join('');
+$('demoTag').textContent = MODE === 'couple' ? 'Brixia · Couple demo' : MODE === 'vendor' ? 'Brixia · Vendor demo' : 'Brixia prototype';
+if (MODE === 'vendor') $('catchup').style.display = 'none';
+const START = MODE === 'vendor' ? 'email' : 'home';
+go(START);
+</script>
+</body>
+</html>
