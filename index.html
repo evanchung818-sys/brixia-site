@@ -3,354 +3,481 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Brixia | Your wedding, all in one place</title>
-<meta name="description" content="Brixia gives every wedding its own folder. Find vendors open on your date, shortlist by category, and message every vendor from one organized inbox.">
-<meta property="og:title" content="Brixia | Your wedding, all in one place">
-<meta property="og:description" content="One folder for your whole wedding. Find vendors open on your date and message all of them from one inbox.">
+<title>Brixia | Plan together. Toast together.</title>
+<meta name="description" content="Brixia gives every wedding its own folder and one chat for every vendor. Find vendors, bring in the ones you've booked, and keep every message, quote and plan together.">
+<meta property="og:title" content="Brixia | Plan together. Toast together.">
+<meta property="og:description" content="One folder. One chat. Every vendor. Wedding planning without the scattered texts and emails.">
 <meta property="og:url" content="https://brixiaco.com">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#FFFFFF">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231F2A4A'/%3E%3Cg fill='none' stroke='white' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#111829">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F3CFCC'/%3E%3Cg fill='none' stroke='%23111829' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
 :root {
-  --bg: #FFFFFF; --soft: #F8F7F6;
-  --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E7E5E8;
-  --accent: #1F2A4A; --slate: #6B7C97; --mist: #E4E9F0; --blush: #F5DEDC; --rose: #A85F62;
+  --night: #111829; --night-2: #18213D; --navy: #1F2A4A; --slate: #2F3F66; --dusk: #6C7499;
+  --blush: #F3CFCC; --rose: #C99A9C; --rose-ink: #A85F62;
+  --paper: #F6F2F1; --card: #FFFFFF; --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E7E2E3;
   --ok: #2C7656; --ok-bg: #E1F0E8; --warn: #8E6210; --warn-bg: #F6EBD3; --info: #3A5687; --info-bg: #E2E8F4;
-  --display: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
-  --body: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --shadow: 0 1px 2px rgba(28,36,64,.05), 0 18px 50px rgba(28,36,64,.11);
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --shadow: 0 2px 4px rgba(10,14,28,.08), 0 24px 60px rgba(10,14,28,.28);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-a { color: inherit; }
+body { margin: 0; background: var(--night); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 h1, h2, h3 { margin: 0; text-wrap: balance; }
 p { margin: 0; }
-:focus-visible { outline: 2px solid var(--slate); outline-offset: 3px; border-radius: 8px; }
-.wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
-.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--blush); outline-offset: 3px; border-radius: 8px; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--rose-ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 22px; border-radius: 999px; border: 0; background: var(--navy); color: #fff; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; white-space: nowrap; transition: transform .12s, opacity .12s; }
+.btn:hover { opacity: .92; } .btn:active { transform: scale(.98); }
+.btn.blush { background: var(--blush); color: var(--night); }
+.btn.ghost { background: rgba(255,255,255,.1); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
 
-/* Buttons and labels */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border-radius: 999px; background: var(--accent); color: #fff; font: 600 15px var(--body); border: 0; cursor: pointer; text-decoration: none; white-space: nowrap; transition: transform .12s, opacity .12s; }
-.btn:hover { opacity: .92; }
-.btn:active { transform: scale(.98); }
-.btn.sm { padding: 9px 16px; font-size: 14px; }
-.btn[disabled] { opacity: .55; cursor: default; }
-.eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--rose); }
+/* ---------- Hero ---------- */
+.hero { position: relative; isolation: isolate; overflow: hidden; color: #fff; background: linear-gradient(130deg, var(--night) 0%, var(--night-2) 34%, var(--slate) 66%, #7C7397 86%, var(--rose) 118%); }
+.hero::before { content: ""; position: absolute; width: 900px; height: 900px; left: -300px; top: -420px; background: radial-gradient(circle, rgba(84,110,168,.55), transparent 62%); z-index: -1; }
+.hero::after { content: ""; position: absolute; width: 1000px; height: 1000px; right: -340px; bottom: -560px; background: radial-gradient(circle, rgba(243,207,204,.45), transparent 60%); z-index: -1; }
+.hero .swirl { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; opacity: .5; pointer-events: none; }
+nav.top { display: flex; align-items: center; gap: 28px; height: 76px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 27px; text-decoration: none; color: #fff; }
+.mark { width: 32px; height: 32px; border-radius: 50%; background: var(--blush); color: var(--night); display: grid; place-items: center; }
+.mark .i { width: 19px; height: 19px; }
+nav.top .links { margin-left: auto; display: flex; align-items: center; gap: 26px; font-size: 14.5px; font-weight: 600; }
+nav.top .links a { text-decoration: none; color: rgba(255,255,255,.82); }
+nav.top .links a:hover { color: #fff; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 56px; align-items: center; padding: 40px 0 36px; }
+.hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(46px, 6vw, 76px); line-height: 1.02; letter-spacing: -.01em; margin: 14px 0 16px; }
+.hero h1 em { color: var(--blush); }
+.hero .eyebrow { color: var(--blush); }
+.hero .lede { font-size: 18px; color: rgba(255,255,255,.82); max-width: 540px; }
 
-/* Nav */
-.nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
-.nav.scrolled { border-bottom-color: var(--line); }
-.nav-in { display: flex; align-items: center; gap: 28px; height: 68px; }
-.logo { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 25px; font-weight: 500; letter-spacing: -.01em; text-decoration: none; }
-.mark { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; }
-.mark svg { width: 19px; height: 19px; }
-.nav-links { display: flex; align-items: center; gap: 26px; margin-left: auto; }
-.nav-links a:not(.btn) { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 14.5px; }
-.nav-links a:not(.btn):hover { color: var(--ink); }
-
-/* Hero */
-.hero { position: relative; isolation: isolate; overflow: hidden; padding: 72px 0 104px; }
-.hero::before { content: ""; position: absolute; top: -260px; right: -220px; width: 760px; height: 760px; background: radial-gradient(circle, var(--blush) 0, transparent 62%); z-index: -1; }
-.hero::after { content: ""; position: absolute; left: -240px; bottom: -300px; width: 660px; height: 660px; background: radial-gradient(circle, var(--mist) 0, transparent 60%); z-index: -1; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 64px; align-items: center; }
-.hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(46px, 6.4vw, 82px); line-height: 1.02; letter-spacing: -.02em; margin: 18px 0 22px; }
-.hero h1 em { font-style: italic; color: var(--rose); }
-.lede { font-size: 18px; color: var(--muted); max-width: 520px; }
-
-/* Waitlist */
-.wl { margin-top: 32px; max-width: 520px; }
-.wl-row { display: flex; gap: 8px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: #fff; box-shadow: 0 1px 2px rgba(28,36,64,.04), 0 8px 24px rgba(28,36,64,.06); transition: border-color .15s; }
-.wl-row:focus-within { border-color: var(--slate); }
-.wl-row input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0 16px; font: 500 15.5px var(--body); color: var(--ink); background: transparent; }
-.wl-role { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; border: 0; padding: 0; }
-.wl-role legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.wl-role label { position: relative; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 13.5px; font-weight: 600; color: var(--muted); cursor: pointer; background: #fff; transition: background .15s, color .15s; }
-.wl-role input { position: absolute; opacity: 0; pointer-events: none; }
-.wl-role label:has(input:checked) { background: var(--accent); border-color: var(--accent); color: #fff; }
-.wl-role label:has(input:focus-visible) { outline: 2px solid var(--slate); outline-offset: 2px; }
-.wl-note { margin-top: 14px; font-size: 13.5px; color: var(--faint); }
-.wl-note.err { color: var(--rose); font-weight: 600; }
-.wl-done { display: none; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 16px; background: var(--ok-bg); color: var(--ok); font-weight: 600; }
-.js-wl.done .wl-fields, .js-wl.done .wl-note { display: none; }
-.js-wl.done .wl-done { display: flex; }
+/* Create card */
+.create { margin-top: 28px; background: var(--card); color: var(--ink); border-radius: 22px; padding: 22px 22px 18px; box-shadow: var(--shadow); max-width: 600px; }
+.create-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.create-h h2 { font-family: var(--serif); font-weight: 400; font-size: 26px; }
+.step { font-size: 12px; font-weight: 700; color: var(--rose-ink); background: #FBEDEC; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fld.full { grid-column: 1 / -1; }
 .hp { position: absolute; left: -9999px; }
+.btn[disabled] { opacity: .6; cursor: default; }
+.vform { margin-top: 22px; }
+.vform .vrow { display: flex; gap: 8px; background: #fff; border-radius: 14px; padding: 6px; }
+.vform input { flex: 1; min-width: 0; border: 0; outline: 0; padding: 0 12px; font-size: 15px; font-weight: 600; color: var(--ink); background: transparent; }
+.vform .btn { padding: 11px 18px; font-size: 14px; border-radius: 10px; }
+.vform .vmsg { font-size: 13.5px; margin-top: 10px; color: rgba(255,255,255,.75); min-height: 1em; }
+.vform .vmsg.err { color: var(--blush); font-weight: 700; }
+.vform.sent .vrow { display: none; }
+.vform.sent .vmsg { color: #fff; font-weight: 700; font-size: 15px; }
+.fld { display: flex; flex-direction: column; gap: 5px; border: 1px solid var(--line); border-radius: 12px; padding: 9px 13px 10px; transition: border-color .15s, box-shadow .15s; }
+.fld:focus-within { border-color: var(--slate); box-shadow: 0 0 0 3px rgba(47,63,102,.12); }
+.fld label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.fld input { border: 0; outline: 0; padding: 0; background: transparent; font-size: 15.5px; font-weight: 600; width: 100%; min-width: 0; }
+.fld input::placeholder { color: #A9AFBE; font-weight: 500; }
+.fld.err { border-color: #C0545A; }
+.tbd { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--muted); margin: 10px 2px 0; cursor: pointer; width: fit-content; }
+.tbd input { accent-color: var(--navy); width: 16px; height: 16px; }
+.create .btn { width: 100%; margin-top: 14px; padding: 15px 22px; font-size: 16px; }
+.create .note { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 12.5px; color: var(--faint); margin-top: 10px; }
+.errmsg { color: #B0464C; font-size: 13px; font-weight: 600; margin-top: 8px; min-height: 0; }
+.done { display: none; text-align: left; }
+.create.is-done form { display: none; }
+.create.is-done .done { display: block; }
+.done h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; margin: 6px 0 6px; }
+.done p { color: var(--muted); font-size: 15px; }
+.done .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.done .acts .btn { margin: 0; width: auto; padding: 12px 14px; font-size: 14px; }
+.done .acts .btn.line { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 
-/* Hero mock */
-.hero-art { position: relative; padding: 24px 0 78px; }
-.mock { background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; }
-.mock-cover { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 26px 24px 22px; color: #fff; background: linear-gradient(118deg, #1C2644 0%, #43537A 52%, #C3979C 100%); overflow: hidden; }
-.mock-cover svg.rings { position: absolute; right: -50px; top: -40px; width: 260px; opacity: .18; }
-.mock-cover > div { position: relative; }
-.m-eyebrow { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; opacity: .75; }
-.m-names { font-family: var(--display); font-size: 32px; line-height: 1.1; margin: 4px 0 6px; }
-.m-names em { opacity: .85; }
-.m-meta { font-size: 12.5px; opacity: .88; }
-.m-count { text-align: right; }
-.m-count b { display: block; font-family: var(--display); font-weight: 400; font-size: 44px; line-height: 1; font-variant-numeric: tabular-nums; }
-.m-count span { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
-.m-list { list-style: none; margin: 0; padding: 6px 14px 10px; }
-.m-list li { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
-.m-list li + li { border-top: 1px solid var(--line); }
-.m-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--mist); color: var(--slate); display: grid; place-items: center; flex: none; }
-.m-tx { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.35; }
-.m-tx b { font-size: 14px; }
-.m-tx small { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pill { padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; white-space: nowrap; }
-.pill.booked { background: var(--ok-bg); color: var(--ok); }
-.pill.quoted { background: var(--info-bg); color: var(--info); }
-.pill.contacted { background: var(--warn-bg); color: var(--warn); }
-.pill.shortlisted { background: var(--blush); color: var(--rose); }
-.bubble { position: absolute; left: -40px; bottom: 0; width: min(310px, 82%); background: #fff; border: 1px solid var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--shadow); padding: 14px 16px; font-size: 13.5px; line-height: 1.5; }
-.b-from { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
-.dotlive { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex: none; }
-.chip-float { position: absolute; right: -18px; top: 0; display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow); font-size: 13px; font-weight: 700; }
-.chip-float .i { color: var(--rose); width: 16px; height: 16px; }
+/* Folder preview */
+.preview { position: relative; padding: 30px 8px 60px 24px; }
+.folder { background: var(--card); color: var(--ink); border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); }
+.fcover { position: relative; overflow: hidden; padding: 26px 24px 22px; color: #fff; background: linear-gradient(118deg, #1C2644 0%, #43537A 55%, #C3979C 100%); display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; min-height: 150px; }
+.fcover svg.rings { position: absolute; right: -60px; top: -50px; width: 280px; opacity: .2; }
+.fcover > div { position: relative; min-width: 0; }
+.fk { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; opacity: .75; }
+.fnames { font-family: var(--serif); font-size: 32px; line-height: 1.1; margin: 4px 0 6px; overflow-wrap: anywhere; }
+.fnames em { color: var(--blush); }
+.fmeta { font-size: 12.5px; opacity: .9; }
+.fcount { text-align: right; flex: none; }
+.fcount b { display: block; font-family: var(--serif); font-weight: 400; font-size: 46px; line-height: 1; font-variant-numeric: tabular-nums; }
+.fcount span { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.flist { list-style: none; margin: 0; padding: 6px 16px 12px; }
+.flist li { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
+.flist li + li { border-top: 1px solid var(--line); }
+.fic { width: 36px; height: 36px; border-radius: 10px; background: #E9ECF3; color: var(--slate); display: grid; place-items: center; flex: none; }
+.ftx { flex: 1; min-width: 0; line-height: 1.35; }
+.ftx b { display: block; font-size: 14px; }
+.ftx small { font-size: 12.5px; color: var(--muted); }
+.pill { padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 800; white-space: nowrap; background: #EEF0F4; color: var(--faint); }
+.pill.booked { background: var(--ok-bg); color: var(--ok); } .pill.quoted { background: var(--info-bg); color: var(--info); } .pill.msg { background: var(--warn-bg); color: var(--warn); }
+.float { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; background: var(--card); color: var(--ink); border-radius: 16px; box-shadow: var(--shadow); padding: 11px 14px; font-size: 13px; font-weight: 700; }
+.float .dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.float.one { left: -6px; bottom: 6px; }
+.float.one .dot { background: #FBEDEC; color: var(--rose-ink); }
+.float.two { right: -10px; top: 0; }
+.float.two .dot { background: var(--ok-bg); color: var(--ok); }
+.float small { display: block; font-weight: 600; color: var(--muted); font-size: 12px; }
 
-/* Sections */
-section { padding: 100px 0; }
+/* Explore strip */
+.explore { padding: 8px 0 52px; }
+.explore-box { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; padding: 14px 16px 14px 22px; border-radius: 20px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.explore-l b { display: block; font-size: 15px; }
+.explore-l span { font-size: 13px; color: rgba(255,255,255,.7); }
+.sbar { display: flex; gap: 8px; align-items: center; background: #fff; border-radius: 14px; padding: 6px 6px 6px 14px; color: var(--ink); }
+.sbar .i { color: var(--faint); }
+.sbar input { flex: 1; min-width: 0; border: 0; outline: 0; font-size: 15px; font-weight: 600; background: transparent; }
+.sbar .sep { width: 1px; height: 26px; background: var(--line); }
+.sbar .loc { font-size: 14px; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px; white-space: nowrap; padding-right: 6px; }
+.sbar .btn { padding: 10px 18px; font-size: 14px; border-radius: 10px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; grid-column: 2; }
+.chips button { padding: 6px 13px; border-radius: 999px; border: 0; background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 1px rgba(255,255,255,.22); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
+.chips button:hover { background: rgba(255,255,255,.18); }
+
+/* ---------- Light sections ---------- */
+.paper { background: var(--paper); }
+section.sec { padding: 96px 0; }
 .sec-h { max-width: 660px; }
-h2 { font-family: var(--display); font-weight: 400; font-size: clamp(32px, 4.2vw, 50px); line-height: 1.08; letter-spacing: -.015em; margin: 12px 0 16px; }
-.sec-sub { font-size: 17px; color: var(--muted); }
-.problem { background: var(--soft); }
-.cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 48px; }
-.pcard { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 26px; }
-.pcard .ic { width: 44px; height: 44px; border-radius: 13px; background: var(--blush); color: var(--rose); display: grid; place-items: center; }
-.pcard h3 { font-size: 18px; font-weight: 700; margin: 18px 0 8px; }
-.pcard p { color: var(--muted); font-size: 15px; }
-.steps { list-style: none; padding: 0; margin: 52px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
-.steps li { border-top: 1px solid var(--ink); padding-top: 22px; }
-.steps .n { font-family: var(--display); font-size: 48px; line-height: 1; color: var(--rose); font-style: italic; }
-.steps h3 { font-size: 19px; font-weight: 700; margin: 16px 0 8px; }
-.steps p { color: var(--muted); font-size: 15px; }
+.sec-h.center { margin: 0 auto; text-align: center; }
+h2.big { font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4.4vw, 52px); line-height: 1.06; letter-spacing: -.01em; margin: 12px 0 14px; }
+h2.big em { color: var(--rose-ink); }
+.sub { font-size: 17px; color: var(--muted); }
+.steps { list-style: none; padding: 0; margin: 52px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.steps li { background: var(--card); border-radius: 20px; padding: 26px 24px 26px; border: 1px solid var(--line); position: relative; }
+.steps li.main { background: var(--navy); color: #fff; border-color: var(--navy); }
+.steps .n { font-family: var(--serif); font-size: 44px; line-height: 1; color: var(--rose-ink); font-style: italic; }
+.steps li.main .n { color: var(--blush); }
+.steps h3 { font-size: 19px; margin: 14px 0 8px; }
+.steps p { font-size: 15px; color: var(--muted); }
+.steps li.main p { color: rgba(255,255,255,.78); }
+.steps .tag { position: absolute; top: 22px; right: 22px; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--blush); }
 
-/* Plans teaser */
-.plans { padding-top: 0; }
-.plans-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
-.plan-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); max-width: 440px; justify-self: end; width: 100%; }
-.plan-ph { height: 150px; background: radial-gradient(circle at 25% 30%, #F3D9CF 0, transparent 55%), radial-gradient(circle at 85% 85%, #E9C9D3 0, transparent 50%), linear-gradient(140deg, #D9C2B4, #B9A6B8); display: grid; place-items: center; color: rgba(28,36,64,.25); }
-.plan-ph svg { width: 70px; height: 70px; }
-.plan-b { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; }
-.plan-b h3 { font-family: var(--display); font-weight: 500; font-size: 21px; line-height: 1.2; }
-.plan-b .by { font-size: 13px; color: var(--muted); }
-.tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.tag { padding: 3px 9px; border-radius: 7px; background: var(--soft); border: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; }
-.plan-v { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; font-weight: 600; color: var(--slate); }
+/* Features */
+.night { background: var(--night); color: #fff; position: relative; overflow: hidden; isolation: isolate; }
+.night::before { content: ""; position: absolute; width: 900px; height: 900px; right: -320px; top: -380px; background: radial-gradient(circle, rgba(84,110,168,.45), transparent 62%); z-index: -1; }
+.night .eyebrow { color: var(--blush); }
+.night .sub { color: rgba(255,255,255,.75); }
+.night h2.big em { color: var(--blush); }
+.feat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 52px; }
+.fcard { background: rgba(255,255,255,.05); border-radius: 22px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); padding: 26px; display: flex; flex-direction: column; gap: 18px; }
+.fcard h3 { font-size: 20px; }
+.fcard p { color: rgba(255,255,255,.72); font-size: 15px; margin-top: 6px; }
+.mini { background: var(--card); color: var(--ink); border-radius: 16px; padding: 10px; }
+.mini .grp { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); padding: 8px 8px 4px; }
+.mini .row { display: flex; align-items: center; gap: 10px; padding: 9px 8px; border-radius: 10px; }
+.mini .row.on { background: #EEF1F7; }
+.mini .av { width: 32px; height: 32px; border-radius: 9px; flex: none; }
+.mini .row b { font-size: 13.5px; display: block; }
+.mini .row span { font-size: 12.5px; color: var(--muted); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini .row .tx { flex: 1; min-width: 0; }
+.mini .udot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose-ink); flex: none; }
+.tl { list-style: none; margin: 0; padding: 6px 8px; }
+.tl li { display: grid; grid-template-columns: 70px 14px minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 8px 0; font-size: 13.5px; }
+.tl li + li { border-top: 1px solid var(--line); }
+.tl .t { font-weight: 800; color: var(--muted); font-size: 12.5px; }
+.tl .d { width: 9px; height: 9px; border-radius: 50%; background: var(--rose-ink); }
+.tl .who { font-size: 11.5px; font-weight: 700; color: var(--info); background: var(--info-bg); padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.tl .who.seen { color: var(--ok); background: var(--ok-bg); }
+
+.fcard.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
+.soon { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--night); background: var(--blush); padding: 4px 10px; border-radius: 999px; margin-bottom: 12px; }
+.qpoints { list-style: none; padding: 0; margin: 18px 0 0; display: grid; gap: 10px; }
+.qpoints li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; font-weight: 600; color: rgba(255,255,255,.88); }
+.qpoints .i { color: var(--blush); margin-top: 3px; }
+.quote { padding: 16px; }
+.q-h { display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.q-h .tx { flex: 1; min-width: 0; }
+.q-h b { font-size: 14px; display: block; }
+.q-h .tx span { font-size: 12.5px; color: var(--muted); }
+.q-exp { font-size: 11.5px; font-weight: 700; color: var(--warn); background: var(--warn-bg); padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.q-lines { padding: 10px 2px; font-size: 13.5px; }
+.q-lines div, .q-sched div { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; }
+.q-lines div span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; }
+.q-total { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px !important; font-weight: 800; font-size: 15px; }
+.q-sched { background: #F4F5F9; border-radius: 12px; padding: 8px 12px; font-size: 13px; color: var(--muted); }
+.q-sched b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.q-acts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; margin-top: 12px; }
+.q-btn { text-align: center; padding: 10px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; box-shadow: inset 0 0 0 1px var(--line); }
+.q-btn.main { background: var(--navy); color: #fff; box-shadow: none; }
+.float.two .mini-cta { margin-left: 4px; font-size: 12px; font-weight: 800; color: #fff; background: var(--navy); padding: 5px 10px; border-radius: 999px; }
+.float.two .dot { background: var(--info-bg); color: var(--info); }
+
+/* Plans */
+.plans { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+.pcards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pc { background: var(--card); border-radius: 18px; overflow: hidden; border: 1px solid var(--line); }
+.pc .ph { height: 110px; }
+.pc .pb { padding: 14px 16px 16px; }
+.pc h3 { font-family: var(--serif); font-weight: 400; font-size: 19px; line-height: 1.2; }
+.pc .by { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+.pc .use { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 12.5px; font-weight: 700; color: var(--slate); display: flex; align-items: center; gap: 6px; }
 
 /* Vendors */
-.vendors { padding-top: 0; }
-.v-box { position: relative; overflow: hidden; background: var(--accent); color: #fff; border-radius: 28px; padding: 60px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 56px; align-items: center; }
-.v-box svg.rings { position: absolute; left: -90px; bottom: -120px; width: 380px; opacity: .08; pointer-events: none; }
-.v-box > * { position: relative; }
-.v-box .eyebrow { color: #F0C7C5; }
-.v-box p { color: rgba(255,255,255,.78); font-size: 17px; }
-.checks { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
-.checks li { display: flex; gap: 10px; align-items: flex-start; font-weight: 600; font-size: 15px; }
-.checks .i { color: #F0C7C5; margin-top: 3px; }
-.vform { background: #fff; color: var(--ink); border-radius: 20px; padding: 28px; }
-.vform h3 { font-family: var(--display); font-weight: 500; font-size: 24px; margin-bottom: 4px; }
-.vform .sub { font-size: 14px; color: var(--muted); margin-bottom: 18px; }
-.vform .wl-fields { display: flex; flex-direction: column; gap: 14px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field label { font-size: 13px; font-weight: 700; color: var(--muted); }
-.field input { padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; font: 500 15px var(--body); color: var(--ink); background: #fff; }
-.field input:focus { outline: 0; border-color: var(--slate); }
-.vform .btn { width: 100%; margin-top: 4px; }
+.vbox { border-radius: 28px; padding: 56px; background: linear-gradient(125deg, var(--night-2), var(--slate) 70%, #7C7397); color: #fff; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; position: relative; overflow: hidden; }
+.vbox .eyebrow { color: var(--blush); }
+.vbox p { color: rgba(255,255,255,.8); font-size: 17px; }
+.vlist { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.vlist li { display: flex; gap: 12px; align-items: flex-start; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16); border-radius: 14px; padding: 14px 16px; font-weight: 600; font-size: 15px; }
+.vlist .i { color: var(--blush); margin-top: 3px; }
 
-/* Toast */
-.toast-sec { text-align: center; padding-top: 0; }
-.toast-sec .glass { width: 64px; height: 64px; color: var(--rose); margin: 0 auto 18px; display: block; }
-.toast-line { font-family: var(--display); font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; max-width: 820px; margin: 0 auto 30px; }
-.toast-line em { color: var(--rose); }
+/* Toast + footer */
+.toast-sec { text-align: center; }
+.glass { width: 60px; height: 60px; color: var(--rose-ink); margin: 0 auto 18px; display: block; }
+.toast-line { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 32px); line-height: 1.3; max-width: 840px; margin: 0 auto 28px; color: var(--ink); }
+.toast-line em { color: var(--rose-ink); }
+footer { background: var(--night); color: rgba(255,255,255,.72); padding: 30px 0 38px; font-size: 14px; }
+.foot { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.foot .logo { font-size: 22px; }
+.foot .r { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
+.foot a { text-decoration: none; } .foot a:hover { color: #fff; }
 
-/* Footer */
-footer { border-top: 1px solid var(--line); padding: 32px 0 40px; }
-.foot { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
-.foot .logo { font-size: 21px; color: var(--ink); }
-.foot .mark { width: 28px; height: 28px; }
-.foot .mark svg { width: 16px; height: 16px; }
-.foot-r { margin-left: auto; display: flex; gap: 20px; flex-wrap: wrap; }
-.foot a { text-decoration: none; }
-.foot a:hover { color: var(--ink); }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 11px 18px; border-radius: 999px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow); z-index: 50; max-width: calc(100% - 32px); }
 
-@media (max-width: 960px) {
-  .hero-grid, .v-box, .plans-grid { grid-template-columns: minmax(0, 1fr); }
-  .hero { padding: 40px 0 80px; }
-  .hero-grid { gap: 40px; }
-  .cards3, .steps { grid-template-columns: minmax(0, 1fr); }
-  .steps { gap: 28px; }
-  .bubble { left: 12px; }
-  .chip-float { right: 12px; }
-  .plan-card { justify-self: start; }
-  .v-box { padding: 40px 28px; gap: 36px; }
-  section { padding: 76px 0; }
-  .plans, .vendors, .toast-sec { padding-top: 0; }
+@media (max-width: 980px) {
+  .hero-grid, .plans, .vbox { grid-template-columns: minmax(0, 1fr); }
+  .preview { padding: 10px 6px 56px; max-width: 520px; }
+  .steps, .feat { grid-template-columns: minmax(0, 1fr); }
+  .explore-box { grid-template-columns: minmax(0, 1fr); }
+  .fcard.wide { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .chips { grid-column: 1; margin-top: 0; }
+  .vbox { padding: 36px 24px; }
+  section.sec { padding: 72px 0; }
 }
-@media (max-width: 620px) {
+@media (max-width: 640px) {
   .wrap { padding: 0 16px; }
-  .nav-links a:not(.btn) { display: none; }
-  .wl-row { flex-direction: column; border-radius: 18px; }
-  .wl-row input { padding: 12px; }
-  .m-names { font-size: 26px; }
-  .m-count b { font-size: 34px; }
-  .mock-cover { padding: 22px 18px 18px; }
-  .v-box { padding: 32px 20px; border-radius: 22px; }
-  .vform { padding: 22px 18px; }
-  .foot-r { margin-left: 0; width: 100%; }
+  nav.top .links a:not(.keep) { display: none; }
+  .grid2 { grid-template-columns: 1fr; }
+  .create { padding: 18px 16px 16px; }
+  .sbar .sep, .sbar .loc { display: none; }
+  .pcards { grid-template-columns: 1fr; }
+  .float.two { right: 4px; }
+  .fnames { font-size: 26px; } .fcount b { font-size: 36px; }
+  .done .acts { grid-template-columns: 1fr; }
+  .tl li { grid-template-columns: 62px 10px minmax(0, 1fr); }
+  .tl .who { grid-column: 3; justify-self: start; }
+  .q-acts { grid-template-columns: 1fr; }
+  .float.two .mini-cta { display: none; }
+  .foot .r { margin-left: 0; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 </style>
 </head>
 <body>
 
-<nav class="nav" id="nav">
-  <div class="wrap nav-in">
-    <a class="logo" href="#top" aria-label="Brixia home"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></span>Brixia</a>
-    <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#vendors">For vendors</a>
-      <a class="btn sm" href="#join" data-focus="hero-email">Join the waitlist</a>
-    </div>
-  </div>
-</nav>
+<header class="hero">
+  <svg class="swirl" viewBox="0 0 1400 800" preserveAspectRatio="none" aria-hidden="true">
+    <g fill="none" stroke="#fff" stroke-width="1.2" opacity=".18">
+      <path d="M-50 640 C 250 520, 520 760, 820 620 S 1250 470, 1460 560"/>
+      <path d="M-50 675 C 270 555, 540 795, 840 655 S 1270 505, 1460 595"/>
+      <path d="M-50 710 C 290 590, 560 830, 860 690 S 1290 540, 1460 630"/>
+    </g>
+  </svg>
+  <div class="wrap">
+    <nav class="top" aria-label="Main">
+      <a class="logo" href="#"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span>Brixia</a>
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#plans">Real weddings</a>
+        <a href="#vendors">For vendors</a>
+        <a class="keep btn blush" href="#create" data-focus="n1" style="padding:9px 16px;font-size:14px;color:var(--night)">Get early access</a>
+      </div>
+    </nav>
 
-<main id="top">
-  <header class="hero">
-    <div class="wrap hero-grid">
+    <div class="hero-grid">
       <div>
-        <span class="eyebrow">Wedding planning, in one place</span>
-        <h1>Plan together.<br><em>Toast</em> together.</h1>
-        <p class="lede">Brixia gives every wedding its own folder. Find vendors who are open on your date, keep a shortlist for every category, and message all of them from one inbox, sorted by vendor type.</p>
+        <span class="eyebrow">One folder. One chat. Every vendor.</span>
+        <h1>Plan together. <em>Toast</em> together.</h1>
+        <p class="lede">Create your wedding folder and start chatting with every vendor in one place. Find new ones, bring in the ones you've already booked, and keep every message, quote and plan together until the last dance.</p>
 
-        <form class="wl js-wl" id="join" data-source="hero" novalidate>
-          <div class="wl-fields">
-            <div class="wl-row">
-              <input type="email" id="hero-email" name="email" placeholder="Your email address" aria-label="Email address" autocomplete="email" required>
-              <button class="btn" type="submit">Join the waitlist</button>
+        <div class="create" id="create">
+          <form id="createForm" novalidate>
+            <div class="create-h"><h2>Start planning together</h2><span class="step">Early access · free</span></div>
+            <div class="grid2">
+              <div class="fld"><label for="n1">Your name</label><input id="n1" name="name" placeholder="Maya" autocomplete="given-name"></div>
+              <div class="fld"><label for="n2">Partner's name</label><input id="n2" name="partner" placeholder="Daniel"></div>
+              <div class="fld"><label for="wd">Wedding date</label><input id="wd" name="wedding_date" type="date"></div>
+              <div class="fld"><label for="city">City</label><input id="city" name="city" placeholder="Brooklyn, NY" autocomplete="address-level2"></div>
             </div>
-            <fieldset class="wl-role">
-              <legend>I am</legend>
-              <label><input type="radio" name="role" value="couple" checked>I'm planning a wedding</label>
-              <label><input type="radio" name="role" value="vendor">I'm a wedding vendor</label>
-            </fieldset>
+            <label class="tbd"><input type="checkbox" id="tbd">We haven't picked a date yet</label>
+            <div class="fld" style="margin-top:12px"><label for="em">Email</label><input id="em" name="email" type="email" placeholder="maya@email.com" autocomplete="email"></div>
             <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="errmsg" id="err" aria-live="polite"></div>
+            <button class="btn" type="submit" id="createBtn">Reserve our wedding folder <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            <div class="note"><span>Opening to New York couples first.</span><span>We'll only email you about Brixia.</span></div>
+          </form>
+          <div class="done" role="status">
+            <span class="eyebrow">You're on the list</span>
+            <h2 id="doneTitle">Welcome, Maya and Daniel.</h2>
+            <p id="doneText">Your wedding folder is reserved. We're opening Brixia to New York couples soon, and you'll be among the first in.</p>
           </div>
-          <p class="wl-note" aria-live="polite">Starting in New York City. We'll only email you about early access.</p>
-          <div class="wl-done" role="status"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>You're on the list. We'll be in touch from hello@brixiaco.com.</div>
-        </form>
+        </div>
       </div>
 
-      <div class="hero-art" aria-hidden="true">
-        <div class="chip-float"><svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="4" width="7" height="16" rx="1.5"/><rect x="13.5" y="4" width="7" height="16" rx="1.5"/></svg>Compare 3 photographers</div>
-        <div class="mock">
-          <div class="mock-cover">
+      <div class="preview" aria-hidden="true">
+        <div class="float two"><span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z"/><path d="M9.5 12h5M9.5 15.5h5"/></svg></span><span>New quote · $4,800<small>Lens and Light Studio</small></span><span class="mini-cta">Review</span></div>
+        <div class="folder">
+          <div class="fcover">
             <svg class="rings" viewBox="0 0 260 200" fill="none" stroke="#fff" stroke-width="1.5"><circle cx="100" cy="110" r="80"/><circle cx="160" cy="110" r="80"/></svg>
             <div>
-              <div class="m-eyebrow">Wedding folder</div>
-              <div class="m-names">Maya <em>&amp;</em> Daniel</div>
-              <div class="m-meta">June 12, 2027 · Brooklyn · 120 guests</div>
+              <div class="fk">Wedding folder</div>
+              <div class="fnames" id="pvNames">Maya <em>&amp;</em> Daniel</div>
+              <div class="fmeta" id="pvMeta">June 12, 2027 · Brooklyn</div>
             </div>
-            <div class="m-count"><b id="countdown">246</b><span>days to go</span></div>
+            <div class="fcount"><b id="pvCount">246</b><span id="pvCountLbl">days to go</span></div>
           </div>
-          <ul class="m-list">
-            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 20V10.5L12 4l8 6.5V20"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20"/><path d="M3 20h18"/></svg></span><span class="m-tx"><b>Venue</b><small>The Greenpoint Loft</small></span><span class="pill booked">Booked</span></li>
-            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/></svg></span><span class="m-tx"><b>Photographer</b><small>2 quotes in · 3 shortlisted</small></span><span class="pill quoted">Quote in</span></li>
-            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="9" r="2"/><path d="M12 13.5V21M12 18.5c-1.8 0-3.3-.9-4-2.5"/><path d="M12 7c-1.6-3.2 1.6-4.4 2.4-2.3.6 1.6-.6 2.6-2.4 2.3zM14 9c3.2-1.6 4.4 1.6 2.3 2.4-1.6.6-2.6-.6-2.3-2.4zM12 11c1.6 3.2-1.6 4.4-2.4 2.3-.6-1.6.6-2.6 2.4-2.3zM10 9C6.8 10.6 5.6 7.4 7.7 6.6c1.6-.6 2.6.6 2.3 2.4z"/></svg></span><span class="m-tx"><b>Florist</b><small>2 conversations · 3 shortlisted</small></span><span class="pill contacted">Messaging</span></li>
-            <li><span class="m-ic"><svg class="i" viewBox="0 0 24 24"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10"/><path d="M17 21V3c-2.2 1.2-3 4-3 7.5h3"/></svg></span><span class="m-tx"><b>Catering</b><small>2 shortlisted</small></span><span class="pill shortlisted">Shortlisted</span></li>
+          <ul class="flist">
+            <li><span class="fic"><svg class="i" viewBox="0 0 24 24"><path d="M4 20V10.5L12 4l8 6.5V20"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20"/><path d="M3 20h18"/></svg></span><span class="ftx"><b>Venue</b><small>The Greenpoint Loft</small></span><span class="pill booked">Booked</span></li>
+            <li><span class="fic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/></svg></span><span class="ftx"><b>Photographer</b><small>2 quotes in</small></span><span class="pill quoted">Quote in</span></li>
+            <li><span class="fic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="9" r="2"/><path d="M12 13.5V21"/><path d="M12 7c-1.6-3.2 1.6-4.4 2.4-2.3.6 1.6-.6 2.6-2.4 2.3zM14 9c3.2-1.6 4.4 1.6 2.3 2.4-1.6.6-2.6-.6-2.3-2.4zM12 11c1.6 3.2-1.6 4.4-2.4 2.3-.6-1.6.6-2.6 2.4-2.3zM10 9C6.8 10.6 5.6 7.4 7.7 6.6c1.6-.6 2.6.6 2.3 2.4z"/></svg></span><span class="ftx"><b>Florist</b><small>Messaging 2 florists</small></span><span class="pill msg">Messaging</span></li>
+            <li><span class="fic"><svg class="i" viewBox="0 0 24 24"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10"/><path d="M17 21V3c-2.2 1.2-3 4-3 7.5h3"/></svg></span><span class="ftx"><b>Catering</b><small>Not started</small></span><span class="pill">To do</span></li>
           </ul>
         </div>
-        <div class="bubble">
-          <div class="b-from"><span class="dotlive"></span>Photographer · just now</div>
-          June 12 is still open! Our 8-hour package includes a second shooter. Want to hop on a call this week?
+        <div class="float one"><span class="dot"><svg class="i" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9l-5 4z"/></svg></span><span>Photographer replied<small>"June 12 is still open!"</small></span></div>
+      </div>
+    </div>
+
+    <div class="explore">
+      <div class="explore-box">
+        <div class="explore-l"><b>Just looking around?</b><span>Browse vendors before you start.</span></div>
+        <form class="sbar" id="searchForm" role="search">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>
+          <input id="q" placeholder="Venues, photographers, florists..." aria-label="Search vendors">
+          <span class="sep"></span>
+          <span class="loc"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>Brooklyn, NY</span>
+          <button class="btn" type="submit">Search</button>
+        </form>
+        <div class="chips">
+          <button type="button" data-q="Venues">Venues</button><button type="button" data-q="Photographers">Photographers</button><button type="button" data-q="Florists">Florists</button><button type="button" data-q="Catering">Catering</button><button type="button" data-q="DJs and bands">DJs and bands</button><button type="button" data-q="Hair and makeup">Hair and makeup</button>
         </div>
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <section class="problem">
+<main>
+  <section class="sec paper" id="how">
     <div class="wrap">
-      <div class="sec-h">
-        <span class="eyebrow">Why we're building this</span>
-        <h2>Planning a wedding shouldn't feel like running a call center.</h2>
-        <p class="sec-sub">We've been talking with couples at the New York City Marriage Bureau. The same story keeps coming up.</p>
-      </div>
-      <div class="cards3">
-        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></span><h3>Vendors everywhere</h3><p>Quotes in email, updates by text, a voicemail from a number you don't recognize. Nothing lives in one place.</p></div>
-        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H9l-5 4z"/><path d="M10 9.5a2 2 0 1 1 2.6 1.9c-.4.1-.6.5-.6.9V13M12 14.8v.1"/></svg></span><h3>Who said what?</h3><p>Was it the second caterer or the third who could do a tasting in November? Good luck finding that thread.</p></div>
-        <div class="pcard"><span class="ic"><svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><h3>Left on delivered</h3><p>Every unanswered message is one more thing to remember. It's easy to lose track of a vendor you actually loved.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="how">
-    <div class="wrap">
-      <div class="sec-h">
-        <span class="eyebrow">How it works</span>
-        <h2>One folder for the whole wedding</h2>
+      <div class="sec-h center">
+        <span class="eyebrow">How Brixia works</span>
+        <h2 class="big">Start with your wedding, <em>not a search bar</em></h2>
+        <p class="sub">Other sites hand you a wall of vendors. Brixia starts with your day and keeps everything about it in one place.</p>
       </div>
       <ol class="steps">
-        <li><span class="n">1</span><h3>Create your wedding folder</h3><p>Add your date, city, guest count and budget. Brixia uses them to find vendors that actually fit.</p></li>
-        <li><span class="n">2</span><h3>Browse by category</h3><p>Venues, photographers, florists and more, filtered to the ones open on your date. Save your favorites and compare them side by side.</p></li>
-        <li><span class="n">3</span><h3>Message everyone in one inbox</h3><p>Chats are grouped by vendor type, quotes sit next to each other, and you check a category off the moment you book.</p></li>
+        <li class="main"><span class="tag">Start here</span><span class="n">1</span><h3>Create your wedding folder</h3><p>Your names, date, city and guest count. Invite your partner so you're planning from the same place.</p></li>
+        <li><span class="n">2</span><h3>Add your vendors</h3><p>Browse vendors open on your date, or invite the ones you've already booked. Each category gets its own shortlist.</p></li>
+        <li><span class="n">3</span><h3>Chat, compare and book</h3><p>Message every vendor from one inbox, get official quotes, and keep everyone in sync right up to the big day.</p></li>
       </ol>
     </div>
   </section>
 
-  <section class="plans">
-    <div class="wrap plans-grid">
+  <section class="sec night">
+    <div class="wrap">
+      <div class="sec-h">
+        <span class="eyebrow">Inside your folder</span>
+        <h2 class="big">Every vendor, <em>one chat</em></h2>
+        <p class="sub">No more digging through emails, texts and voicemails to figure out who said what.</p>
+      </div>
+      <div class="feat">
+        <div class="fcard">
+          <div><h3>An inbox sorted by vendor</h3><p>Chats are grouped by category, so you always know where each one stands.</p></div>
+          <div class="mini" aria-hidden="true">
+            <div class="grp"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/></svg>Photographer</div>
+            <div class="row on"><span class="av" style="background:linear-gradient(140deg,#B9C3DA,#8C9BC0)"></span><span class="tx"><b>Lens and Light Studio</b><span>Our 8-hour package is $4,800 and includes...</span></span><span class="udot"></span></div>
+            <div class="row"><span class="av" style="background:linear-gradient(140deg,#D8C3D6,#A98EB0)"></span><span class="tx"><b>Hazel Ward Photography</b><span>You: Are you available June 12?</span></span></div>
+            <div class="grp"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><circle cx="12" cy="9" r="2"/><path d="M12 13.5V21"/></svg>Florist</div>
+            <div class="row"><span class="av" style="background:linear-gradient(140deg,#F0D2CF,#D3A4A6)"></span><span class="tx"><b>Petal and Stem Studio</b><span>About $4,200 for tables, bouquets and an arch</span></span></div>
+          </div>
+        </div>
+        <div class="fcard">
+          <div><h3>A day-of timeline everyone shares</h3><p>Your vendors see the same schedule you do, and you can see who's checked it.</p></div>
+          <div class="mini" aria-hidden="true">
+            <ul class="tl">
+              <li><span class="t">3:30 pm</span><span class="d"></span><span>Hair and makeup wraps</span><span class="who seen">Seen by Glow Theory</span></li>
+              <li><span class="t">5:00 pm</span><span class="d"></span><span>Ceremony on the roof deck</span><span class="who seen">Seen by venue</span></li>
+              <li><span class="t">5:40 pm</span><span class="d"></span><span>Cocktail hour</span><span class="who">Sent to caterer</span></li>
+              <li><span class="t">8:30 pm</span><span class="d"></span><span>First dance, DJ takes over</span><span class="who seen">Seen by DJ</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="fcard wide">
+          <div class="wide-tx">
+            <span class="soon">Coming soon</span>
+            <h3>Quotes and payments, made official</h3>
+            <p>No more prices buried in a text. Vendors send a real quote right in the chat, with every line item, the total and the payment schedule. Accept it in one tap, pay deposits in the app, and get a reminder before each payment is due.</p>
+            <ul class="qpoints">
+              <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Every revision saved, so nobody argues about what was agreed</li>
+              <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Deposits and balances tracked in your folder</li>
+            </ul>
+          </div>
+          <div class="mini quote" aria-hidden="true">
+            <div class="q-h">
+              <span class="av" style="background:linear-gradient(140deg,#B9C3DA,#8C9BC0)"></span>
+              <span class="tx"><b>Lens and Light Studio</b><span>Photography quote · Version 2</span></span>
+              <span class="q-exp">Valid until Oct 30</span>
+            </div>
+            <div class="q-lines">
+              <div><span>8 hours of coverage</span><span>$3,900</span></div>
+              <div><span>Second shooter</span><span>$600</span></div>
+              <div><span>Engagement session</span><span>$300</span></div>
+              <div class="q-total"><span>Total</span><span>$4,800</span></div>
+            </div>
+            <div class="q-sched">
+              <div><span>Deposit, due on booking</span><b>$1,200</b></div>
+              <div><span>Balance, due May 12, 2027</span><b>$3,600</b></div>
+            </div>
+            <div class="q-acts"><span class="q-btn main">Accept and pay deposit</span><span class="q-btn">Ask a question</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec paper" id="plans">
+    <div class="wrap plans">
       <div>
         <span class="eyebrow">Coming soon</span>
-        <h2>Start from a real wedding</h2>
-        <p class="sec-sub">Couples can share the vendors they booked and how their day ran, only what they choose to share. Find a plan that feels like you and start from it.</p>
+        <h2 class="big">Start from a <em>real wedding</em></h2>
+        <p class="sub">Couples can share the vendors they booked and how their day ran, only what they choose to share. Find one that feels like you and copy it into your folder.</p>
       </div>
-      <div class="plan-card" aria-hidden="true">
-        <div class="plan-ph"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></div>
-        <div class="plan-b">
-          <h3>Golden hour on a Williamsburg rooftop</h3>
-          <div class="by">A fall wedding · 100 to 130 guests</div>
-          <div class="tags"><span class="tag">Rooftop</span><span class="tag">Modern</span><span class="tag">Fusion menu</span></div>
-          <div class="plan-v"><svg class="i" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>7 vendors · Start from this plan</div>
-        </div>
+      <div class="pcards" aria-hidden="true">
+        <div class="pc"><div class="ph" style="background:radial-gradient(circle at 25% 30%,#F3D9CF 0,transparent 55%),linear-gradient(140deg,#D9C2B4,#B9A6B8)"></div><div class="pb"><h3>Golden hour on a Williamsburg rooftop</h3><div class="by">Fall · 100 to 130 guests</div><div class="use"><svg class="i" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>7 vendors · Use this plan</div></div></div>
+        <div class="pc"><div class="ph" style="background:radial-gradient(circle at 70% 30%,#DCE8D8 0,transparent 55%),linear-gradient(140deg,#B7C8BC,#9FB0C4)"></div><div class="pb"><h3>Garden ceremony, conservatory dinner</h3><div class="by">Spring · 80 to 100 guests</div><div class="use"><svg class="i" viewBox="0 0 24 24" style="width:15px;height:15px"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/></svg>6 vendors · Use this plan</div></div></div>
       </div>
     </div>
   </section>
 
-  <section class="vendors" id="vendors">
+  <section class="sec paper" id="vendors" style="padding-top:0">
     <div class="wrap">
-      <div class="v-box">
-        <svg class="rings" viewBox="0 0 260 200" fill="none" stroke="#fff" stroke-width="1.5" aria-hidden="true"><circle cx="100" cy="110" r="80"/><circle cx="160" cy="110" r="80"/></svg>
+      <div class="vbox">
         <div>
           <span class="eyebrow">For wedding vendors</span>
-          <h2>No new app to learn</h2>
+          <h2 class="big" style="color:#fff">No new app to learn</h2>
           <p>When a couple messages you on Brixia, you get an email. Click the link and reply right on the site. Claim your profile whenever you're ready.</p>
-          <ul class="checks">
-            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reply from a link, no account needed</li>
-            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Every inquiry comes with the date, city and guest count</li>
-            <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Hear from couples who are ready to book</li>
-          </ul>
-        </div>
-        <form class="vform js-wl" data-source="vendor" novalidate>
-          <h3>Get vendor updates</h3>
-          <p class="sub">We'll reach out before we open in your area.</p>
-          <div class="wl-fields">
-            <div class="field"><label for="v-biz">Business name</label><input id="v-biz" name="business" autocomplete="organization" placeholder="Petal and Stem Studio"></div>
-            <div class="field"><label for="v-email">Email</label><input id="v-email" type="email" name="email" autocomplete="email" placeholder="hello@yourbusiness.com" required></div>
-            <input type="hidden" name="role" value="vendor">
+          <form class="vform" id="vendorForm" novalidate>
+            <div class="vrow">
+              <input type="email" name="email" id="vem" placeholder="hello@yourbusiness.com" aria-label="Your business email" autocomplete="email">
+              <button class="btn" type="submit">Get vendor updates</button>
+            </div>
             <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-            <button class="btn" type="submit">Keep me posted</button>
-          </div>
-          <p class="wl-note" aria-live="polite"></p>
-          <div class="wl-done" role="status"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Thanks! We'll be in touch soon.</div>
-        </form>
+            <p class="vmsg" aria-live="polite">Wedding vendor in New York? Hear from us before we launch.</p>
+          </form>
+        </div>
+        <ul class="vlist">
+          <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reply from a link, no account needed</li>
+          <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Every inquiry comes with the date, city and guest count</li>
+          <li><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>See the couple's timeline instead of chasing details</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="toast-sec">
+  <section class="sec paper toast-sec" style="padding-top:24px">
     <div class="wrap">
       <svg class="glass i" viewBox="0 0 64 64" aria-hidden="true">
         <g transform="rotate(-14 22 36)"><path d="M16 10h12l-1 15a5 5 0 0 1-10 0z"/><path d="M22 30v19M17 49h10"/></g>
@@ -358,76 +485,115 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; }
         <path d="M32 6V2M27 7l-2.5-2.5M37 7l2.5-2.5"/>
       </svg>
       <p class="toast-line">Brixia is the Roman name for Brescia, home of Franciacorta, Italy's answer to Champagne. We named ourselves after the place that makes the toast, and we raise one to <em>every couple who plans with us.</em></p>
-      <a class="btn" href="#join" data-focus="hero-email">Join the waitlist</a>
+      <a class="btn" href="#create" data-focus="n1">Reserve our wedding folder</a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap foot">
-    <a class="logo" href="#top"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M13 6.5L15 4.5l2 2"/></svg></span>Brixia</a>
+    <a class="logo" href="#"><span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span>Brixia</a>
     <span>Made in New York</span>
-    <div class="foot-r">
-      <a href="mailto:hello@brixiaco.com">hello@brixiaco.com</a>
-      <span>© <span id="yr">2026</span> Brixia</span>
-    </div>
+    <div class="r"><a href="mailto:hello@brixiaco.com">hello@brixiaco.com</a><span>© <span id="yr">2026</span> Brixia</span></div>
   </div>
 </footer>
 
 <script>
-/* Paste your Formspree form URL between the quotes, for example "https://formspree.io/f/abcdwxyz".
-   Until it's filled in, signups show a message asking people to email you instead. */
-const FORM_ENDPOINT = "https://formspree.io/f/mljgbayj";
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-document.querySelectorAll('.js-wl').forEach(form => {
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const note = form.querySelector('.wl-note');
-    const btn = form.querySelector('button[type=submit]');
-    const email = form.querySelector('input[type=email]');
-    note.classList.remove('err');
-    if (!email.value.trim() || !email.checkValidity()) {
-      note.textContent = 'Please enter a valid email address.';
-      note.classList.add('err');
-      email.focus();
-      return;
-    }
-    if (!FORM_ENDPOINT) {
-      note.textContent = "Signups open very soon. For now, email hello@brixiaco.com and we'll add you.";
-      note.classList.add('err');
-      return;
-    }
-    const data = new FormData(form);
-    data.append('source', form.dataset.source);
-    const label = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    try {
-      const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-      if (!res.ok) throw new Error('Request failed');
-      form.classList.add('done');
-    } catch (err) {
-      note.textContent = 'Something went wrong. Please try again, or email hello@brixiaco.com.';
-      note.classList.add('err');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = label;
-    }
-  });
+let toastTimer;
+function toast(msg) {
+  document.querySelector('.toast')?.remove();
+  const t = document.createElement('div');
+  t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.appendChild(t);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.remove(), 2600);
+}
+
+function updatePreview() {
+  const a = $('n1').value.trim() || 'Maya', b = $('n2').value.trim() || 'Daniel';
+  $('pvNames').innerHTML = `${esc(a)} <em>&amp;</em> ${esc(b)}`;
+  const city = ($('city').value.trim() || 'Brooklyn').split(',')[0];
+  if ($('tbd').checked) {
+    $('pvMeta').textContent = `Date to be decided · ${city}`;
+    $('pvCount').textContent = '?'; $('pvCountLbl').textContent = 'date TBD';
+  } else {
+    const d = new Date(($('wd').value || '2027-06-12') + 'T12:00:00');
+    $('pvMeta').textContent = `${d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${city}`;
+    const t = new Date(); t.setHours(12, 0, 0, 0);
+    $('pvCount').textContent = Math.max(0, Math.round((d - t) / 86400000));
+    $('pvCountLbl').textContent = 'days to go';
+  }
+}
+['n1', 'n2', 'wd', 'city'].forEach(id => $(id).addEventListener('input', updatePreview));
+$('tbd').addEventListener('change', () => { $('wd').disabled = $('tbd').checked; updatePreview(); });
+
+const FORM_ENDPOINT = "https://formspree.io/f/mljgbayj";
+const validEmail = el => el.value.trim() && el.checkValidity();
+
+async function send(data) {
+  const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error('Request failed');
+}
+
+$('createForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const a = $('n1'), b = $('n2'), em = $('em'), btn = $('createBtn');
+  const bad = [];
+  if (!a.value.trim()) bad.push(a);
+  if (!b.value.trim()) bad.push(b);
+  if (!validEmail(em)) bad.push(em);
+  [a, b, em].forEach(x => x.closest('.fld').classList.toggle('err', bad.includes(x)));
+  if (bad.length) {
+    $('err').textContent = bad.includes(em) && bad.length === 1 ? 'Add a valid email so we can reach you.' : 'Add both of your names and your email to reserve your folder.';
+    bad[0].focus();
+    return;
+  }
+  $('err').textContent = '';
+  const data = new FormData($('createForm'));
+  data.set('wedding_date', $('tbd').checked || !$('wd').value ? 'Not picked yet' : $('wd').value);
+  data.append('role', 'couple');
+  data.append('_subject', `New couple: ${a.value.trim()} and ${b.value.trim()}`);
+  const label = btn.innerHTML;
+  btn.disabled = true; btn.textContent = 'Reserving...';
+  try {
+    await send(data);
+    $('doneTitle').textContent = `Welcome, ${a.value.trim()} and ${b.value.trim()}.`;
+    $('doneText').textContent = `Your wedding folder is reserved. We're opening Brixia to New York couples soon, and we'll email ${em.value.trim()} as soon as yours is ready.`;
+    $('create').classList.add('is-done');
+  } catch (err) {
+    $('err').textContent = 'Something went wrong. Try again, or email hello@brixiaco.com.';
+  } finally {
+    btn.disabled = false; btn.innerHTML = label;
+  }
 });
 
-document.querySelectorAll('[data-focus]').forEach(a => a.addEventListener('click', () => {
-  setTimeout(() => document.getElementById(a.dataset.focus)?.focus({ preventScroll: true }), 450);
-}));
+$('vendorForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const f = $('vendorForm'), em = $('vem'), msg = f.querySelector('.vmsg'), btn = f.querySelector('button');
+  msg.classList.remove('err');
+  if (!validEmail(em)) { msg.textContent = 'Enter a valid email address.'; msg.classList.add('err'); em.focus(); return; }
+  const data = new FormData(f);
+  data.append('role', 'vendor');
+  data.append('_subject', 'New vendor signup');
+  btn.disabled = true;
+  try {
+    await send(data);
+    f.classList.add('sent');
+    msg.textContent = "Thanks. We'll be in touch before we launch.";
+  } catch (err) {
+    msg.textContent = 'Something went wrong. Try again, or email hello@brixiaco.com.'; msg.classList.add('err');
+  } finally { btn.disabled = false; }
+});
 
-const days = Math.round((new Date('2027-06-12T12:00:00') - new Date()) / 86400000);
-if (days > 0) document.getElementById('countdown').textContent = days;
-document.getElementById('yr').textContent = new Date().getFullYear();
+$('searchForm').addEventListener('submit', e => { e.preventDefault(); toast('Vendor search opens soon. Reserve your folder to get in first.'); });
+document.querySelectorAll('.chips button').forEach(b => b.addEventListener('click', () => { $('q').value = b.dataset.q; $('q').focus(); }));
+document.querySelectorAll('[data-toast]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); toast(el.dataset.toast); }));
+document.querySelectorAll('[data-focus]').forEach(a => a.addEventListener('click', () => setTimeout(() => $(a.dataset.focus)?.focus({ preventScroll: true }), 450)));
 
-const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+$('yr').textContent = new Date().getFullYear();
+updatePreview();
 </script>
 </body>
 </html>
