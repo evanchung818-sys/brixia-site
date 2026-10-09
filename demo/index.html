@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Brixia prototype · Inbox and vendor reply</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23F3CFCC'/%3E%3Cg fill='none' stroke='%23111829' stroke-width='2'%3E%3Ccircle cx='13' cy='18' r='6'/%3E%3Ccircle cx='19' cy='18' r='6'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+:root {
+  --night: #111829; --night-2: #18213D; --navy: #1F2A4A; --slate: #2F3F66;
+  --blush: #F3CFCC; --blush-2: #FBEDEC; --rose: #C99A9C; --rose-ink: #A85F62;
+  --paper: #F6F2F1; --card: #FFFFFF; --ink: #1C2440; --muted: #5C6780; --faint: #8790A3; --line: #E9E4E4; --hover: #F7F4F3; --sel: #EEF1F7;
+  --ok: #2C7656; --ok-bg: #E1F0E8; --warn: #8E6210; --warn-bg: #F6EBD3; --info: #3A5687; --info-bg: #E2E8F4;
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "Manrope", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --shadow: 0 1px 2px rgba(17,24,41,.06), 0 12px 32px rgba(17,24,41,.10);
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; display: flex; flex-direction: column; height: 100dvh; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 2px solid var(--slate); outline-offset: 2px; border-radius: 8px; }
+.i { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 16px; border-radius: 999px; border: 0; background: var(--navy); color: #fff; font-weight: 700; font-size: 14px; white-space: nowrap; transition: transform .1s, opacity .1s; }
+.btn:hover { opacity: .92; } .btn:active { transform: scale(.98); }
+.btn.line { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.line:hover { background: var(--hover); opacity: 1; }
+.btn.blush { background: var(--blush); color: var(--night); }
+.btn.sm { padding: 7px 12px; font-size: 13px; }
+.pill { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800; white-space: nowrap; }
+.pill.booked { background: var(--ok-bg); color: var(--ok); }
+.pill.qin { background: var(--info-bg); color: var(--info); }
+.pill.needs { background: var(--blush-2); color: var(--rose-ink); }
+.pill.waiting { background: #EEF0F4; color: var(--muted); }
+.pill.todo { background: #F1EEED; color: var(--faint); }
+.av { width: 38px; height: 38px; border-radius: 11px; flex: none; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 13px; }
+.av.sm { width: 30px; height: 30px; border-radius: 9px; font-size: 11.5px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose-ink); flex: none; }
+
+/* Demo bar */
+.demo { flex: none; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 16px; background: var(--night); color: #fff; }
+.demo .tag { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--blush); }
+.seg { display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.08); flex-wrap: wrap; }
+.seg button { border: 0; background: transparent; color: rgba(255,255,255,.75); padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.seg button.on { background: #fff; color: var(--night); }
+.seg .n { font-size: 11px; opacity: .7; font-weight: 800; }
+.demo .reset { margin-left: auto; border: 0; background: transparent; color: rgba(255,255,255,.7); font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.screen { flex: 1; min-height: 0; display: none; }
+body[data-screen="inbox"] #s-inbox, body[data-screen="email"] #s-email, body[data-screen="reply"] #s-reply, body[data-screen="claim"] #s-claim, body[data-screen="vinbox"] #s-vinbox { display: flex; }
+
+/* ---------- Couple app ---------- */
+#s-inbox { }
+.side { width: 232px; flex: none; background: var(--night); color: #fff; display: flex; flex-direction: column; padding: 18px 14px; gap: 18px; }
+.logo { display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 24px; padding: 0 6px; }
+.mark { width: 30px; height: 30px; border-radius: 50%; background: var(--blush); color: var(--night); display: grid; place-items: center; flex: none; }
+.mark .i { width: 18px; height: 18px; }
+.wcard { border-radius: 14px; padding: 14px; background: linear-gradient(125deg, #1C2644, #43537A 60%, #A98A97); }
+.wcard small { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.wcard b { display: block; font-family: var(--serif); font-weight: 400; font-size: 21px; line-height: 1.15; margin: 3px 0 4px; }
+.wcard b em { color: var(--blush); }
+.wcard span { font-size: 12.5px; opacity: .88; }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav button { display: flex; align-items: center; gap: 11px; padding: 10px 10px; border: 0; border-radius: 10px; background: transparent; color: rgba(255,255,255,.75); font-weight: 700; font-size: 14px; text-align: left; }
+.nav button:hover { background: rgba(255,255,255,.06); color: #fff; }
+.nav button.on { background: rgba(255,255,255,.1); color: #fff; }
+.nav .count { margin-left: auto; font-size: 11.5px; font-weight: 800; background: var(--blush); color: var(--night); padding: 1px 8px; border-radius: 999px; }
+.side .foot { margin-top: auto; font-size: 12px; color: rgba(255,255,255,.55); padding: 0 6px; }
+
+.list { width: 400px; flex: none; display: flex; flex-direction: column; background: var(--card); border-right: 1px solid var(--line); min-height: 0; }
+.list-h { padding: 18px 18px 12px; border-bottom: 1px solid var(--line); }
+.list-h h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.1; }
+.list-h p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.search { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 0 12px; height: 40px; border-radius: 12px; background: var(--hover); }
+.search .i { color: var(--faint); }
+.search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font-size: 14px; font-weight: 600; }
+.chips { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.chips button { border: 0; padding: 6px 12px; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--line); font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.chips button.on { background: var(--navy); color: #fff; box-shadow: none; }
+.scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 10px 10px 24px; }
+.needs { margin: 4px 0 12px; border-radius: 14px; background: var(--blush-2); padding: 10px; }
+.needs-h { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--rose-ink); padding: 2px 4px 8px; }
+.nrow { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: #fff; border-radius: 10px; padding: 8px 10px; text-align: left; }
+.nrow + .nrow { margin-top: 6px; }
+.nrow:hover { box-shadow: 0 0 0 1px var(--rose); }
+.nrow .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.nrow b { font-size: 13.5px; display: block; }
+.nrow span { font-size: 12px; color: var(--muted); }
+.nrow .act { font-size: 12px; font-weight: 800; color: var(--rose-ink); white-space: nowrap; }
+
+.cat { margin-bottom: 8px; }
+.cat-h { display: flex; align-items: center; gap: 11px; width: 100%; border: 0; background: var(--navy); color: #fff; padding: 12px 12px; text-align: left; border-radius: 14px; transition: background .15s; }
+.cat-h:hover { background: #26335A; }
+.cat.open .cat-h { border-radius: 14px 14px 0 0; }
+.cic { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.12); color: #fff; display: grid; place-items: center; flex: none; }
+.cat.is-booked .cic { background: var(--ok-bg); color: var(--ok); }
+.cat-h .dot { background: var(--blush); }
+.cat-h .count-b { font-size: 11.5px; font-weight: 800; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.14); color: #fff; }
+.cat-h .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.cat-h b { display: block; font-size: 14.5px; }
+.cat-h span.sub { font-size: 12.5px; color: rgba(255,255,255,.72); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chev { color: #fff; transition: transform .15s; }
+.cat.open .chev { transform: rotate(180deg); }
+.cat-b { display: none; position: relative; background: #fff; border: 1px solid var(--line); border-top: 0; border-radius: 0 0 14px 14px; padding: 6px 6px 6px 22px; }
+.cat-b::before { content: ""; position: absolute; left: 11px; top: 10px; bottom: 10px; width: 2px; border-radius: 2px; background: var(--blush); }
+.cat.open .cat-b { display: block; }
+.trow { display: flex; align-items: center; gap: 10px; width: 100%; border: 0; background: transparent; border-radius: 10px; padding: 9px 8px; text-align: left; }
+.trow:hover { background: var(--hover); }
+.trow.on { background: var(--sel); }
+.trow .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.trow .top { display: flex; gap: 8px; align-items: baseline; }
+.trow .top b { font-size: 13.5px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.trow .top time { font-size: 11.5px; color: var(--faint); white-space: nowrap; }
+.trow .prev { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+.trow.unread .prev { color: var(--ink); font-weight: 700; }
+.trow .meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.arch { width: 100%; border: 0; background: transparent; text-align: left; font-size: 12.5px; font-weight: 700; color: var(--faint); padding: 8px 10px; border-radius: 10px; }
+.arch:hover { background: var(--hover); color: var(--muted); }
+.trow.archived { opacity: .6; }
+.empty-cat { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px 10px; font-size: 13px; color: var(--muted); }
+.none { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 14px; }
+
+.thread { flex: 1; min-width: 0; display: flex; flex-direction: column; background: var(--paper); min-height: 0; }
+.th-h { display: flex; align-items: center; gap: 12px; padding: 14px 20px; background: #fff; border-bottom: 1px solid var(--line); }
+.th-h .back { display: none; border: 0; background: transparent; padding: 6px; margin-left: -6px; border-radius: 8px; }
+.th-h .who { flex: 1; min-width: 0; line-height: 1.35; }
+.th-h .who b { font-size: 16px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.th-h .who .sub { font-size: 12.5px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; }
+.acts .btn .i { width: 16px; height: 16px; }
+.acts .btn.starred { color: var(--rose-ink); }
+.acts .btn.starred .i { fill: var(--rose-ink); }
+.msgs { flex: 1; min-height: 0; overflow-y: auto; padding: 20px 20px 12px; display: flex; flex-direction: column; gap: 14px; }
+.note { align-self: center; font-size: 12px; color: var(--muted); background: #fff; border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; text-align: center; max-width: 90%; }
+.m { display: flex; gap: 10px; align-items: flex-end; max-width: min(620px, 86%); }
+.m.me { align-self: flex-end; flex-direction: row-reverse; }
+.bub { padding: 11px 14px; border-radius: 16px 16px 16px 6px; background: #fff; border: 1px solid var(--line); font-size: 14.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.m.me .bub { background: var(--navy); color: #fff; border-color: var(--navy); border-radius: 16px 16px 6px 16px; }
+.m .when { font-size: 11.5px; color: var(--faint); margin-top: 4px; display: flex; gap: 6px; align-items: center; }
+.m.me .when { justify-content: flex-end; }
+.via { font-size: 11px; font-weight: 800; color: var(--warn); background: var(--warn-bg); padding: 1px 7px; border-radius: 999px; }
+.m.fresh .bub { animation: pop .5s ease-out; }
+@keyframes pop { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+.quote { width: min(420px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: var(--shadow); }
+.q-h { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.q-h .tx { flex: 1; min-width: 0; line-height: 1.3; }
+.q-h b { font-size: 14px; display: block; }
+.q-h span { font-size: 12px; color: var(--muted); }
+.q-l { padding: 8px 2px; font-size: 13.5px; }
+.q-l div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.q-l div span:last-child { font-variant-numeric: tabular-nums; font-weight: 600; }
+.q-l .tot { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 9px; font-weight: 800; font-size: 15px; }
+.q-s { background: #F4F5F9; border-radius: 12px; padding: 8px 12px; font-size: 12.5px; color: var(--muted); }
+.q-s div { display: flex; justify-content: space-between; padding: 3px 0; }
+.q-s b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.q-a { display: flex; gap: 8px; margin-top: 12px; }
+.q-a .btn { flex: 1; }
+.q-done { display: flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font-size: 13px; font-weight: 700; }
+
+.compose { padding: 10px 20px 16px; background: var(--paper); }
+.sugg { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.sugg button { border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line); padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: var(--slate); text-align: left; }
+.sugg button:hover { box-shadow: inset 0 0 0 1px var(--slate); }
+.box { display: flex; align-items: flex-end; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 8px 8px 8px 14px; }
+.box:focus-within { border-color: var(--slate); }
+.box textarea { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; font-size: 14.5px; line-height: 1.45; padding: 6px 0; max-height: 140px; background: transparent; }
+.icon-btn { border: 0; background: transparent; color: var(--faint); width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex: none; }
+.icon-btn:hover { background: var(--hover); color: var(--ink); }
+.send { width: 40px; height: 40px; border-radius: 12px; border: 0; background: var(--navy); color: #fff; display: grid; place-items: center; flex: none; }
+.send .i { width: 18px; height: 18px; }
+.empty-th { flex: 1; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 24px; }
+.empty-th b { display: block; font-family: var(--serif); font-weight: 400; font-size: 26px; color: var(--ink); margin-bottom: 6px; }
+.bottom-nav { display: none; }
+
+/* ---------- Vendor email ---------- */
+#s-email { overflow-y: auto; background: #E9EBF0; padding: 28px 16px 48px; }
+body[data-screen="email"] #s-email { display: block; }
+.mail { width: min(720px, 100%); background: #fff; border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+.mail-bar { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: #F4F5F8; border-bottom: 1px solid #E3E5EA; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.mail-bar .d { width: 10px; height: 10px; border-radius: 50%; background: #D6D9E0; }
+.mail-meta { padding: 16px 22px; border-bottom: 1px solid #ECEEF2; font-size: 13.5px; }
+.mail-meta h2 { font-size: 19px; font-weight: 800; margin-bottom: 10px; }
+.mail-meta .r { display: flex; gap: 8px; color: var(--muted); padding: 2px 0; flex-wrap: wrap; }
+.mail-meta .r b { color: var(--ink); font-weight: 700; }
+.mail-body { padding: 26px 22px 30px; background: #F7F5F4; }
+.em { max-width: 560px; margin: 0 auto; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); }
+.em-top { background: var(--night); color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 9px; font-family: var(--serif); font-size: 22px; }
+.em-in { padding: 24px; }
+.em-in h3 { font-family: var(--serif); font-weight: 400; font-size: 26px; line-height: 1.15; margin-bottom: 6px; }
+.em-in .lead { color: var(--muted); font-size: 14.5px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0; }
+.facts span { font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #F1F3F8; color: var(--slate); }
+.em-q { border-left: 3px solid var(--blush); padding: 4px 0 4px 14px; font-size: 15px; white-space: pre-wrap; margin: 4px 0 20px; }
+.em-cta { display: block; text-align: center; background: var(--navy); color: #fff; padding: 14px; border-radius: 12px; font-weight: 800; font-size: 15px; border: 0; width: 100%; }
+.em-small { text-align: center; font-size: 12.5px; color: var(--faint); margin-top: 10px; }
+.em-foot { border-top: 1px solid var(--line); padding: 16px 24px; font-size: 12px; color: var(--faint); line-height: 1.6; }
+.em-foot a { color: var(--slate); font-weight: 700; }
+.explain { width: min(720px, 100%); margin: 0 auto 14px; font-size: 13px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
+.explain .i { color: var(--rose-ink); margin-top: 1px; }
+.email-wrap { display: flex; flex-direction: column; width: 100%; align-items: center; }
+
+/* ---------- Vendor reply page ---------- */
+#s-reply { flex-direction: column; overflow-y: auto; background: var(--paper); }
+.vtop { display: flex; align-items: center; gap: 14px; padding: 14px 24px; background: #fff; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.vtop .logo { color: var(--ink); font-size: 23px; padding: 0; }
+.vtop .as { font-size: 13px; color: var(--muted); }
+.vtop .as b { color: var(--ink); }
+.vtop .btn { margin-left: auto; }
+.vgrid { width: min(1120px, 100%); margin: 0 auto; padding: 24px; display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; align-items: start; }
+.vmain { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; }
+.vmain-h { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.vmain-h h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.vmain-h p { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+.vmain .msgs { background: var(--paper); min-height: 260px; max-height: 52vh; }
+.vmain .compose { background: #fff; border-top: 1px solid var(--line); padding-top: 12px; }
+.vrow { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
+.vrow .hint { font-size: 12px; color: var(--faint); margin-left: auto; }
+.sent { display: none; align-items: center; gap: 12px; margin: 12px 20px 0; padding: 12px 14px; border-radius: 12px; background: var(--ok-bg); color: var(--ok); font-weight: 700; font-size: 14px; flex-wrap: wrap; }
+.sent.show { display: flex; }
+.sent .btn { margin-left: auto; }
+.aside { display: flex; flex-direction: column; gap: 16px; }
+.acard { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+.acard h3 { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: 12px; }
+.det { display: grid; gap: 10px; font-size: 14px; }
+.det div { display: flex; justify-content: space-between; gap: 12px; }
+.det span { color: var(--muted); }
+.det b { text-align: right; }
+.claim { background: var(--navy); color: #fff; border-color: var(--navy); }
+.claim h3 { color: var(--blush); }
+.claim p { font-size: 14px; color: rgba(255,255,255,.82); }
+.claim ul { list-style: none; padding: 0; margin: 12px 0 16px; display: grid; gap: 8px; font-size: 13.5px; font-weight: 600; }
+.claim li { display: flex; gap: 8px; }
+.claim li .i { color: var(--blush); width: 16px; height: 16px; margin-top: 2px; }
+.claim .btn { width: 100%; }
+
+.toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); background: var(--ink); color: #fff; padding: 11px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow); z-index: 50; display: flex; gap: 12px; align-items: center; max-width: calc(100% - 32px); }
+.toast button { border: 0; background: var(--blush); color: var(--night); font-weight: 800; font-size: 12.5px; padding: 6px 10px; border-radius: 999px; white-space: nowrap; }
+
+
+
+/* Group style variants */
+.gstyle { display: flex; align-items: center; gap: 8px; }
+.gstyle span { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.6); }
+body[data-groups="white"] .cat-h { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px #C5CFE2, inset 5px 0 0 var(--navy); }
+body[data-groups="white"] .cat-h:hover { background: #F7F8FC; }
+body[data-groups="white"] .cic { background: #EEF1F7; color: var(--slate); }
+body[data-groups="white"] .cat-h span.sub { color: var(--muted); }
+body[data-groups="white"] .chev { color: var(--slate); }
+body[data-groups="white"] .cat-h .dot { background: var(--rose-ink); }
+body[data-groups="white"] .cat-h .count-b { background: #EEF1F7; color: var(--slate); }
+body[data-groups="white"] .cat.is-booked .cic { background: var(--ok-bg); color: var(--ok); }
+body[data-groups="white"] .cat-b { background: #F4F2F1; border: 1.5px solid #C5CFE2; border-top: 0; padding: 8px 8px 8px 22px; }
+body[data-groups="white"] .cat-b .trow { background: #fff; box-shadow: 0 0 0 1px var(--line); margin-bottom: 6px; }
+body[data-groups="white"] .cat-b .trow:last-child { margin-bottom: 0; }
+body[data-groups="white"] .cat-b .trow.on { background: var(--sel); }
+
+/* ---------- Claim + vendor inbox ---------- */
+#s-claim { overflow-y: auto; background: var(--paper); justify-content: center; padding: 32px 16px 48px; }
+.claim-card { width: min(560px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; align-self: flex-start; }
+.claim-top { background: var(--night); color: #fff; padding: 22px 24px; }
+.claim-top .steps { display: flex; gap: 6px; margin-bottom: 14px; }
+.claim-top .steps span { height: 4px; flex: 1; border-radius: 4px; background: rgba(255,255,255,.18); }
+.claim-top .steps span.on { background: var(--blush); }
+.claim-top h1 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; }
+.claim-top p { font-size: 14px; color: rgba(255,255,255,.78); margin-top: 6px; }
+.claim-in { padding: 22px 24px 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.claim-in .grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.fld { display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--line); border-radius: 12px; padding: 8px 12px 9px; }
+.fld:focus-within { border-color: var(--slate); }
+.fld label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+.fld input { border: 0; outline: 0; padding: 0; font-size: 15px; font-weight: 600; background: transparent; min-width: 0; width: 100%; }
+.fld.code input { font-size: 24px; letter-spacing: .4em; font-variant-numeric: tabular-nums; }
+.fld.err { border-color: #C0545A; }
+.found { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); background: var(--hover); border-radius: 12px; padding: 10px 12px; }
+.found .i { color: var(--rose-ink); margin-top: 1px; width: 16px; height: 16px; }
+.claim-in .errmsg { color: #B0464C; font-size: 13px; font-weight: 700; min-height: 0; }
+.claim-in .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.claim-in .row .btn { flex: 1; padding: 13px 16px; font-size: 15px; }
+.claim-in .small { font-size: 12.5px; color: var(--faint); text-align: center; }
+.claim-in .small button { border: 0; background: none; color: var(--slate); font-weight: 700; font-size: 12.5px; text-decoration: underline; padding: 0; }
+.vbiz { border-radius: 14px; padding: 14px; background: linear-gradient(125deg, #3A2E3A, #7B5D6A 60%, #C99A9C); }
+.vbiz small { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.vbiz b { display: block; font-family: var(--serif); font-weight: 400; font-size: 20px; line-height: 1.15; margin: 3px 0 6px; }
+.vbiz .ver { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 800; background: rgba(255,255,255,.16); padding: 2px 8px; border-radius: 999px; }
+.vbiz .ver .i { width: 12px; height: 12px; }
+.wchips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 3px; }
+.wchips span { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #F1F3F8; color: var(--slate); }
+.sent .acts2 { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.trow .wd { font-size: 11px; font-weight: 800; color: var(--slate); background: #EEF1F7; padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+@media (max-width: 1180px) { .vbiz { display: none; } }
+@media (max-width: 760px) { .claim-in .grid2 { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 1180px) {
+  .side { width: 76px; padding: 18px 10px; align-items: center; }
+  .side .logo span:last-child, .wcard, .nav button span, .nav .count, .side .foot { display: none; }
+  .logo { padding: 0; }
+  .nav button { justify-content: center; position: relative; }
+  .list { width: 360px; }
+}
+@media (max-width: 1000px) { .vgrid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .app-screen { flex-direction: column; }
+  .side { display: none; }
+  .list { width: 100%; flex: 1; border-right: 0; }
+  .thread { display: none; }
+  .app-screen.thread-open .list { display: none; }
+  .app-screen.thread-open .thread { display: flex; }
+  .th-h { padding: 10px 14px; flex-wrap: wrap; }
+  .th-h .back { display: grid; }
+  .acts { width: 100%; }
+  .msgs { padding: 14px; }
+  .compose { padding: 8px 12px 12px; }
+  .bottom-nav { display: flex; flex: none; justify-content: space-around; background: var(--night); padding: 6px 4px calc(6px + env(safe-area-inset-bottom)); }
+  .app-screen.thread-open .bottom-nav { display: none; }
+  .bottom-nav button { border: 0; background: transparent; color: rgba(255,255,255,.65); display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 10px; }
+  .bottom-nav button.on { color: #fff; }
+  .vgrid { padding: 14px; }
+  .vtop { padding: 12px 14px; }
+  .vtop .btn { margin-left: 0; }
+  .demo .reset { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body data-screen="inbox" data-groups="white">
+
+<div class="demo" role="navigation" aria-label="Prototype screens">
+  <span class="tag">Brixia prototype</span>
+  <div class="seg" id="seg">
+    <button type="button" data-go="inbox" class="on"><span class="n">1</span>Couple's inbox</button>
+    <button type="button" data-go="email"><span class="n">2</span>Vendor's email</button>
+    <button type="button" data-go="reply"><span class="n">3</span>Vendor reply page</button>
+    <button type="button" data-go="vinbox"><span class="n">4</span>Vendor's inbox</button>
+  </div>
+  <button type="button" class="reset" id="reset">Reset demo</button>
+</div>
+
+<!-- Couple inbox -->
+<section class="screen app-screen" id="s-inbox" aria-label="Couple inbox">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="wcard"><small>Wedding folder</small><b>Maya <em>&amp;</em> Daniel</b><span>June 12, 2027 · Brooklyn</span></div>
+    <nav class="nav" id="sideNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+
+  <div class="list">
+    <div class="list-h">
+      <h1>Inbox</h1>
+      <p id="listSub">Every vendor, grouped by category</p>
+      <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="q" placeholder="Search vendors" aria-label="Search vendors"></label>
+      <div class="chips" id="chips">
+        <button type="button" data-f="all" class="on">All</button>
+        <button type="button" data-f="unread">Unread</button>
+        <button type="button" data-f="quotes">Quotes</button>
+        <button type="button" data-f="booked">Booked</button>
+      </div>
+    </div>
+    <div class="scroll" id="list"></div>
+  </div>
+
+  <div class="thread" id="thread"></div>
+  <nav class="bottom-nav" id="bottomNav"></nav>
+</section>
+
+<!-- Vendor email -->
+<section class="screen" id="s-email" aria-label="Vendor's email">
+  <div class="email-wrap">
+    <p class="explain"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg><span>This is what lands in the vendor's normal inbox when a couple messages them. They don't need a Brixia account to reply.</span></p>
+    <div class="mail" id="mail"></div>
+  </div>
+</section>
+
+<!-- Vendor reply page -->
+<section class="screen" id="s-reply" aria-label="Vendor reply page"></section>
+
+<!-- Claim profile -->
+<section class="screen" id="s-claim" aria-label="Claim profile"></section>
+
+<!-- Vendor inbox -->
+<section class="screen app-screen" id="s-vinbox" aria-label="Vendor inbox">
+  <aside class="side">
+    <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+    <div class="vbiz"><small>Vendor account</small><b>Petal and Stem Studio</b><span class="ver"><svg class="i" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Verified florist</span></div>
+    <nav class="nav" id="vNav"></nav>
+    <div class="foot">Prototype. Nothing here is saved.</div>
+  </aside>
+  <div class="list">
+    <div class="list-h">
+      <h1>Your couples</h1>
+      <p id="vListSub">Every inquiry, grouped by stage</p>
+      <label class="search"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="vq" placeholder="Search couples" aria-label="Search couples"></label>
+      <div class="chips" id="vchips">
+        <button type="button" data-vf="all" class="on">All</button>
+        <button type="button" data-vf="turn">Your turn</button>
+        <button type="button" data-vf="booked">Booked</button>
+      </div>
+    </div>
+    <div class="scroll" id="vlist"></div>
+  </div>
+  <div class="thread" id="vthread"></div>
+</section>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => '$' + n.toLocaleString('en-US');
+
+const ICON = {
+  venue: '<path d="M4 20V10.5L12 4l8 6.5V20"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20"/><path d="M3 20h18"/>',
+  photo: '<rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/>',
+  florist: '<circle cx="12" cy="9" r="2"/><path d="M12 13.5V21"/><path d="M12 7c-1.6-3.2 1.6-4.4 2.4-2.3.6 1.6-.6 2.6-2.4 2.3zM14 9c3.2-1.6 4.4 1.6 2.3 2.4-1.6.6-2.6-.6-2.3-2.4zM12 11c1.6 3.2-1.6 4.4-2.4 2.3-.6-1.6.6-2.6 2.4-2.3zM10 9C6.8 10.6 5.6 7.4 7.7 6.6c1.6-.6 2.6.6 2.3 2.4z"/>',
+  catering: '<path d="M7 3v6a2 2 0 0 0 4 0V3M9 11v10"/><path d="M17 21V3c-2.2 1.2-3 4-3 7.5h3"/>',
+  music: '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+  beauty: '<path d="M14.5 3.5l6 6-9 9a3 3 0 0 1-4.2 0l-1.8-1.8a3 3 0 0 1 0-4.2z"/><path d="M3.5 20.5c.8-2.4 2.4-3.5 4-3.5"/>',
+  home: '<path d="M4 11l8-7 8 7v9h-5v-6h-6v6H4z"/>',
+  inbox: '<path d="M4 5.5h16v10.5H9l-5 4z"/>',
+  explore: '<circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+  plans: '<path d="M12 4l8 4-8 4-8-4z"/><path d="M4 12l8 4 8-4"/><path d="M4 16l8 4 8-4"/>',
+  chev: '<path d="M6 9l6 6 6-6"/>',
+  send: '<path d="M4 12l16-8-6 16-2.5-6.5z"/>',
+  clip: '<path d="M20 11.5l-7.8 7.8a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7l-8.5 8.5a1.7 1.7 0 0 1-2.4-2.4l7.8-7.8"/>',
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.7l5.9-.9z"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  back: '<path d="M15 5l-7 7 7 7"/>',
+  doc: '<path d="M7 3.5h7l4 4v13H6v-17z"/><path d="M9.5 12h5M9.5 15.5h5"/>',
+  bell: '<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  archive: '<rect x="3.5" y="4.5" width="17" height="4" rx="1"/><path d="M5 8.5v11h14v-11M10 12.5h4"/>'
+};
+const ic = (n, extra = '') => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true" ${extra}>${ICON[n]}</svg>`;
+
+const CATS = [
+  { id: 'venue', name: 'Venue', about: 'their venue' },
+  { id: 'photo', name: 'Photographer', about: 'photography' },
+  { id: 'florist', name: 'Florist', about: 'flowers' },
+  { id: 'catering', name: 'Catering', about: 'catering' },
+  { id: 'music', name: 'DJ and music', about: 'music' },
+  { id: 'beauty', name: 'Hair and makeup', about: 'hair and makeup' }
+];
+
+const SEED = () => [
+  { id: 't1', cat: 'venue', vendor: 'Harborline Loft', av: ['#C9D2E6', '#8E9EC4'], status: 'booked', unread: 0, onBrixia: true, email: 'events@harborlineloft.com', msgs: [
+    { from: 'vendor', text: 'Thanks for touring the space! June 12 is yours. The contract is attached.', when: 'Sep 20' },
+    { from: 'me', text: 'Signed and sent back. So excited!', when: 'Sep 21' },
+    { from: 'vendor', text: 'Wonderful. Your coordinator will reach out about 8 weeks before the date.', when: 'Oct 2' } ] },
+  { id: 't2', cat: 'venue', vendor: 'The Glasshouse on Kent', av: ['#D7D0C4', '#A99C8A'], status: 'archived', unread: 0, onBrixia: false, email: 'hello@glasshouseonkent.com', msgs: [
+    { from: 'me', text: 'Hi! Is June 12, 2027 available?', when: 'Sep 8' },
+    { from: 'vendor', text: "Unfortunately we're booked that weekend. Best of luck!", when: 'Sep 9', via: true } ] },
+  { id: 't3', cat: 'photo', vendor: 'Lens and Light Studio', av: ['#B9C3DA', '#8C9BC0'], status: 'quote', unread: 1, onBrixia: true, email: 'studio@lensandlight.com', msgs: [
+    { from: 'me', text: "Hi! We're getting married June 12 at Harborline Loft. Are you available, and what do your packages look like?", when: 'Oct 3' },
+    { from: 'vendor', text: 'Congrats! June 12 is open. I put together a quote for 8 hours with a second shooter.', when: 'Yesterday' },
+    { from: 'vendor', type: 'quote', when: 'Yesterday', quote: { title: 'Photography quote', lines: [['8 hours of coverage', 3900], ['Second shooter', 600], ['Engagement session', 300]], deposit: 1200, due: 'May 12, 2027', valid: 'Oct 30' } } ] },
+  { id: 't4', cat: 'photo', vendor: 'Hazel Ward Photography', av: ['#D8C3D6', '#A98EB0'], status: 'waiting', unread: 0, onBrixia: false, email: 'hazel@hazelwardphoto.com', msgs: [
+    { from: 'me', text: 'Hi Hazel! Are you available on June 12, 2027 in Brooklyn?', when: 'Oct 5' } ] },
+  { id: 't5', cat: 'florist', vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], status: 'needs', unread: 1, onBrixia: false, email: 'hello@petalandstem.com', msgs: [
+    { from: 'me', text: "Hi! We're planning a June 12 wedding at Harborline Loft for about 120 guests. We'd love a soft, garden feel. Are you available?", when: 'Oct 6' },
+    { from: 'vendor', text: "Congratulations! We're free on June 12 and we love a garden look. Could you share a few inspiration photos and a rough budget for florals?", when: '9:12 AM', via: true } ] },
+  { id: 't6', cat: 'florist', vendor: 'Wildbloom Florals', av: ['#DCE6D2', '#9DB394'], status: 'waiting', unread: 0, onBrixia: false, email: 'orders@wildbloomflorals.com', msgs: [
+    { from: 'me', text: 'Hi! Do you have June 12, 2027 open? About 120 guests in Brooklyn.', when: 'Oct 6' } ] },
+  { id: 't7', cat: 'catering', vendor: 'Saffron Table Catering', av: ['#F1DDB8', '#D2A867'], status: 'quote', unread: 0, onBrixia: true, email: 'events@saffrontable.com', msgs: [
+    { from: 'me', text: "We'd love a family-style dinner for about 120. Could you send a quote?", when: 'Oct 1' },
+    { from: 'vendor', type: 'quote', when: 'Oct 4', quote: { title: 'Catering quote', lines: [['Family-style dinner, 120 guests', 9600], ['Cocktail hour passed bites', 2400], ['Staffing and rentals', 1800]], deposit: 3450, due: 'Apr 12, 2027', valid: 'Nov 1' } } ] },
+  { id: 't8', cat: 'music', vendor: 'Night Shift Sound', av: ['#C7C9E8', '#8B8FC8'], status: 'waiting', unread: 0, onBrixia: false, email: 'book@nightshiftsound.com', msgs: [
+    { from: 'me', text: 'Hi! Do you have June 12 open? The reception runs 6 to 11 pm.', when: 'Oct 8' } ] }
+];
+
+let S;
+function reset() {
+  S = { threads: SEED().map(t => t.id === 't5' ? { ...t, unread: 0 } : t), sel: 't5', filter: 'all', q: '', open: new Set(['photo', 'florist']), showArch: new Set(), starred: new Set(['t3']), mailThread: 't5', replySent: false, fresh: null };
+}
+reset();
+
+const T = id => S.threads.find(t => t.id === id);
+const catName = id => CATS.find(c => c.id === id).name;
+const initials = name => name.split(' ').filter(w => /^[A-Z]/.test(w)).slice(0, 2).map(w => w[0]).join('');
+const avatar = (t, sm) => `<span class="av${sm ? ' sm' : ''}" style="background:linear-gradient(140deg,${t.av[0]},${t.av[1]})" aria-hidden="true">${esc(initials(t.vendor))}</span>`;
+const STATUS = { booked: ['booked', 'Booked'], quote: ['qin', 'Quote in'], needs: ['needs', 'Needs reply'], waiting: ['waiting', 'Waiting on vendor'] };
+const total = q => q.lines.reduce((a, l) => a + l[1], 0);
+const lastMsg = t => t.msgs.at(-1);
+const preview = t => { const m = lastMsg(t); if (!m) return ''; if (m.type === 'quote') return m.accepted ? 'Quote accepted' : `Sent you a quote for ${money(total(m.quote))}`; return (m.from === 'me' ? 'You: ' : '') + m.text; };
+const hasQuote = t => t.msgs.some(m => m.type === 'quote');
+
+function catState(cid) {
+  const ts = S.threads.filter(t => t.cat === cid && t.status !== 'archived');
+  const booked = ts.find(t => t.status === 'booked');
+  if (booked) return { key: 'booked', label: 'Booked', booked };
+  if (ts.some(t => t.status === 'needs')) return { key: 'needs', label: 'Needs reply' };
+  if (ts.some(t => t.status === 'quote')) return { key: 'qin', label: 'Quote in' };
+  if (ts.length) return { key: 'waiting', label: 'Messaging' };
+  return { key: 'todo', label: 'To do' };
+}
+
+function matches(t) {
+  if (S.q && !t.vendor.toLowerCase().includes(S.q.toLowerCase())) return false;
+  if (S.filter === 'unread') return t.unread > 0;
+  if (S.filter === 'quotes') return hasQuote(t) && t.status !== 'archived';
+  if (S.filter === 'booked') return t.status === 'booked';
+  return true;
+}
+
+function renderNav() {
+  const unread = S.threads.reduce((a, t) => a + t.unread, 0);
+  const items = [['home', 'Home'], ['inbox', 'Inbox'], ['explore', 'Explore'], ['plans', 'Plans']];
+  $('sideNav').innerHTML = items.map(([k, l]) => `<button type="button" class="${k === 'inbox' ? 'on' : ''}" data-nav="${k}" aria-label="${l}">${ic(k)}<span>${l}</span>${k === 'inbox' && unread ? `<b class="count">${unread}</b>` : ''}</button>`).join('');
+  $('bottomNav').innerHTML = items.map(([k, l]) => `<button type="button" class="${k === 'inbox' ? 'on' : ''}" data-nav="${k}">${ic(k)}${l}</button>`).join('');
+  const n = S.threads.filter(t => t.status !== 'archived').length;
+  $('listSub').textContent = `${n} conversations in ${CATS.filter(c => S.threads.some(t => t.cat === c.id && t.status !== 'archived')).length} categories${unread ? `, ${unread} unread` : ''}`;
+}
+
+function renderList() {
+  let h = '';
+  const needs = S.threads.filter(t => (t.status === 'needs' || (t.status === 'quote' && !t.msgs.some(m => m.accepted))) && matches(t));
+  if (needs.length && S.filter === 'all') {
+    h += `<div class="needs"><div class="needs-h">${ic('bell')}Needs you · ${needs.length}</div>` +
+      needs.map(t => `<button type="button" class="nrow" data-open="${t.id}">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(catName(t.cat))}</span></span><span class="act">${t.status === 'needs' ? 'Reply' : 'Review quote'}</span></button>`).join('') + '</div>';
+  }
+  let shown = 0;
+  CATS.forEach(c => {
+    const all = S.threads.filter(t => t.cat === c.id);
+    const active = all.filter(t => t.status !== 'archived' && matches(t));
+    const arch = all.filter(t => t.status === 'archived' && matches(t));
+    if (S.filter !== 'all' && !active.length) return;
+    if (S.q && !active.length && !arch.length) return;
+    shown++;
+    const st = catState(c.id);
+    const unread = active.reduce((a, t) => a + t.unread, 0);
+    const open = S.open.has(c.id) || (S.q && active.length);
+    const sub = st.booked ? `Booked with ${st.booked.vendor}` : active.length ? `${active.length} chat${active.length > 1 ? 's' : ''}${unread ? ` · ${unread} unread` : ''}` : 'No vendors yet';
+    h += `<div class="cat${open ? ' open' : ''}${st.key === 'booked' ? ' is-booked' : ''}">
+      <button type="button" class="cat-h" data-cat="${c.id}" aria-expanded="${open ? 'true' : 'false'}">
+        <span class="cic">${ic(st.key === 'booked' ? 'check' : c.id)}</span>
+        <span class="tx"><b>${c.name}</b><span class="sub">${esc(sub)}</span></span>
+        ${unread ? '<span class="dot" aria-label="Unread"></span>' : ''}
+        <span class="pill ${st.key}">${st.label}</span>
+        <svg class="i chev" viewBox="0 0 24 24" aria-hidden="true">${ICON.chev}</svg>
+      </button>
+      <div class="cat-b">` +
+      (active.length ? active.map(threadRow).join('') : `<div class="empty-cat"><span>No ${c.name.toLowerCase()} chats yet.</span><button type="button" class="btn sm line" data-toast="Vendor browse comes in Phase 4. For now you can invite a vendor you found anywhere.">Find one</button></div>`) +
+      (arch.length && S.filter === 'all' ? `<button type="button" class="arch" data-arch="${c.id}">${S.showArch.has(c.id) ? 'Hide' : 'Show'} archived (${arch.length})</button>` + (S.showArch.has(c.id) ? arch.map(threadRow).join('') : '') : '') +
+      `</div></div>`;
+  });
+  if (!shown) h += `<div class="none">No conversations match. Try another filter.</div>`;
+  $('list').innerHTML = h;
+}
+
+function threadRow(t) {
+  const st = STATUS[t.status];
+  return `<button type="button" class="trow${t.id === S.sel ? ' on' : ''}${t.unread ? ' unread' : ''}${t.status === 'archived' ? ' archived' : ''}" data-open="${t.id}">
+    ${avatar(t, true)}
+    <span class="tx"><span class="top"><b>${esc(t.vendor)}</b><time>${esc(lastMsg(t).when)}</time></span><span class="prev">${esc(preview(t))}</span></span>
+    <span class="meta">${t.unread ? '<span class="dot"></span>' : ''}${st ? `<span class="pill ${st[0]}">${st[1]}</span>` : ''}</span>
+  </button>`;
+}
+
+function quoteCard(t, m, mi, vendorView) {
+  const q = m.quote, tot = total(q);
+  return `<div class="quote">
+    <div class="q-h">${avatar(t, true)}<span class="tx"><b>${esc(t.vendor)}</b><span>${esc(q.title)}</span></span><span class="pill waiting">Valid until ${esc(q.valid)}</span></div>
+    <div class="q-l">${q.lines.map(l => `<div><span>${esc(l[0])}</span><span>${money(l[1])}</span></div>`).join('')}<div class="tot"><span>Total</span><span>${money(tot)}</span></div></div>
+    <div class="q-s"><div><span>Deposit, due on booking</span><b>${money(q.deposit)}</b></div><div><span>Balance, due ${esc(q.due)}</span><b>${money(tot - q.deposit)}</b></div></div>
+    ${m.accepted ? `<div class="q-done">${ic('check')}Accepted. Paying deposits in Brixia is coming soon.</div>` : vendorView ? '' : `<div class="q-a"><button type="button" class="btn" data-accept="${t.id}:${mi}">Accept quote</button><button type="button" class="btn line" data-sugg="Quick question about the quote:">Ask a question</button></div>`}
+  </div>`;
+}
+
+function renderMsgs(t, vendorView, showNote = true) {
+  let h = '';
+  if (!vendorView && !t.onBrixia) h += `<div class="note">${esc(t.vendor)} isn't on Brixia yet. They get your messages by email and reply through a link.</div>`;
+  if (vendorView && showNote) h += `<div class="note">Maya and Daniel are planning on Brixia. Your replies go straight to their inbox.</div>`;
+  t.msgs.forEach((m, mi) => {
+    const mine = vendorView ? m.from === 'vendor' : m.from === 'me';
+    const fresh = S.fresh === `${t.id}:${mi}` ? ' fresh' : '';
+    const ca = t.coupleAv || ['#43537A', '#C3979C'];
+    const who = mine ? '' : vendorView ? `<span class="av sm" style="background:linear-gradient(140deg,${ca[0]},${ca[1]})" aria-hidden="true">${esc(t.coupleInit || 'MD')}</span>` : avatar(t, true);
+    if (m.type === 'quote') { h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div>${quoteCard(t, m, mi, vendorView)}<div class="when">${esc(m.when)}</div></div></div>`; return; }
+    const via = !vendorView && m.from === 'vendor' && m.via ? '<span class="via">via email link</span>' : '';
+    h += `<div class="m${mine ? ' me' : ''}${fresh}">${who}<div><div class="bub">${esc(m.text)}</div><div class="when">${esc(m.when)}${via}</div></div></div>`;
+  });
+  return h;
+}
+
+function renderThread() {
+  const t = T(S.sel);
+  if (!t) { $('thread').innerHTML = `<div class="empty-th"><div><b>Pick a conversation</b>Every vendor chat lives in its category on the left.</div></div>`; return; }
+  const st = STATUS[t.status];
+  const sugg = t.status === 'needs' && t.id === 't5' && t.msgs.length === 2 ? ["Sure! We're thinking around $4,000. I'll send a few photos we love tonight.", 'Could you send us a quote?'] :
+    t.status === 'waiting' ? ['Just following up on our date. Any update?'] : t.status === 'booked' ? ['Quick question about the timeline'] : t.status === 'quote' ? ['Could we adjust the hours?', 'Is the deposit refundable?'] : ['Could you send us a quote?', 'Are you available June 12?'];
+  $('thread').innerHTML = `
+    <div class="th-h">
+      <button type="button" class="back" data-back aria-label="Back to inbox">${ic('back')}</button>
+      ${avatar(t)}
+      <div class="who"><b>${esc(t.vendor)}</b><span class="sub">${st ? `<span class="pill ${st[0]}">${st[1]}</span>` : '<span class="pill todo">Archived</span>'}<span>${esc(catName(t.cat))} · ${t.onBrixia ? 'On Brixia' : 'Replies by email link'}</span></span></div>
+      <div class="acts">
+        <button type="button" class="btn sm line${S.starred.has(t.id) ? ' starred' : ''}" data-star="${t.id}">${ic('star')}${S.starred.has(t.id) ? 'Shortlisted' : 'Shortlist'}</button>
+        ${t.status !== 'booked' ? `<button type="button" class="btn sm line" data-reqquote="${t.id}">${ic('doc')}Request quote</button><button type="button" class="btn sm" data-book="${t.id}">${ic('check')}Mark booked</button>` : ''}
+      </div>
+    </div>
+    <div class="msgs" id="msgs">${renderMsgs(t, false)}</div>
+    <div class="compose">
+      <div class="sugg">${sugg.map(s => `<button type="button" data-sugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+      <form class="box" id="sendForm">
+        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        <textarea id="msgIn" rows="1" placeholder="Message ${esc(t.vendor)}" aria-label="Message"></textarea>
+        <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
+      </form>
+    </div>`;
+  const box = $('msgs'); box.scrollTop = box.scrollHeight;
+}
+
+function renderInbox() { renderNav(); renderList(); renderThread(); }
+
+function openThread(id) {
+  const t = T(id); S.sel = id; t.unread = 0; S.open.add(t.cat);
+  if (t.status === 'archived') S.showArch.add(t.cat);
+  $('s-inbox').classList.add('thread-open');
+  renderInbox();
+}
+
+/* ---------- Vendor email ---------- */
+function renderEmail() {
+  const t = T(S.mailThread);
+  const m = [...t.msgs].reverse().find(x => x.from === 'me');
+  $('mail').innerHTML = `
+    <div class="mail-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span style="margin-left:8px">Inbox · ${esc(t.email)}</span></div>
+    <div class="mail-meta">
+      <h2>Maya and Daniel sent you a message</h2>
+      <div class="r"><b>Brixia</b><span>&lt;messages@brixiaco.com&gt;</span></div>
+      <div class="r"><span>to</span><b>${esc(t.email)}</b><span style="margin-left:auto">${esc(m.when)}</span></div>
+    </div>
+    <div class="mail-body">
+      <div class="em">
+        <div class="em-top"><span class="mark">${ic('check').replace(ICON.check, '<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/>')}</span>Brixia</div>
+        <div class="em-in">
+          <h3>New message from Maya and Daniel</h3>
+          <p class="lead">They're planning their wedding on Brixia and reached out to ${esc(t.vendor)} about ${esc(CATS.find(c => c.id === t.cat).about)}.</p>
+          <div class="facts"><span>June 12, 2027</span><span>Brooklyn</span><span>About 120 guests</span><span>Venue booked</span></div>
+          <div class="em-q">${esc(m.text)}</div>
+          <button type="button" class="em-cta" data-go="reply">Reply to Maya and Daniel</button>
+          <p class="em-small">No account needed. Your reply goes straight to their inbox.</p>
+        </div>
+        <div class="em-foot">Is this your business? <a href="#" data-go="claim">Claim your free Brixia profile</a> to manage every inquiry in one place.<br>Don't want messages from couples on Brixia? <a href="#" data-toast="Every email will include a one-click opt out.">Stop these emails</a>.</div>
+      </div>
+    </div>`;
+}
+
+/* ---------- Vendor reply page ---------- */
+function renderReply() {
+  const t = T(S.mailThread);
+  const sugg = ["We're available! Happy to put together a quote.", "Sorry, we're already booked that date.", 'Could we set up a quick call this week?'];
+  $('s-reply').innerHTML = `
+    <div class="vtop">
+      <div class="logo"><span class="mark"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/></svg></span><span>Brixia</span></div>
+      <span class="as">Replying as <b>${esc(t.vendor)}</b> · ${esc(t.email)}</span>
+      ${VS.claimed ? '<button type="button" class="btn sm blush" data-go="vinbox">Open my inbox</button>' : '<button type="button" class="btn sm blush" data-go="claim">Claim your free profile</button>'}
+    </div>
+    <div class="vgrid">
+      <div class="vmain">
+        <div class="vmain-h"><h1>Maya and Daniel</h1><p>${esc(catName(t.cat))} inquiry · June 12, 2027 · Brooklyn</p></div>
+        <div class="msgs" id="vmsgs">${renderMsgs(t, true)}</div>
+        <div class="sent${S.replySent ? ' show' : ''}" id="sentBanner">${ic('check')}<span>Sent. Maya and Daniel will see your reply in their Brixia inbox.</span><span class="acts2"><button type="button" class="btn sm line" data-go="inbox" data-reveal="${t.id}">See the couple's inbox</button>${VS.claimed ? '' : '<button type="button" class="btn sm" data-go="claim">Keep all your couples in one inbox</button>'}</span></div>
+        <div class="compose">
+          <div class="sugg">${sugg.map(s => `<button type="button" data-vsugg="${esc(s)}">${esc(s)}</button>`).join('')}</div>
+          <form class="box" id="vForm">
+            <textarea id="vIn" rows="2" placeholder="Write your reply to Maya and Daniel" aria-label="Your reply"></textarea>
+            <button type="submit" class="send" aria-label="Send reply">${ic('send')}</button>
+          </form>
+          <div class="vrow"><button type="button" class="btn sm line" data-toast="The quote builder comes in Phase 5.">${ic('doc')}Send a quote</button><span class="hint">Replies also work from your phone.</span></div>
+        </div>
+      </div>
+      <div class="aside">
+        <div class="acard">
+          <h3>Their wedding</h3>
+          <div class="det">
+            <div><span>Date</span><b>June 12, 2027</b></div>
+            <div><span>Location</span><b>Brooklyn, NY</b></div>
+            <div><span>Venue</span><b>Harborline Loft (booked)</b></div>
+            <div><span>Guests</span><b>About 120</b></div>
+            <div><span>Style</span><b>Soft, garden feel</b></div>
+          </div>
+        </div>
+        <div class="acard claim">
+          <h3>Free for vendors</h3>
+          <p>Claim your profile to keep every couple's inquiry in one place.</p>
+          <ul>
+            <li>${ic('check')}Every inquiry comes with the date and guest count</li>
+            <li>${ic('check')}Send official quotes couples accept in one tap</li>
+            <li>${ic('check')}Get paid deposits through Brixia (coming soon)</li>
+          </ul>
+          <button type="button" class="btn blush" data-go="claim">Claim ${esc(t.vendor)}</button>
+        </div>
+      </div>
+    </div>`;
+  const box = $('vmsgs'); if (box) box.scrollTop = box.scrollHeight;
+}
+
+/* ---------- Screens ---------- */
+function go(screen) {
+  document.querySelector('.toast')?.remove();
+  document.body.dataset.screen = screen;
+  const tab = screen === 'claim' ? 'vinbox' : screen;
+  document.querySelectorAll('#seg button').forEach(b => b.classList.toggle('on', b.dataset.go === tab));
+  if (screen === 'vinbox' && !VS.claimed) { VS.claimed = true; T('t5').onBrixia = true; }
+  if (screen === 'inbox') renderInbox();
+  if (screen === 'claim') renderClaim();
+  if (screen === 'vinbox') renderVInbox();
+  if (screen === 'email') renderEmail();
+  if (screen === 'reply') renderReply();
+  window.scrollTo(0, 0);
+}
+
+let toastTimer;
+function toast(msg, action) {
+  document.querySelector('.toast')?.remove();
+  const el = document.createElement('div');
+  el.className = 'toast'; el.setAttribute('role', 'status');
+  el.innerHTML = `<span>${esc(msg)}</span>` + (action ? `<button type="button">${esc(action.label)}</button>` : '');
+  if (action) el.querySelector('button').addEventListener('click', () => { el.remove(); action.fn(); });
+  document.body.appendChild(el);
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.remove(), action ? 6000 : 3000);
+}
+
+function sendCouple(text) {
+  const t = T(S.sel); if (!t || !text.trim()) return;
+  t.msgs.push({ from: 'me', text: text.trim(), when: 'Just now' });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (t.status === 'needs' || t.status === 'quote') t.status = t.status === 'quote' ? 'quote' : 'waiting';
+  S.mailThread = t.id; S.replySent = false;
+  renderInbox();
+  toast(t.onBrixia ? `Sent to ${t.vendor}.` : `Sent. ${t.vendor} gets it by email with a reply link.`, { label: "See the vendor's email", fn: () => go('email') });
+}
+
+function sendVendor(text) {
+  const t = T(S.mailThread); if (!text.trim()) return;
+  t.msgs.push({ from: 'vendor', text: text.trim(), when: 'Just now', via: !t.onBrixia });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (t.status !== 'booked') t.status = 'needs';
+  t.unread += 1; S.replySent = true;
+  renderReply();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('button, a'); if (!el) return;
+  const d = el.dataset;
+  if (d.go) { if (d.reveal) { const t = T(d.reveal); S.open.add(t.cat); S.sel = t.id; } go(d.go); if (d.reveal) { T(d.reveal).unread = 0; renderInbox(); } return; }
+  if (d.toast) { e.preventDefault(); toast(d.toast); return; }
+  if (vClick(el, d)) return;
+  if (d.nav) { if (d.nav !== 'inbox') toast(`${d.nav[0].toUpperCase() + d.nav.slice(1)} is the next screen we prototype.`); return; }
+  if (d.cat) { S.open.has(d.cat) ? S.open.delete(d.cat) : S.open.add(d.cat); renderList(); return; }
+  if (d.arch) { S.showArch.has(d.arch) ? S.showArch.delete(d.arch) : S.showArch.add(d.arch); renderList(); return; }
+  if (d.open) { S.fresh = null; openThread(d.open); return; }
+  if (d.f) { S.filter = d.f; document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b === el)); renderList(); return; }
+  if (el.hasAttribute('data-back')) { el.closest('.app-screen').classList.remove('thread-open'); return; }
+  if (d.star) { S.starred.has(d.star) ? S.starred.delete(d.star) : S.starred.add(d.star); renderThread(); return; }
+  if (d.book) { const t = T(d.book); t.status = 'booked'; S.fresh = null; renderInbox(); toast(`${catName(t.cat)} booked with ${t.vendor}.`); return; }
+  if (d.reqquote) { $('msgIn').value = 'Could you send us a quote for June 12?'; $('msgIn').focus(); return; }
+  if (d.accept) { const [tid, mi] = d.accept.split(':'); const t = T(tid); t.msgs[+mi].accepted = true; t.status = 'booked'; S.fresh = null; renderInbox(); toast(`Quote accepted. ${catName(t.cat)} is booked.`); return; }
+  if (d.sugg !== undefined) { const i = $('msgIn'); i.value = d.sugg; i.focus(); return; }
+  if (d.vsugg !== undefined) { const i = $('vIn'); i.value = d.vsugg; i.focus(); return; }
+});
+
+document.addEventListener('submit', e => {
+  e.preventDefault();
+  if (e.target.id === 'sendForm') sendCouple($('msgIn').value);
+  if (e.target.id === 'vForm') sendVendor($('vIn').value);
+  if (e.target.id === 'vinForm') sendVInbox($('vinIn').value);
+  if (e.target.id === 'claimForm') claimSubmit();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey && (e.target.id === 'msgIn' || e.target.id === 'vIn' || e.target.id === 'vinIn')) { e.preventDefault(); e.target.form.requestSubmit(); }
+});
+$('q').addEventListener('input', e => { S.q = e.target.value; renderList(); });
+$('reset').addEventListener('click', () => { reset(); resetV(); $('q').value = ''; $('vq').value = ''; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b.dataset.vf === 'all')); $('s-vinbox').classList.remove('thread-open'); document.querySelectorAll('#chips button').forEach(b => b.classList.toggle('on', b.dataset.f === 'all')); $('s-inbox').classList.remove('thread-open'); go('inbox'); });
+
+/* ---------- Vendor side: claim + inbox ---------- */
+let VS;
+const VSEED = () => [
+  { id: 'c1', link: 't5', names: 'Maya and Daniel', init: 'MD', av: ['#43537A', '#C3979C'], date: 'June 12, 2027', short: 'Jun 12, 2027', area: 'Brooklyn', guests: 120, style: 'Soft, garden feel', budget: 'Around $4,000', stage: 'talk', unread: 0 },
+  { id: 'c2', names: 'Priya and Sam', init: 'PS', av: ['#6E86B8', '#B6C4E2'], date: 'September 18, 2027', short: 'Sep 18, 2027', area: 'Queens', guests: 90, style: 'Bright and colorful', budget: 'Not shared yet', stage: 'new', unread: 1, msgs: [
+    { from: 'me', text: "Hi! We're getting married September 18, 2027 in Astoria with about 90 guests. We love bright, colorful flowers. Are you available?", when: '8:40 AM' } ] },
+  { id: 'c3', names: 'Chloe and Marcus', init: 'CM', av: ['#5B4A6E', '#A58BB8'], date: 'October 23, 2027', short: 'Oct 23, 2027', area: 'Manhattan', guests: 140, style: 'Moody, candlelit', budget: '$6,000 to $8,000', stage: 'new', unread: 1, msgs: [
+    { from: 'me', text: 'Hello! Do you do ceremony and reception florals for about 140 guests? Our date is October 23, 2027.', when: 'Yesterday' } ] },
+  { id: 'c4', names: 'Jordan and Alex', init: 'JA', av: ['#3F6B6A', '#8DB8B0'], date: 'May 2, 2027', short: 'May 2, 2027', area: 'Manhattan', guests: 150, style: 'Modern, all white', budget: 'Around $5,000', stage: 'quoted', unread: 0, msgs: [
+    { from: 'me', text: 'Could you send a quote for a ceremony arch, 15 centerpieces and two bouquets?', when: 'Oct 2' },
+    { from: 'vendor', type: 'quote', when: 'Oct 4', quote: { title: 'Florals quote', lines: [['Ceremony arch', 1800], ['15 centerpieces', 2700], ['Two bouquets and boutonnieres', 700]], deposit: 1300, due: 'Apr 2, 2027', valid: 'Oct 31' } } ] },
+  { id: 'c5', names: 'Emma and Luis', init: 'EL', av: ['#8A6A3E', '#D2B07C'], date: 'April 10, 2027', short: 'Apr 10, 2027', area: 'Brooklyn', guests: 80, style: 'Wildflower, relaxed', budget: '$3,500', stage: 'booked', unread: 0, msgs: [
+    { from: 'vendor', text: "You're all set for April 10! We'll do a final walkthrough in March.", when: 'Sep 28' },
+    { from: 'me', text: 'Perfect, thank you so much!', when: 'Sep 28' } ] }
+];
+const STAGES = [
+  { id: 'new', name: 'New inquiries', icon: 'bell' },
+  { id: 'talk', name: 'In conversation', icon: 'inbox' },
+  { id: 'quoted', name: 'Quote sent', icon: 'doc' },
+  { id: 'booked', name: 'Booked', icon: 'check' }
+];
+function resetV() { VS = { couples: VSEED(), sel: 'c1', open: new Set(['new', 'talk']), filter: 'all', q: '', claimed: false, step: 1 }; }
+resetV();
+
+const C = id => VS.couples.find(c => c.id === id);
+const vt = c => c.link ? Object.assign(T(c.link), { coupleInit: c.init, coupleAv: c.av }) : { id: c.id, vendor: 'Petal and Stem Studio', av: ['#F0D2CF', '#D3A4A6'], onBrixia: true, cat: 'florist', msgs: c.msgs, coupleInit: c.init, coupleAv: c.av };
+const cMsgs = c => vt(c).msgs;
+const yourTurn = c => { const m = cMsgs(c).at(-1); return m && m.from === 'me' && c.stage !== 'booked'; };
+const cUnread = c => c.link ? (yourTurn(c) && VS.sel !== c.id ? 1 : 0) : c.unread;
+const cAv = c => `<span class="av sm" style="background:linear-gradient(140deg,${c.av[0]},${c.av[1]})" aria-hidden="true">${esc(c.init)}</span>`;
+const cPrev = c => { const m = cMsgs(c).at(-1); if (!m) return ''; if (m.type === 'quote') return `You sent a quote for ${money(total(m.quote))}`; return (m.from === 'vendor' ? 'You: ' : '') + m.text; };
+const vMatch = c => (!VS.q || c.names.toLowerCase().includes(VS.q.toLowerCase())) && (VS.filter === 'all' || (VS.filter === 'turn' && yourTurn(c)) || (VS.filter === 'booked' && c.stage === 'booked'));
+
+function renderClaim() {
+  const step = VS.step;
+  $('s-claim').innerHTML = `<form class="claim-card" id="claimForm" novalidate>
+    <div class="claim-top">
+      <div class="steps"><span class="on"></span><span class="${step === 2 ? 'on' : ''}"></span></div>
+      <h1>${step === 1 ? 'Claim Petal and Stem Studio' : 'Verify your email'}</h1>
+      <p>${step === 1 ? 'We set up your profile from your public info so couples can find you. Check it over, then verify your email.' : "We sent a 6-digit code to hello@petalandstem.com. Enter it to open your inbox."}</p>
+    </div>
+    <div class="claim-in">
+      ${step === 1 ? `
+        <div class="found">${ic('check')}<span>Found from your website and Instagram. Fix anything we got wrong.</span></div>
+        <div class="grid2">
+          <div class="fld"><label for="cf1">Business name</label><input id="cf1" value="Petal and Stem Studio"></div>
+          <div class="fld"><label for="cf2">Category</label><input id="cf2" value="Florist"></div>
+          <div class="fld"><label for="cf3">Areas you serve</label><input id="cf3" value="Brooklyn, Manhattan, Queens"></div>
+          <div class="fld"><label for="cf4">Typical price range</label><input id="cf4" value="$2,500 to $8,000"></div>
+          <div class="fld"><label for="cf5">Instagram</label><input id="cf5" value="@petalandstemstudio"></div>
+          <div class="fld"><label for="cf6">Business email</label><input id="cf6" value="hello@petalandstem.com"></div>
+        </div>
+        <div class="row"><button type="submit" class="btn">Looks right, continue</button></div>
+        <p class="small">Not your business? <button type="button" data-toast="We'd remove the profile or pass it to the right owner.">Let us know</button></p>` : `
+        <div class="fld code" id="codeFld"><label for="code">6-digit code</label><input id="code" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="one-time-code"></div>
+        <div class="errmsg" id="codeErr" aria-live="polite"></div>
+        <div class="row"><button type="button" class="btn line" data-claimback>Back</button><button type="submit" class="btn">Verify and open my inbox</button></div>
+        <p class="small">Prototype: any 6 digits work. <button type="button" data-toast="A new code would be emailed.">Resend code</button></p>`}
+    </div>
+  </form>`;
+  setTimeout(() => (step === 2 ? $('code') : $('cf1'))?.focus(), 50);
+}
+
+function claimSubmit() {
+  if (VS.step === 1) { VS.step = 2; renderClaim(); return; }
+  const v = $('code').value.trim();
+  if (!/^\d{6}$/.test(v)) { $('codeErr').textContent = 'Enter the 6-digit code from your email.'; $('codeFld').classList.add('err'); $('code').focus(); return; }
+  VS.claimed = true; T('t5').onBrixia = true; VS.sel = 'c1';
+  go('vinbox');
+  toast("Profile claimed. Every couple who messages you lands here now.");
+}
+
+function renderVInbox() {
+  const turn = VS.couples.filter(yourTurn).length;
+  const items = [['inbox', 'Inbox'], ['calendar', 'Calendar'], ['quotes', 'Quotes'], ['profile', 'Profile']];
+  const icn = { inbox: 'inbox', calendar: 'plans', quotes: 'doc', profile: 'home' };
+  $('vNav').innerHTML = items.map(([k, l]) => `<button type="button" class="${k === 'inbox' ? 'on' : ''}" data-vnav="${l}" aria-label="${l}">${ic(icn[k])}<span>${l}</span>${k === 'inbox' && turn ? `<b class="count">${turn}</b>` : ''}</button>`).join('');
+  $('vListSub').textContent = `${VS.couples.length} couples${turn ? `, ${turn} waiting on you` : ''}`;
+  renderVList(); renderVThread();
+}
+
+function renderVList() {
+  let h = '';
+  const waiting = VS.couples.filter(c => yourTurn(c) && vMatch(c));
+  if (waiting.length && VS.filter === 'all') {
+    h += `<div class="needs"><div class="needs-h">${ic('bell')}Your turn · ${waiting.length}</div>` + waiting.map(c => `<button type="button" class="nrow" data-vopen="${c.id}">${cAv(c)}<span class="tx"><b>${esc(c.names)}</b><span>${esc(c.short)} · ${c.guests} guests</span></span><span class="act">Reply</span></button>`).join('') + '</div>';
+  }
+  let shown = 0;
+  STAGES.forEach(st => {
+    const cs = VS.couples.filter(c => c.stage === st.id && vMatch(c));
+    if (!cs.length) return;
+    shown++;
+    const open = VS.open.has(st.id) || VS.q;
+    const w = cs.filter(yourTurn).length;
+    const sub = `${cs.length} couple${cs.length > 1 ? 's' : ''}${w ? ` · ${w} waiting on you` : ''}`;
+    h += `<div class="cat${open ? ' open' : ''}${st.id === 'booked' ? ' is-booked' : ''}">
+      <button type="button" class="cat-h" data-vgrp="${st.id}" aria-expanded="${open ? 'true' : 'false'}">
+        <span class="cic">${ic(st.icon)}</span>
+        <span class="tx"><b>${st.name}</b><span class="sub">${sub}</span></span>
+        ${w ? '<span class="dot" aria-label="Waiting on you"></span>' : ''}
+        <span class="count-b">${cs.length}</span>
+        <svg class="i chev" viewBox="0 0 24 24" aria-hidden="true">${ICON.chev}</svg>
+      </button>
+      <div class="cat-b">${cs.map(c => `<button type="button" class="trow${c.id === VS.sel ? ' on' : ''}${cUnread(c) ? ' unread' : ''}" data-vopen="${c.id}">
+        ${cAv(c)}
+        <span class="tx"><span class="top"><b>${esc(c.names)}</b><time>${esc(cMsgs(c).at(-1).when)}</time></span><span class="prev">${esc(cPrev(c))}</span></span>
+        <span class="meta">${cUnread(c) ? '<span class="dot"></span>' : ''}<span class="wd">${esc(c.short)}</span></span>
+      </button>`).join('')}</div></div>`;
+  });
+  if (!shown) h += '<div class="none">No couples match. Try another filter.</div>';
+  $('vlist').innerHTML = h;
+}
+
+function renderVThread() {
+  const c = C(VS.sel);
+  if (!c) { $('vthread').innerHTML = '<div class="empty-th"><div><b>Pick a couple</b>Every inquiry is grouped by stage on the left.</div></div>'; return; }
+  const t = vt(c);
+  const sugg = c.stage === 'new' ? ["Congratulations! We're available that date.", "Sorry, we're already booked that date."] : c.stage === 'booked' ? ['Looking forward to it!'] : ['Happy to put together a quote.', 'Could we set up a quick call?'];
+  $('vthread').innerHTML = `
+    <div class="th-h">
+      <button type="button" class="back" data-back aria-label="Back to couples">${ic('back')}</button>
+      ${cAv(c).replace('av sm', 'av')}
+      <div class="who"><b>${esc(c.names)}</b><span class="sub"><span class="wchips"><span>${esc(c.date)}</span><span>${esc(c.area)}</span><span>${c.guests} guests</span><span>${esc(c.style)}</span><span>Budget: ${esc(c.budget)}</span></span></span></div>
+      <div class="acts">
+        <button type="button" class="btn sm line" data-toast="The quote builder comes in Phase 5.">${ic('doc')}Send quote</button>
+        ${c.stage !== 'booked' ? `<button type="button" class="btn sm" data-vbook="${c.id}">${ic('check')}Mark booked</button>` : ''}
+      </div>
+    </div>
+    <div class="msgs" id="vinMsgs">${renderMsgs(t, true, false)}</div>
+    <div class="compose">
+      <div class="sugg">${sugg.map(x => `<button type="button" data-visugg="${esc(x)}">${esc(x)}</button>`).join('')}</div>
+      <form class="box" id="vinForm">
+        <button type="button" class="icon-btn" aria-label="Attach a file" data-toast="Attachments come with the real app.">${ic('clip')}</button>
+        <textarea id="vinIn" rows="1" placeholder="Message ${esc(c.names)}" aria-label="Message"></textarea>
+        <button type="submit" class="send" aria-label="Send">${ic('send')}</button>
+      </form>
+    </div>`;
+  const box = $('vinMsgs'); box.scrollTop = box.scrollHeight;
+}
+
+function sendVInbox(text) {
+  const c = C(VS.sel); if (!c || !text.trim()) return;
+  const t = vt(c);
+  t.msgs.push({ from: 'vendor', text: text.trim(), when: 'Just now' });
+  S.fresh = `${t.id}:${t.msgs.length - 1}`;
+  if (c.stage === 'new') c.stage = 'talk';
+  VS.open.add(c.stage);
+  if (c.link) { const ct = T(c.link); if (ct.status !== 'booked') ct.status = 'needs'; ct.unread += 1; }
+  renderVInbox();
+  if (c.link) toast('Sent. Maya and Daniel see it in their Brixia inbox.', { label: "See the couple's inbox", fn: () => { S.sel = c.link; S.open.add(T(c.link).cat); T(c.link).unread = 0; go('inbox'); } });
+}
+
+function vClick(el, d) {
+  if (el.hasAttribute('data-claimback')) { VS.step = 1; renderClaim(); return true; }
+  if (d.vnav) { if (d.vnav !== 'Inbox') toast(`${d.vnav} is a later vendor screen.`); return true; }
+  if (d.vgrp) { VS.open.has(d.vgrp) ? VS.open.delete(d.vgrp) : VS.open.add(d.vgrp); renderVList(); return true; }
+  if (d.vopen) { const c = C(d.vopen); VS.sel = c.id; c.unread = 0; VS.open.add(c.stage); S.fresh = null; $('s-vinbox').classList.add('thread-open'); renderVInbox(); return true; }
+  if (d.vf) { VS.filter = d.vf; document.querySelectorAll('#vchips button').forEach(b => b.classList.toggle('on', b === el)); renderVList(); return true; }
+  if (d.vbook) { const c = C(d.vbook); c.stage = 'booked'; VS.open.add('booked'); if (c.link) T(c.link).status = 'booked'; renderVInbox(); toast(`${c.names} moved to Booked.`); return true; }
+  if (d.visugg !== undefined) { const i = $('vinIn'); i.value = d.visugg; i.focus(); return true; }
+  return false;
+}
+$('vq').addEventListener('input', e => { VS.q = e.target.value; renderVList(); });
+
+go('inbox');
+</script>
+</body>
+</html>
